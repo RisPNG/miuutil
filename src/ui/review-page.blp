@@ -1,0 +1,155 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $MiuUtilReviewPage : Gtk.Box {
+  orientation: vertical;
+  spacing: 0;
+
+  Gtk.Box {
+    orientation: vertical;
+    spacing: 8;
+    margin-start: 24;
+    margin-end: 24;
+    margin-top: 20;
+    margin-bottom: 16;
+
+    Gtk.Label heading {
+      label: _("Review changes");
+      xalign: 0;
+      wrap: true;
+      styles ["title-1"]
+    }
+
+    Gtk.Label summary_label {
+      xalign: 0;
+      wrap: true;
+      styles ["dim-label"]
+    }
+
+    Gtk.Label approval_label {
+      label: _("Administrator approval will be requested for system changes.");
+      xalign: 0;
+      wrap: true;
+      visible: false;
+      styles ["caption", "dim-label"]
+    }
+  }
+
+  Gtk.ScrolledWindow scroller {
+    hscrollbar-policy: never;
+    vexpand: true;
+
+    Adw.Clamp {
+      maximum-size: 920;
+      tightening-threshold: 700;
+      Gtk.Box {
+        orientation: vertical;
+        spacing: 24;
+        margin-start: 24;
+        margin-end: 24;
+        margin-bottom: 24;
+
+        Adw.PreferencesGroup changes_group {
+          title: _("Changes to apply");
+        }
+
+        Adw.PreferencesGroup results_group {
+          title: _("Results");
+          visible: false;
+        }
+
+        Gtk.Box progress_box {
+          orientation: vertical;
+          spacing: 12;
+          visible: false;
+
+          Gtk.Label current_label {
+            xalign: 0;
+            wrap: true;
+            styles ["heading"]
+          }
+
+          Gtk.ProgressBar progress_bar {
+            show-text: true;
+          }
+
+          Gtk.Label stop_label {
+            label: _("The current change will finish before MiuUtil stops.");
+            xalign: 0;
+            wrap: true;
+            visible: false;
+            styles ["dim-label"]
+          }
+
+          Gtk.Expander {
+            label: _("Operation output");
+            expanded: false;
+            Gtk.ScrolledWindow {
+              hscrollbar-policy: never;
+              min-content-height: 180;
+              max-content-height: 360;
+              propagate-natural-height: true;
+              styles ["card"]
+              Gtk.TextView output_view {
+                editable: false;
+                cursor-visible: false;
+                monospace: true;
+                wrap-mode: word_char;
+                left-margin: 12;
+                right-margin: 12;
+                top-margin: 12;
+                bottom-margin: 12;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  Gtk.Separator {}
+
+  Gtk.Box {
+    spacing: 12;
+    margin-start: 24;
+    margin-end: 24;
+    margin-top: 12;
+    margin-bottom: 12;
+
+    Gtk.Button back_button {
+      Gtk.Label {
+        label: _("Back to choices");
+        wrap: true;
+      }
+    }
+
+    Gtk.Label {
+      hexpand: true;
+    }
+
+    Gtk.Button retry_button {
+      Gtk.Label {
+        label: _("Review remaining");
+        wrap: true;
+      }
+      tooltip-text: _("Review failed or unapplied changes before trying again");
+      visible: false;
+    }
+
+    Gtk.Button stop_button {
+      Gtk.Label {
+        label: _("Stop after current");
+        wrap: true;
+      }
+      visible: false;
+    }
+
+    Gtk.Button apply_button {
+      Gtk.Label {
+        label: _("Apply changes");
+        wrap: true;
+      }
+      styles ["suggested-action"]
+    }
+  }
+}

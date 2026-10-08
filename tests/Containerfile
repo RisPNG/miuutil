@@ -1,0 +1,14 @@
+ARG BASE_IMAGE=debian:trixie-slim
+FROM ${BASE_IMAGE}
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    valac build-essential meson ninja-build pkg-config blueprint-compiler \
+    libgtk-4-dev libadwaita-1-dev libjson-glib-dev gettext \
+    debhelper desktop-file-utils appstream dbus-x11 xvfb xauth \
+    python3-gi python3-cairo python3-pyatspi python3-venv pipx gir1.2-gtk-4.0 gir1.2-adw-1 \
+    xdotool imagemagick ca-certificates && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+
+RUN useradd --create-home --uid 1000 miuutil
+USER miuutil

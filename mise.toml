@@ -1,0 +1,26 @@
+[settings]
+disable_tools = ["python"]
+
+[tools]
+"pipx:meson" = { version = "1.7.0", uvx = "false", pipx_args = "--python /usr/bin/python3" }
+"aqua:ninja-build/ninja" = "1.12.1"
+
+[tasks.configure]
+description = "Configure the native application build"
+run = "meson setup build --prefix=/usr --libexecdir=libexec"
+
+[tasks.build]
+description = "Compile MiuUtil"
+run = "meson compile -C build -j 2"
+
+[tasks.test]
+description = "Run native core and operation tests"
+run = "meson test -C build --print-errorlogs"
+
+[tasks.run]
+description = "Run MiuUtil from the build directory"
+run = "GSETTINGS_SCHEMA_DIR=build/data build/src/miuutil"
+
+[tasks.package]
+description = "Build the Debian package"
+run = "dpkg-buildpackage -us -uc -b"

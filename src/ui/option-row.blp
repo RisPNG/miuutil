@@ -1,0 +1,100 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $MiuUtilOptionRow : Adw.ExpanderRow {
+  title-lines: 0;
+  subtitle-lines: 0;
+  use-markup: false;
+
+  [prefix]
+  Gtk.CheckButton selection {
+    valign: center;
+    tooltip-text: _("Queue this change");
+  }
+
+  [suffix]
+  Gtk.Label status_label {
+    valign: center;
+    margin-start: 12;
+    styles ["caption"]
+  }
+
+  Gtk.Box {
+    orientation: vertical;
+    spacing: 12;
+    margin-start: 48;
+    margin-end: 18;
+    margin-top: 12;
+    margin-bottom: 18;
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 4;
+      Gtk.Label {
+        label: _("Current");
+        xalign: 0;
+        styles ["caption", "dim-label"]
+      }
+      Gtk.Label current_label {
+        xalign: 0;
+        wrap: true;
+        wrap-mode: word_char;
+        selectable: true;
+      }
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 4;
+      Gtk.Label {
+        label: _("Miubian");
+        xalign: 0;
+        styles ["caption", "dim-label"]
+      }
+      Gtk.Label desired_label {
+        xalign: 0;
+        wrap: true;
+        wrap-mode: word_char;
+        selectable: true;
+      }
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 4;
+      Gtk.Label {
+        label: _("Applies to");
+        xalign: 0;
+        styles ["caption", "dim-label"]
+      }
+      Gtk.Label scope_label {
+        xalign: 0;
+        wrap: true;
+        wrap-mode: word_char;
+      }
+    }
+
+    Gtk.Box {
+      orientation: vertical;
+      spacing: 4;
+      Gtk.Label {
+        label: _("Consider before applying");
+        xalign: 0;
+        styles ["caption", "dim-label"]
+      }
+      Gtk.Label risk_label {
+        xalign: 0;
+        wrap: true;
+        wrap-mode: word_char;
+      }
+    }
+
+    Gtk.Label details_label {
+      xalign: 0;
+      wrap: true;
+      wrap-mode: word_char;
+      selectable: true;
+      styles ["dim-label"]
+    }
+  }
+}

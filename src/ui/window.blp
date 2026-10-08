@@ -1,0 +1,247 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $MiuUtilWindow : Adw.ApplicationWindow {
+  title: _("MiuUtil");
+  default-width: 1100;
+  default-height: 780;
+  width-request: 360;
+  height-request: 480;
+
+  Adw.Breakpoint {
+    condition ("max-width: 850sp")
+    setters {
+      split.collapsed: true;
+      split.show-sidebar: false;
+      sidebar_button.visible: true;
+    }
+  }
+
+  Adw.Breakpoint {
+    condition ("max-width: 580sp")
+    setters {
+      split.collapsed: true;
+      split.show-sidebar: false;
+      sidebar_button.visible: true;
+      search_entry.width-chars: 1;
+      category_context.orientation: vertical;
+      show_controls.halign: start;
+    }
+  }
+
+  content: Adw.ToastOverlay toast_overlay {
+    child: Adw.OverlaySplitView split {
+      min-sidebar-width: 210;
+      max-sidebar-width: 250;
+      sidebar-width-fraction: 0.23;
+
+      sidebar: Adw.ToolbarView {
+        styles ["sidebar"]
+        [top]
+        Adw.HeaderBar {
+          show-end-title-buttons: false;
+          title-widget: Adw.WindowTitle {
+            title: "MiuUtil";
+            subtitle: _("Preferences");
+          };
+        }
+        content: Gtk.ScrolledWindow {
+          hscrollbar-policy: never;
+          Gtk.ListBox navigation {
+            selection-mode: single;
+            margin-start: 6;
+            margin-end: 6;
+            margin-top: 6;
+            margin-bottom: 6;
+            styles ["navigation-sidebar"]
+          }
+        };
+      };
+
+      content: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          [start]
+          Gtk.Button sidebar_button {
+            icon-name: "sidebar-show-symbolic";
+            tooltip-text: _("Show categories");
+            visible: false;
+          }
+
+          title-widget: Gtk.Stack header_stack {
+            Gtk.StackPage {
+              name: "search";
+              child: Gtk.SearchEntry search_entry {
+                placeholder-text: _("Search all categories");
+                hexpand: true;
+                width-chars: 24;
+              };
+            }
+            Gtk.StackPage {
+              name: "review";
+              child: Adw.WindowTitle {
+                title: _("MiuUtil");
+              };
+            }
+          };
+
+          [end]
+          Gtk.MenuButton menu_button {
+            icon-name: "open-menu-symbolic";
+            tooltip-text: _("Application menu");
+          }
+
+          [end]
+          Gtk.Button refresh_button {
+            icon-name: "view-refresh-symbolic";
+            tooltip-text: _("Refresh current settings");
+            action-name: "app.refresh";
+          }
+        }
+
+        content: Gtk.Stack page_stack {
+          transition-type: crossfade;
+          Gtk.StackPage {
+            name: "preferences";
+            child: Gtk.Box {
+              orientation: vertical;
+
+              Adw.Banner banner {
+                title: _("Checking current settings…");
+                button-label: _("Refresh");
+                revealed: true;
+              }
+
+              Adw.Clamp {
+                maximum-size: 920;
+                tightening-threshold: 700;
+                Gtk.Box {
+                  orientation: vertical;
+                  spacing: 12;
+                  margin-start: 24;
+                  margin-end: 24;
+                  margin-top: 20;
+                  margin-bottom: 12;
+
+                  Gtk.Label category_title {
+                    label: _("All categories");
+                    xalign: 0;
+                    wrap: true;
+                    styles ["title-1"]
+                  }
+
+                  Gtk.Box category_context {
+                    spacing: 12;
+                    Gtk.Label category_description {
+                      label: _("Choose changes from across the Miubian setup.");
+                      xalign: 0;
+                      wrap: true;
+                      hexpand: true;
+                      styles ["dim-label"]
+                    }
+                    Gtk.Box show_controls {
+                      spacing: 8;
+                      halign: end;
+                      valign: center;
+                      Gtk.Label {
+                        label: _("Show");
+                        styles ["dim-label"]
+                      }
+                      Gtk.DropDown status_filter {
+                        model: Gtk.StringList {
+                          strings [
+                            _("All settings"),
+                            _("Differences"),
+                            _("Already matching"),
+                            _("Unavailable")
+                          ]
+                        };
+                        accessibility {
+                          label: _("Show settings by status");
+                        }
+                      }
+                    }
+                  }
+
+                  Gtk.Box {
+                    spacing: 12;
+                    styles ["card", "selection-toolbar"]
+                    Gtk.Button bulk_button {
+                      tooltip-text: _("Select all eligible settings in this view");
+                      styles ["flat", "bulk-selection"]
+                      Gtk.Box {
+                        spacing: 8;
+                        Gtk.Image {
+                          icon-name: "select-all-symbolic";
+                          pixel-size: 24;
+                        }
+                        Gtk.Label bulk_label {
+                          label: _("Select all");
+                        }
+                      }
+                    }
+                  Gtk.Label shown_label {
+                    xalign: 1;
+                    hexpand: true;
+                    wrap: true;
+                      margin-end: 12;
+                      styles ["caption", "dim-label"]
+                    }
+                  }
+                }
+              }
+
+              Gtk.ScrolledWindow {
+                hscrollbar-policy: never;
+                vexpand: true;
+                Adw.Clamp {
+                  maximum-size: 920;
+                  tightening-threshold: 700;
+                  Gtk.Box {
+                    orientation: vertical;
+                    margin-start: 24;
+                    margin-end: 24;
+                    margin-top: 6;
+                    margin-bottom: 24;
+                    Gtk.Box groups_box {
+                      orientation: vertical;
+                      spacing: 24;
+                    }
+                    Adw.StatusPage empty_state {
+                      title: _("No settings in this view");
+                      description: _("Try another category, search or Show filter.");
+                      icon-name: "system-search-symbolic";
+                      visible: false;
+                    }
+                  }
+                }
+              }
+
+              Gtk.Separator {}
+
+              Gtk.Box {
+                spacing: 12;
+                margin-start: 24;
+                margin-end: 24;
+                margin-top: 12;
+                margin-bottom: 12;
+                Gtk.Label selected_label {
+                  label: _("No changes selected");
+                  xalign: 0;
+                  wrap: true;
+                  hexpand: true;
+                  styles ["dim-label"]
+                }
+                Gtk.Button review_button {
+                  label: _("Review changes");
+                  sensitive: false;
+                  styles ["suggested-action"]
+                }
+              }
+            };
+          }
+        };
+      };
+    };
+  };
+}

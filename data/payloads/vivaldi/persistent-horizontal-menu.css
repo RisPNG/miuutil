@@ -1,0 +1,45 @@
+/* Vivaldi 8.2: keep the horizontal menu visible while tabs auto-hide.
+ * Scoped to Linux native windows, outside fullscreen. Remove this file and
+ * restart Vivaldi to restore the built-in menu auto-hide behavior.
+ */
+#browser.linux.native.auto-hide:not(.fullscreen):has(> .auto-hide-wrapper.top > .topmenu) {
+  --persistent-menu-height: 30px;
+}
+
+/* Reserve menu space above the address bar and page. */
+#browser.linux.native.auto-hide:not(.fullscreen):has(> .auto-hide-wrapper.top > .topmenu) > #header {
+  display: block !important;
+  flex: 0 0 var(--persistent-menu-height) !important;
+  height: var(--persistent-menu-height) !important;
+  min-height: var(--persistent-menu-height) !important;
+}
+
+/* Preserve child dimensions for Vivaldi's tab reveal hotspot. */
+#browser.linux.native.auto-hide:not(.fullscreen) > .auto-hide-wrapper.top:has(> .topmenu) {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  transform: none !important;
+  border-radius: 0 !important;
+}
+
+#browser.linux.native.auto-hide:not(.fullscreen) > .auto-hide-wrapper.top:has(> .topmenu):not(.show) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#browser.linux.native.auto-hide:not(.fullscreen) > .auto-hide-wrapper.top > .topmenu {
+  flex: 0 0 var(--persistent-menu-height) !important;
+  height: var(--persistent-menu-height) !important;
+  min-height: var(--persistent-menu-height) !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  pointer-events: auto !important;
+  touch-action: auto !important;
+}
+
+/* Hide only the other auto-hide children; keep their measured sizes. */
+#browser.linux.native.auto-hide:not(.fullscreen) > .auto-hide-wrapper.top:has(> .topmenu):not(.show) > :not(.topmenu) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

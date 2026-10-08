@@ -1,0 +1,6 @@
+[tools]
+go = "latest"
+java = "latest"
+node = "latest"
+python = "3.11"
+rust = "latest"

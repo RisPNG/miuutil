@@ -1,0 +1,292 @@
+{
+  "alternate_error_pages": {
+    "enabled": false
+  },
+  "autofill": {
+    "credit_card_enabled": false,
+    "profile_enabled": false
+  },
+  "credentials_enable_service": false,
+  "enable_do_not_track": true,
+  "payments": {
+    "can_make_payment_enabled": false
+  },
+  "safebrowsing": {
+    "enabled": false
+  },
+  "search": {
+    "suggest_enabled": true
+  },
+  "profile": {
+    "default_content_setting_values": {
+      "mixed_script": 1,
+      "popups": 1,
+      "subresource_filter": 1
+    }
+  },
+  "vivaldi": {
+    "address_bar": {
+      "position": 0,
+      "search": {
+        "suggest_enabled": true
+      },
+      "show_qr_generator": true,
+      "show_search_suggestions_warning": -1,
+      "visible": false
+    },
+    "appearance": {
+      "css_ui_mods_directory": "$CONFIG/miuutil/vivaldi",
+      "density": true,
+      "disable_title_bar": false
+    },
+    "auto_hide": {
+      "address_bar": false,
+      "bookmarks_bar": false,
+      "enabled": true,
+      "panel": false,
+      "show_introduction": false,
+      "status_bar": false,
+      "tab_bar": true
+    },
+    "dashboard": {
+      "columns": 4,
+      "enabled": true
+    },
+    "downloads": {
+      "start_automatically": true
+    },
+    "history": {
+      "days_to_keep_visits": 3650
+    },
+    "menu": {
+      "display": 1,
+      "icon_type": 0
+    },
+    "panels": {
+      "as_overlay": {
+        "auto_close": false,
+        "enabled": true
+      },
+      "elements": [
+        {
+          "id": "PanelBookmarks",
+          "resizable": false,
+          "width": 400
+        },
+        {
+          "id": "PanelReadingList",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelDownloads",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelHistory",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelNotes",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelWindow",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelTranslate",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelMail",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelCalendar",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelTasks",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelFeeds",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelContacts",
+          "resizable": false,
+          "width": -1
+        },
+        {
+          "id": "PanelSession",
+          "resizable": false,
+          "width": -1
+        }
+      ],
+      "position": 1,
+      "show_toggle": true,
+      "window_defaults": {
+        "barVisible": true,
+        "contentVisible": false,
+        "selectedPanel": "PanelDownloads",
+        "width": 400
+      }
+    },
+    "popups": {
+      "show_in_tab": false
+    },
+    "privacy": {
+      "adverse_ad_block": {
+        "enabled": false
+      }
+    },
+    "startpage": {
+      "navigation": 2
+    },
+    "status_bar": {
+      "display": 0
+    },
+    "system": {
+      "show_exit_confirmation_dialog": false
+    },
+    "tabs": {
+      "activation": {
+        "prefer_related": true
+      },
+      "align_next": true,
+      "bar": {
+        "position": 1
+      },
+      "close_button_left": false,
+      "confirm_closing_tabs": false,
+      "confirm_closing_threshold": 99,
+      "never_close_last": true,
+      "stacking": {
+        "mode": 3
+      },
+      "thumbnails": false,
+      "visible": true
+    },
+    "theme": {
+      "dim_blurred": true,
+      "schedule": {
+        "enabled": 0,
+        "o_s": {
+          "dark": "Vivaldi2",
+          "light": "Vivaldi2"
+        }
+      },
+      "simple_scrollbar": true
+    },
+    "themes": {
+      "current": "Vivaldi2"
+    },
+    "toolbars": {
+      "navigation": [
+        "Back",
+        "Forward",
+        "Reload",
+        "AddressField",
+        "DownloadButton",
+        "Spacer",
+        "Extensions",
+        "VPNButton",
+        "UpdateButton",
+        "AccountButton"
+      ],
+      "panel": [
+        "PanelBookmarks",
+        "PanelDownloads",
+        "PanelHistory",
+        "PanelTranslate",
+        "PanelWindow",
+        "PanelSession",
+        "Divider",
+        "PanelMail",
+        "PanelContacts",
+        "PanelCalendar",
+        "PanelTasks",
+        "PanelFeeds",
+        "PanelWeb",
+        "FlexibleSpacer"
+      ],
+      "status": [
+        "Settings",
+        "BreakMode",
+        "SyncStatus",
+        "MailStatus",
+        "CalendarStatus",
+        "StatusInfo",
+        "VersionInfo",
+        "AutoHideToggle",
+        "CaptureImages",
+        "TilingToggle",
+        "PageActions",
+        "Zoom",
+        "Clock"
+      ],
+      "tabbar_after": [
+        "NewTab",
+        "FlexibleSpacer",
+        "AccountButton",
+        "FlexibleSpacer",
+        "VPNButton",
+        "UpdateButton"
+      ],
+      "tabbar_before": [
+        "WorkspaceButton",
+        "TabButton",
+        "Extensions",
+        "FlexibleSpacer",
+        "Back",
+        "Reload",
+        "Forward",
+        "AddressField",
+        "Spacer"
+      ]
+    },
+    "translate": {
+      "enabled": true
+    },
+    "webpages": {
+      "translate_selection_button": {
+        "enabled": true
+      }
+    },
+    "windows": {
+      "linux_alt_controls": false,
+      "use_native_decoration": true
+    },
+    "startup": {
+      "has_seen_welcome_page": true,
+      "has_seen_feature": 1
+    },
+    "welcome": {
+      "read_pages": [
+        "intro",
+        "a11y_settings",
+        "account",
+        "control",
+        "import_data",
+        "tracker_and_ad",
+        "layouts",
+        "personalize",
+        "panel_internal",
+        "panel_apps",
+        "welcome_feature_amount",
+        "mail_setup"
+      ]
+    }
+  }
+}

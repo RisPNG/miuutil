@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+import datetime
+import json
+import os
+from pathlib import Path
+import subprocess
+
+
+def main():
+    descriptor = int(os.environ.get("APT_HOOK_INFO_FD", "0"))
+    with os.fdopen(descriptor) as stream:
+        transaction = stream.read()
+    configuration = Path("/etc/timeshift/timeshift.json")
+    if not configuration.exists():
+        return
+    settings = json.loads(configuration.read_text())
+    if settings.get("btrfs_mode") != "true":
+        return
+    command_line = Path("/proc/cmdline").read_text().split()
+    if any(option.startswith("overlayroot=") or option in ("boot=live", "boot=casper") for option in command_line):
+        return
+    filesystem = subprocess.check_output(
+        ["/usr/bin/findmnt", "--noheadings", "--output", "FSTYPE,FSROOT", "--target", "/"], text=True).split()
+    if filesystem != ["btrfs", "/@"]:
+        return
+    operations = transaction.partition("\n\n")[2].splitlines()
+    packages = [line.split()[0] for line in operations if line.strip()]
+    if not packages:
+        return
+    context = ", ".join(dict.fromkeys(packages[:12]))
+    if len(packages) > 12:
+        context += f", and {len(packages) - 12} more"
+    timestamp = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    subprocess.run(["/usr/bin/timeshift", "--create", "--scripted", "--tags", "D",
+                    "--comments", f"Before APT transaction {timestamp}: {context}"], check=True)
+
+
+if __name__ == "__main__":
+    main()

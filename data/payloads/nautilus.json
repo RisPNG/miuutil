@@ -1,0 +1,67 @@
+{
+  "actions": [
+    {
+      "type": "menu",
+      "label": "Copy details",
+      "sort": "manual",
+      "actions": [
+        {
+          "type": "command",
+          "label": "Copy name",
+          "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py copy-name %U",
+          "use_shell": false,
+          "use_v1_interpolation": false
+        },
+        {
+          "type": "command",
+          "label": "Copy path",
+          "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py copy-path %U",
+          "use_shell": false,
+          "use_v1_interpolation": false
+        },
+        {
+          "type": "command",
+          "label": "Copy URI",
+          "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py copy-uri %U",
+          "use_shell": false,
+          "use_v1_interpolation": false
+        }
+      ]
+    },
+    {
+      "type": "command",
+      "label": "Open in Terminal",
+      "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py terminal %U",
+      "use_shell": false,
+      "use_v1_interpolation": false,
+      "max_items": 1,
+      "filetypes": [
+        "directory"
+      ]
+    },
+    {
+      "type": "command",
+      "label": "Execute command here",
+      "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py execute %U",
+      "use_shell": false,
+      "use_v1_interpolation": false,
+      "max_items": 1,
+      "filetypes": [
+        "directory"
+      ]
+    },
+    {
+      "type": "command",
+      "label": "Open in Code",
+      "command_line": "/usr/bin/python3 $LIBEXEC/nautilus-actions.py code %U",
+      "use_shell": false,
+      "use_v1_interpolation": false,
+      "max_items": 1,
+      "filetypes": [
+        "directory"
+      ]
+    }
+  ],
+  "sort": "manual",
+  "debug": false
+}

@@ -1,0 +1,194 @@
+#!/usr/bin/python3
+"""GNOME: Home/terminal tabs and DDC/CI brightness endpoints."""
+import concurrent.futures
+import contextlib
+import fcntl
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+
+import gi
+gi.require_version("GioUnix", "2.0")
+from gi.repository import Gio, GioUnix, GLib
+
+
+def call(destination, path, interface, method, parameters=None):
+    return Gio.bus_get_sync(Gio.BusType.SESSION, None).call_sync(
+        destination, path, interface, method, parameters, None,
+        Gio.DBusCallFlags.NONE, 5000, None)
+
+
+@contextlib.contextmanager
+def locked(name):
+    runtime = Path(os.environ.get("XDG_RUNTIME_DIR", f"/run/user/{os.getuid()}"))
+    with (runtime / f"gnome-shortcut-{name}.lock").open("w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        yield
+
+
+def windows():
+    return call("org.gnome.Nautilus", "/org/freedesktop/FileManager1",
+                "org.freedesktop.DBus.Properties", "Get",
+                GLib.Variant("(ss)", ("org.freedesktop.FileManager1",
+                                      "OpenWindowsWithLocations"))).unpack()[0]
+
+
+def files():
+    with locked("files"):
+        opened = windows()
+        if not opened:
+            subprocess.Popen(["/usr/bin/nautilus", str(Path.home())])
+            deadline = time.monotonic() + 5
+            while not windows() and time.monotonic() < deadline:
+                time.sleep(0.1)
+            if not windows():
+                raise RuntimeError("Nautilus did not open a window.")
+            return
+        window = next(iter(opened))
+        count = len(opened[window])
+        platform = {key: GLib.Variant("s", os.environ[env]) for key, env in (
+            ("activation-token", "XDG_ACTIVATION_TOKEN"),
+            ("desktop-startup-id", "DESKTOP_STARTUP_ID")) if env in os.environ}
+
+        def activate(action):
+            call("org.gnome.Nautilus", window, "org.gtk.Actions", "Activate",
+                 GLib.Variant("(sava{sv})", (action, [], platform)))
+
+        activate("new-tab")
+        deadline = time.monotonic() + 3
+        while len(windows().get(window, [])) <= count:
+            if time.monotonic() >= deadline:
+                raise RuntimeError("Nautilus did not create a tab; retry after loading.")
+            time.sleep(0.1)
+        activate("go-home")
+        for _ in range(count):
+            activate("tab-move-right")
+
+
+def terminal():
+    desktop = subprocess.check_output(
+        ["/usr/bin/xdg-terminal-exec", "--print-id"], text=True, timeout=10
+    ).strip().split(":", 1)[0]
+    app = GioUnix.DesktopAppInfo.new(desktop)
+    if not app or "new-tab" not in app.list_actions():
+        raise RuntimeError(f"Default terminal {desktop} has no New Tab action.")
+    gi.require_version("Gtk", "4.0")
+    gi.require_version("Gdk", "4.0")
+    from gi.repository import Gtk, Gdk
+    Gtk.init()
+    context = Gdk.Display.get_default().get_app_launch_context()
+    if app.get_boolean("DBusActivatable"):
+        platform = {key: GLib.Variant("s", os.environ[env]) for key, env in (
+            ("activation-token", "XDG_ACTIVATION_TOKEN"),
+            ("desktop-startup-id", "DESKTOP_STARTUP_ID")) if env in os.environ}
+        if not platform and app.get_boolean("StartupNotify"):
+            token = context.get_startup_notify_id(app, [])
+            if token:
+                platform = {key: GLib.Variant("s", token) for key in
+                            ("activation-token", "desktop-startup-id")}
+        name = Path(app.get_filename()).name.removesuffix(".desktop")
+        path = "/" + name.replace(".", "/").replace("-", "_")
+        call(name, path, "org.freedesktop.Application", "ActivateAction",
+             GLib.Variant("(sava{sv})", ("new-tab", [], platform)))
+    else:
+        app.launch_action("new-tab", context)
+
+
+def ddc(*args):
+    return subprocess.run(["/usr/bin/ddcutil", *args], text=True,
+                          capture_output=True, timeout=30,
+                          env={**os.environ, "LC_ALL": "C"})
+
+
+def brightness(percent):
+    with locked("brightness"):
+        report = ddc("detect", "--brief")
+        if report.returncode:
+            raise RuntimeError((report.stderr or report.stdout).strip()[-600:])
+        displays = re.findall(r"^Display\s+(\d+)\s*\n(.*?)(?=^\S|\Z)",
+                              report.stdout, re.M | re.S)
+        selectors = []
+        for number, details in displays:
+            bus = re.search(r"I2C bus:\s*/dev/i2c-(\d+)", details)
+            selector = ("--bus", bus[1]) if bus else ("--display", number)
+            if selector not in selectors:
+                selectors.append(selector)
+        if not selectors:
+            raise RuntimeError("No DDC/CI displays found. Enable DDC/CI on physical monitors.")
+
+        def adjust(selector):
+            try:
+                controls = {"10": percent, "12": 75 if percent else 0,
+                            "16": percent, "18": percent, "1a": percent}
+                report = ddc(*selector, "getvcp", *controls)
+                failures = []
+                expected = {}
+                for code, target in controls.items():
+                    line = re.search(rf"^VCP code 0x{code}\s+\([^\n]*\):\s*(.*)$",
+                                     report.stdout + "\n" + report.stderr, re.M | re.I)
+                    if line and line[1].strip().startswith("Unsupported feature code"):
+                        continue
+                    match = re.fullmatch(r"current value\s*=\s*\d+,\s*max value\s*=\s*(\d+)",
+                                         line[1].strip()) if line else None
+                    if not match or not 0 < int(match[1]) <= 65535:
+                        detail = line[1] if line else report.stderr.strip() or "Could not read the control."
+                        failures.append(f"{code}: {detail}")
+                        continue
+                    raw = (int(match[1]) * target + 50) // 100
+                    try:
+                        result = ddc(*selector, "setvcp", code, str(raw), "--verify")
+                        if result.returncode:
+                            raise RuntimeError((result.stderr or result.stdout).strip()[-600:])
+                        expected[code] = raw
+                    except Exception as error:
+                        failures.append(f"{code}: {error}")
+                if expected:
+                    result = ddc(*selector, "getvcp", *expected, "--terse")
+                    for code, raw in expected.items():
+                        match = re.search(rf"^VCP {code} C (\d+) (\d+)\s*$",
+                                          result.stdout, re.M | re.I)
+                        if not match or int(match[1]) != raw:
+                            actual = match[1] if match else result.stderr.strip() or "unreadable"
+                            failures.append(f"{code}: requested {raw}, read back {actual}.")
+                elif not failures:
+                    failures.append("No supported brightness, contrast or RGB gain controls.")
+                return f"{' '.join(selector)}: {'; '.join(failures)}" if failures else None
+            except Exception as error:
+                return f"{' '.join(selector)}: {error}"
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+            failures = [error for error in pool.map(adjust, selectors) if error]
+        if failures:
+            raise RuntimeError("\n".join(failures))
+
+
+def main():
+    action = sys.argv[1:]
+    if action == ["files"]:
+        files()
+    elif action == ["terminal"]:
+        terminal()
+    elif action in (["brightness", "0"], ["brightness", "100"]):
+        brightness(int(action[1]))
+    else:
+        raise RuntimeError("Usage: gnome-shortcut-helper files|terminal|brightness 0|brightness 100")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        message = str(error)
+        print(message, file=sys.stderr)
+        try:
+            call("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+                 "org.freedesktop.Notifications", "Notify",
+                 GLib.Variant("(susssasa{sv}i)",
+                              ("GNOME shortcuts", 0, "dialog-warning",
+                               "Shortcut failed", message[:1800], [], {}, -1)))
+        except Exception:
+            pass
+        sys.exit(1)

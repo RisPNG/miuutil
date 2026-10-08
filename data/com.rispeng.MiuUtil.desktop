@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=MiuUtil
+Comment=Choose and apply your Debian GNOME setup
+Exec=miuutil
+Icon=com.rispeng.MiuUtil
+Terminal=false
+Categories=GNOME;GTK;Settings;
+Keywords=Debian;Miubian;setup;preferences;
+StartupNotify=true

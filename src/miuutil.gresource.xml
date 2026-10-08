@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/rispeng/MiuUtil">
+    <file alias="ui/window.ui">window.ui</file>
+    <file alias="ui/option-row.ui">option-row.ui</file>
+    <file alias="ui/review-page.ui">review-page.ui</file>
+    <file alias="ui/style.css">ui/style.css</file>
+    <file alias="icons/scalable/actions/select-all-symbolic.svg">../data/icons/hicolor/scalable/actions/select-all-symbolic.svg</file>
+    <file alias="icons/scalable/apps/com.rispeng.MiuUtil-symbolic.svg">../data/icons/hicolor/scalable/apps/com.rispeng.MiuUtil-symbolic.svg</file>
+    <file alias="icons/scalable/apps/com.rispeng.MiuUtil.svg">../data/icons/hicolor/scalable/apps/com.rispeng.MiuUtil.svg</file>
+  </gresource>
+</gresources>

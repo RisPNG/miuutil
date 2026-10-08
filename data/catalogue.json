@@ -1,0 +1,4675 @@
+{
+  "schema": 1,
+  "options": [
+    {
+      "id": "apps-copyq",
+      "title": "CopyQ clipboard manager",
+      "description": "Install CopyQ clipboard manager.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install CopyQ clipboard manager.",
+      "details": "Packages: copyq, copyq-plugins. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "copyq",
+          "copyq-plugins"
+        ]
+      }
+    },
+    {
+      "id": "apps-mpv",
+      "title": "mpv media player",
+      "description": "Install mpv media player.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install mpv media player.",
+      "details": "Packages: mpv. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "mpv"
+        ]
+      }
+    },
+    {
+      "id": "apps-epiphany",
+      "title": "GNOME Web",
+      "description": "Install GNOME Web.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install GNOME Web.",
+      "details": "Packages: epiphany-browser. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "epiphany-browser"
+        ]
+      }
+    },
+    {
+      "id": "apps-console",
+      "title": "GNOME Console",
+      "description": "Install GNOME Console.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install GNOME Console.",
+      "details": "Packages: gnome-console, xdg-terminal-exec. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "gnome-console",
+          "xdg-terminal-exec"
+        ]
+      }
+    },
+    {
+      "id": "apps-blackbox",
+      "title": "Black Box terminal",
+      "description": "Install Black Box terminal.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Black Box terminal.",
+      "details": "Packages: blackbox-terminal. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "blackbox-terminal"
+        ]
+      }
+    },
+    {
+      "id": "apps-files-tools",
+      "title": "File management tools",
+      "description": "Install File management tools.",
+      "category": "files",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install File management tools.",
+      "details": "Packages: mc, file-roller, gnome-sushi, wl-clipboard, xclip, zenity. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "mc",
+          "file-roller",
+          "gnome-sushi",
+          "wl-clipboard",
+          "xclip",
+          "zenity"
+        ]
+      }
+    },
+    {
+      "id": "apps-font-manager",
+      "title": "Font Manager",
+      "description": "Install Font Manager.",
+      "category": "appearance",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Font Manager.",
+      "details": "Packages: font-manager. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "font-manager"
+        ]
+      }
+    },
+    {
+      "id": "apps-gnome-utilities",
+      "title": "GNOME desktop utilities",
+      "description": "Install GNOME desktop utilities.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install GNOME desktop utilities.",
+      "details": "Packages: gnome-tweaks, gnome-text-editor, gnome-system-monitor, baobab, gnome-characters, gnome-clocks. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "gnome-tweaks",
+          "gnome-text-editor",
+          "gnome-system-monitor",
+          "baobab",
+          "gnome-characters",
+          "gnome-clocks"
+        ]
+      }
+    },
+    {
+      "id": "apps-flatpak-support",
+      "title": "Flatpak and GNOME Software integration",
+      "description": "Install Flatpak and GNOME Software integration.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Flatpak and GNOME Software integration.",
+      "details": "Packages: flatpak, gnome-software-plugin-flatpak. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "flatpak",
+          "gnome-software-plugin-flatpak"
+        ]
+      }
+    },
+    {
+      "id": "apps-firefox",
+      "title": "Firefox ESR",
+      "description": "Install Firefox ESR.",
+      "category": "browsers",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Firefox ESR.",
+      "details": "Packages: firefox-esr. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "firefox-esr"
+        ]
+      }
+    },
+    {
+      "id": "system-hardware-tools",
+      "title": "Hardware and network tools",
+      "description": "Install Hardware and network tools.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Hardware and network tools.",
+      "details": "Packages: ddcutil, gddccontrol, i2c-tools, lm-sensors, inxi, curl, ripgrep, jq, tree, zstd, inotify-tools. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "ddcutil",
+          "gddccontrol",
+          "i2c-tools",
+          "lm-sensors",
+          "inxi",
+          "curl",
+          "ripgrep",
+          "jq",
+          "tree",
+          "zstd",
+          "inotify-tools"
+        ]
+      }
+    },
+    {
+      "id": "fonts-packages",
+      "title": "Miubian font collection",
+      "description": "Install the Miubian font collection supported by your configured Debian repositories.",
+      "category": "appearance",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "All available fonts from the Miubian collection installed.",
+      "details": "The full Miubian collection is retained. Fonts absent from the configured repositories are listed explicitly; no additional repository or Debian release is enabled.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "culmus",
+          "font-manager",
+          "fonts-0xproto",
+          "fonts-3270",
+          "fonts-aclonica",
+          "fonts-adf-accanthis",
+          "fonts-adf-baskervald",
+          "fonts-adf-berenis",
+          "fonts-adf-gillius",
+          "fonts-adf-ikarius",
+          "fonts-adf-irianis",
+          "fonts-adf-libris",
+          "fonts-adf-mekanus",
+          "fonts-adf-oldania",
+          "fonts-adf-romande",
+          "fonts-adf-solothurn",
+          "fonts-adf-switzera",
+          "fonts-adf-tribun",
+          "fonts-adf-universalis",
+          "fonts-adf-verana",
+          "fonts-adobe-sourcesans3",
+          "fonts-aenigma",
+          "fonts-agave",
+          "fonts-aksharyogini2",
+          "fonts-albert-sans",
+          "fonts-alee",
+          "fonts-allerta",
+          "fonts-amiga",
+          "fonts-ancient-scripts",
+          "fonts-anonymous-pro",
+          "fonts-aoyagi-kouzan-t",
+          "fonts-aoyagi-soseki",
+          "fonts-apropal",
+          "fonts-arabeyes",
+          "fonts-arcade",
+          "fonts-arphic-bkai00mp",
+          "fonts-arphic-bsmi00lp",
+          "fonts-arphic-gbsn00lp",
+          "fonts-arphic-gkai00mp",
+          "fonts-arphic-ukai",
+          "fonts-arphic-uming",
+          "fonts-arundina",
+          "fonts-atarismall",
+          "fonts-atarist",
+          "fonts-atkinson-hyperlegible",
+          "fonts-atkinson-hyperlegible-next",
+          "fonts-atkinson-hyperlegible-ttf",
+          "fonts-atkinson-hyperlegible-web",
+          "fonts-averia-gwf",
+          "fonts-averia-sans-gwf",
+          "fonts-averia-serif-gwf",
+          "fonts-b612",
+          "fonts-babelstone-han",
+          "fonts-babelstone-modern",
+          "fonts-baekmuk",
+          "fonts-bajaderka",
+          "fonts-bebas-neue",
+          "fonts-beteckna",
+          "fonts-blankenburg",
+          "fonts-bpg-georgian",
+          "fonts-breip",
+          "fonts-bwht",
+          "fonts-cabin",
+          "fonts-cabinsketch",
+          "fonts-campania",
+          "fonts-cascadia-code",
+          "fonts-century-catalogue",
+          "fonts-cherrybomb",
+          "fonts-chomsky",
+          "fonts-circos-symbols",
+          "fonts-cmu",
+          "fonts-cns11643-kai",
+          "fonts-cns11643-sung",
+          "fonts-comfortaa",
+          "fonts-compagnon",
+          "fonts-creep2",
+          "fonts-croscore",
+          "fonts-culmus-fancy",
+          "fonts-cwtex-docs",
+          "fonts-cwtex-fs",
+          "fonts-cwtex-heib",
+          "fonts-cwtex-kai",
+          "fonts-cwtex-ming",
+          "fonts-cwtex-yen",
+          "fonts-dancingscript",
+          "fonts-dclfonts",
+          "fonts-ddc-uchen",
+          "fonts-dejavu-web",
+          "fonts-dejima-mincho",
+          "fonts-dkg-handwriting",
+          "fonts-dosis",
+          "fonts-dotgothic16",
+          "fonts-droid-fallback",
+          "fonts-dseg",
+          "fonts-dustin",
+          "fonts-dzongkha",
+          "fonts-ebgaramond",
+          "fonts-ebgaramond-extra",
+          "fonts-ebgaramond-initials",
+          "fonts-ebgaramond-initials-extra",
+          "fonts-ecolier-court",
+          "fonts-ecolier-lignes-court",
+          "fonts-eeyek",
+          "fonts-elstob",
+          "fonts-elusive-icons",
+          "fonts-engadget",
+          "fonts-essays1743",
+          "fonts-esteban",
+          "fonts-eurofurence",
+          "fonts-fantasma",
+          "fonts-femkeklaver",
+          "fonts-font-awesome",
+          "fonts-fork-awesome",
+          "fonts-freefarsi",
+          "fonts-freefont-otf",
+          "fonts-freefont-ttf",
+          "fonts-gemunu-libre",
+          "fonts-georgewilliams",
+          "fonts-gfs-artemisia",
+          "fonts-gfs-baskerville",
+          "fonts-gfs-bodoni-classic",
+          "fonts-gfs-complutum",
+          "fonts-gfs-didot",
+          "fonts-gfs-didot-classic",
+          "fonts-gfs-neohellenic",
+          "fonts-gfs-olga",
+          "fonts-gfs-porson",
+          "fonts-gfs-solomos",
+          "fonts-gfs-theokritos",
+          "fonts-glasstty",
+          "fonts-glyphicons-halflings",
+          "fonts-go",
+          "fonts-gotico-antiqua",
+          "fonts-gr-framework",
+          "fonts-hack",
+          "fonts-hanazono",
+          "fonts-havana",
+          "fonts-hermit",
+          "fonts-horai-umefont",
+          "fonts-hosny-amiri",
+          "fonts-hosny-thabit",
+          "fonts-humor-sans",
+          "fonts-ibm-plex",
+          "fonts-inconsolata",
+          "fonts-indic",
+          "fonts-inter",
+          "fonts-inter-variable",
+          "fonts-ipaexfont",
+          "fonts-ipafont",
+          "fonts-ipamj-mincho",
+          "fonts-isabella",
+          "fonts-jetbrains-mono",
+          "fonts-jetbrains-mono-web",
+          "fonts-johnsmith-induni",
+          "fonts-joscelyn",
+          "fonts-jsmath",
+          "fonts-junction",
+          "fonts-junicode",
+          "fonts-jura",
+          "fonts-kacst-one",
+          "fonts-kanjistrokeorders",
+          "fonts-karla",
+          "fonts-karmilla",
+          "fonts-katex",
+          "fonts-kaushanscript",
+          "fonts-khmeros",
+          "fonts-kiloji",
+          "fonts-klaudia-berenika",
+          "fonts-klee",
+          "fonts-komatuna",
+          "fonts-konatu",
+          "fonts-kouzan-mouhitsu",
+          "fonts-kristi",
+          "fonts-lao",
+          "fonts-lato",
+          "fonts-ldco",
+          "fonts-le-murmure",
+          "fonts-league-mono",
+          "fonts-leckerli-one",
+          "fonts-lemonada",
+          "fonts-levien-museum",
+          "fonts-levien-typoscript",
+          "fonts-lg-aboriginal",
+          "fonts-liberation-sans-narrow",
+          "fonts-liberation2",
+          "fonts-libertinus",
+          "fonts-libfinal",
+          "fonts-linex",
+          "fonts-linguistics-pro",
+          "fonts-linuxlibertine",
+          "fonts-lklug-sinhala",
+          "fonts-lmodern",
+          "fonts-lobstertwo",
+          "fonts-lohit-deva-marathi",
+          "fonts-lohit-deva-nepali",
+          "fonts-lxgw-wenkai",
+          "fonts-lxgw-wenkai-doc",
+          "fonts-lyx",
+          "fonts-manchufont",
+          "fonts-manrope",
+          "fonts-material-design-icons-iconfont",
+          "fonts-materialdesignicons-legacy",
+          "fonts-materialdesignicons-webfont",
+          "fonts-mathjax-extras",
+          "fonts-meera-inimai",
+          "fonts-migmix",
+          "fonts-mikhak",
+          "fonts-mikhak-variable",
+          "fonts-millimetre",
+          "fonts-misaki",
+          "fonts-mmcedar",
+          "fonts-mona",
+          "fonts-monapo",
+          "fonts-monlam",
+          "fonts-monocraft",
+          "fonts-monoid",
+          "fonts-monoid-halfloose",
+          "fonts-monoid-halftight",
+          "fonts-monoid-loose",
+          "fonts-monoid-tight",
+          "fonts-mononoki",
+          "fonts-montserrat",
+          "fonts-morisawa-bizud-gothic",
+          "fonts-morisawa-bizud-mincho",
+          "fonts-motoya-l-cedar",
+          "fonts-motoya-l-maruberi",
+          "fonts-mph-2b-damase",
+          "fonts-mplus",
+          "fonts-myanmar",
+          "fonts-nafees",
+          "fonts-nanum",
+          "fonts-nanum-eco",
+          "fonts-national-park",
+          "fonts-naver-d2coding",
+          "fonts-nerd-symbols",
+          "fonts-noto",
+          "fonts-noto-cjk-extra",
+          "fonts-noto-extra",
+          "fonts-noto-hinted",
+          "fonts-noto-ui-extra",
+          "fonts-noto-unhinted",
+          "fonts-nunito",
+          "fonts-ocr-a",
+          "fonts-ocr-b",
+          "fonts-oflb-asana-math",
+          "fonts-oflb-euterpe",
+          "fonts-okolaks",
+          "fonts-oldstandard",
+          "fonts-open-sans",
+          "fonts-opendin",
+          "fonts-opendyslexic",
+          "fonts-oradano-mincho-gsrr",
+          "fonts-osifont",
+          "fonts-ottilie",
+          "fonts-overpass",
+          "fonts-oxanium",
+          "fonts-paktype",
+          "fonts-paratype",
+          "fonts-pc-extra",
+          "fonts-play",
+          "fonts-povray",
+          "fonts-powerline",
+          "fonts-pretendard",
+          "fonts-proggy",
+          "fonts-quattrocento",
+          "fonts-radisnoir",
+          "fonts-rampart",
+          "fonts-recommended",
+          "fonts-reggae",
+          "fonts-ricty-diminished",
+          "fonts-rit-sundar",
+          "fonts-roadgeek",
+          "fonts-roboto",
+          "fonts-roboto-fontface",
+          "fonts-roboto-slab",
+          "fonts-rocknroll",
+          "fonts-routed-gothic",
+          "fonts-rufscript",
+          "fonts-sahel",
+          "fonts-sahel-variable",
+          "fonts-sambhota-tsugring",
+          "fonts-sambhota-yigchung",
+          "fonts-samyak",
+          "fonts-sarai",
+          "fonts-sawarabi-gothic",
+          "fonts-sawarabi-mincho",
+          "fonts-schraubenkiste",
+          "fonts-senamirmir-washra",
+          "fonts-seto",
+          "fonts-sil-abyssinica",
+          "fonts-sil-akatab",
+          "fonts-sil-alkalami",
+          "fonts-sil-andika",
+          "fonts-sil-andika-compact",
+          "fonts-sil-andikanewbasic",
+          "fonts-sil-awami-nastaliq",
+          "fonts-sil-charis",
+          "fonts-sil-charis-compact",
+          "fonts-sil-dai-banna",
+          "fonts-sil-doulos",
+          "fonts-sil-doulos-compact",
+          "fonts-sil-ezra",
+          "fonts-sil-galatia",
+          "fonts-sil-gentium",
+          "fonts-sil-gentium-basic",
+          "fonts-sil-gentiumplus",
+          "fonts-sil-gentiumplus-compact",
+          "fonts-sil-harmattan",
+          "fonts-sil-lateef",
+          "fonts-sil-mingzat",
+          "fonts-sil-mondulkiri",
+          "fonts-sil-mondulkiri-extra",
+          "fonts-sil-nuosusil",
+          "fonts-sil-padauk",
+          "fonts-sil-scheherazade",
+          "fonts-sil-shimenkan",
+          "fonts-sil-shimenkan-gsm",
+          "fonts-sil-shimenkan-guifan",
+          "fonts-sil-shimenkan-mas",
+          "fonts-sil-shimenkan-mgs",
+          "fonts-sil-shimenkan-salaowu",
+          "fonts-sil-shimenkan-sapushan",
+          "fonts-sil-shimenkan-taogu",
+          "fonts-sil-shimenkan-zonghe",
+          "fonts-sil-sophia-nubian",
+          "fonts-sil-tagmukay",
+          "fonts-sil-taiheritagepro",
+          "fonts-sil-zaghawa-beria",
+          "fonts-sixtyfour",
+          "fonts-sjfonts",
+          "fonts-smiley-sans",
+          "fonts-sn-pro",
+          "fonts-solide-mirage",
+          "fonts-sora",
+          "fonts-spleen",
+          "fonts-staypuft",
+          "fonts-stick",
+          "fonts-summersby",
+          "fonts-tagbanwa",
+          "fonts-takao",
+          "fonts-taml-tamu",
+          "fonts-taml-tscu",
+          "fonts-terminus",
+          "fonts-terminus-otb",
+          "fonts-texgyre",
+          "fonts-texgyre-math",
+          "fonts-texmacs",
+          "fonts-thai-tlwg",
+          "fonts-thai-tlwg-otf",
+          "fonts-thai-tlwg-ttf",
+          "fonts-thai-tlwg-web",
+          "fonts-the-neue-black",
+          "fonts-tibetan-machine",
+          "fonts-tiresias",
+          "fonts-tomsontalks",
+          "fonts-topaz-unicode",
+          "fonts-train",
+          "fonts-transit105",
+          "fonts-triod-postnaja",
+          "fonts-tt2020",
+          "fonts-tuffy",
+          "fonts-typodermic",
+          "fonts-ubuntu-title",
+          "fonts-ukij-uyghur",
+          "fonts-umeplus",
+          "fonts-umeplus-cl",
+          "fonts-unfonts-core",
+          "fonts-unfonts-extra",
+          "fonts-unikurdweb",
+          "fonts-uralic",
+          "fonts-vazirmatn",
+          "fonts-vazirmatn-variable",
+          "fonts-vlgothic",
+          "fonts-vollkorn",
+          "fonts-weather-icons",
+          "fonts-woowa-bm",
+          "fonts-wqy-microhei",
+          "fonts-wqy-zenhei",
+          "fonts-xolonium",
+          "fonts-yanone-kaffeesatz",
+          "fonts-yozvox-yozfont",
+          "fonts-yusei-magic",
+          "t1-teams",
+          "xfonts-base"
+        ],
+        "available_only": true
+      }
+    },
+    {
+      "id": "development-packages",
+      "title": "Debian development tools",
+      "description": "Install Debian development tools.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Debian development tools.",
+      "details": "Packages: git, build-essential, python3-full, python3-pip, libcurl4-openssl-dev, libssl-dev, libreadline-dev, zlib1g-dev, libbz2-dev, libsqlite3-dev, libffi-dev, liblzma-dev, bison, gettext. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "git",
+          "build-essential",
+          "python3-full",
+          "python3-pip",
+          "libcurl4-openssl-dev",
+          "libssl-dev",
+          "libreadline-dev",
+          "zlib1g-dev",
+          "libbz2-dev",
+          "libsqlite3-dev",
+          "libffi-dev",
+          "liblzma-dev",
+          "bison",
+          "gettext"
+        ]
+      }
+    },
+    {
+      "id": "development-install-tools",
+      "title": "Upstream installation tools",
+      "description": "Install tools used by the verified upstream installers.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "desired": "curl, Git, tar, unzip, certificates and native schema/build tools",
+      "details": "Packages install through APT; upstream application installers run as your account.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "curl",
+          "git",
+          "tar",
+          "unzip",
+          "ca-certificates",
+          "python3",
+          "python3-gi",
+          "gir1.2-glib-2.0",
+          "gir1.2-gtk-4.0",
+          "libglib2.0-bin",
+          "build-essential",
+          "libfuse2t64",
+          "python3-nautilus",
+          "gir1.2-nautilus-4.0",
+          "pkg-config",
+          "meson",
+          "ninja-build",
+          "procps",
+          "libjs-jquery"
+        ]
+      }
+    },
+    {
+      "id": "flatpak-com-mattjakeman-extensionmanager",
+      "title": "Install Extension Manager",
+      "description": "Extension Manager from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Extension Manager from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "com.mattjakeman.ExtensionManager"
+      }
+    },
+    {
+      "id": "flatpak-com-raggesilver-blackbox",
+      "title": "Install Black Box (Flatpak)",
+      "description": "Black Box (Flatpak) from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Black Box (Flatpak) from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "com.raggesilver.BlackBox"
+      }
+    },
+    {
+      "id": "flatpak-io-github-qalculate",
+      "title": "Install Qalculate!",
+      "description": "Qalculate! from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Qalculate! from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "io.github.Qalculate"
+      }
+    },
+    {
+      "id": "flatpak-io-github-flattool-warehouse",
+      "title": "Install Warehouse",
+      "description": "Warehouse from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Warehouse from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "io.github.flattool.Warehouse"
+      }
+    },
+    {
+      "id": "flatpak-it-mijorus-gearlever",
+      "title": "Install Gear Lever",
+      "description": "Gear Lever from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Gear Lever from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "it.mijorus.gearlever"
+      }
+    },
+    {
+      "id": "flatpak-it-mijorus-smile",
+      "title": "Install Smile",
+      "description": "Smile from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Smile from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "it.mijorus.smile"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-boxes",
+      "title": "Install GNOME Boxes",
+      "description": "GNOME Boxes from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "GNOME Boxes from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.Boxes"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-evince",
+      "title": "Install Evince",
+      "description": "Evince from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Evince from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.Evince"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-snapshot",
+      "title": "Install GNOME Snapshot",
+      "description": "GNOME Snapshot from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "GNOME Snapshot from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.Snapshot"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-soundrecorder",
+      "title": "Install GNOME Sound Recorder",
+      "description": "GNOME Sound Recorder from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "GNOME Sound Recorder from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.SoundRecorder"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-meld",
+      "title": "Install Meld",
+      "description": "Meld from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Meld from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.meld"
+      }
+    },
+    {
+      "id": "flatpak-org-gnome-seahorse-application",
+      "title": "Install Passwords and Keys",
+      "description": "Passwords and Keys from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Passwords and Keys from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.gnome.seahorse.Application"
+      }
+    },
+    {
+      "id": "flatpak-org-libreoffice-libreoffice",
+      "title": "Install LibreOffice",
+      "description": "LibreOffice from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "LibreOffice from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.libreoffice.LibreOffice"
+      }
+    },
+    {
+      "id": "flatpak-org-nickvision-tubeconverter",
+      "title": "Install Parabolic",
+      "description": "Parabolic from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Parabolic from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.nickvision.tubeconverter"
+      }
+    },
+    {
+      "id": "flatpak-org-nomacs-imagelounge",
+      "title": "Install nomacs",
+      "description": "nomacs from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "nomacs from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.nomacs.ImageLounge"
+      }
+    },
+    {
+      "id": "flatpak-org-pgadmin-pgadmin4",
+      "title": "Install pgAdmin 4",
+      "description": "pgAdmin 4 from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "pgAdmin 4 from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.pgadmin.pgadmin4"
+      }
+    },
+    {
+      "id": "flatpak-org-qbittorrent-qbittorrent",
+      "title": "Install qBittorrent",
+      "description": "qBittorrent from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "qBittorrent from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.qbittorrent.qBittorrent"
+      }
+    },
+    {
+      "id": "flatpak-org-remmina-remmina",
+      "title": "Install Remmina",
+      "description": "Remmina from Flathub, installed for your account.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Remmina from Flathub, installed for your account.",
+      "details": "An existing system-wide installation also satisfies this option. App and runtime downloads need an internet connection.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-flatpak-support"
+      ],
+      "operation": {
+        "kind": "flatpak",
+        "application": "org.remmina.Remmina"
+      }
+    },
+    {
+      "id": "system-zram",
+      "title": "Enable zram swap",
+      "description": "Enable zram swap.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Enable zram swap.",
+      "details": "Uses the installed system and verifies its configuration. Filesystem conversion is not performed.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "system",
+        "check": "zram"
+      }
+    },
+    {
+      "id": "system-timesync",
+      "title": "Enable time synchronisation",
+      "description": "Enable time synchronisation.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Enable time synchronisation.",
+      "details": "Uses the installed system and verifies its configuration. Filesystem conversion is not performed.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "system",
+        "check": "timesync"
+      }
+    },
+    {
+      "id": "system-monitor-controls",
+      "title": "Enable DDC/CI monitor controls",
+      "description": "Enable DDC/CI monitor controls.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Enable DDC/CI monitor controls.",
+      "details": "Uses the installed system and verifies its configuration. Filesystem conversion is not performed. Sign out and back in after new group membership is applied.",
+      "requires_admin": true,
+      "dependencies": [
+        "system-hardware-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "monitor-controls"
+      }
+    },
+    {
+      "id": "system-passwordless-admin",
+      "title": "Passwordless administrator access",
+      "description": "Passwordless administrator access.",
+      "category": "system",
+      "scope": "System",
+      "risk": "High",
+      "current": "",
+      "desired": "Passwordless administrator access.",
+      "details": "Members of sudo can obtain administrator access without a password. Desktop approval also requires an active local session.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "system",
+        "check": "passwordless-admin"
+      }
+    },
+    {
+      "id": "recovery-timeshift",
+      "title": "Configure Btrfs snapshots and recovery",
+      "description": "Configure Btrfs snapshots and recovery.",
+      "category": "recovery",
+      "scope": "System",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Configure Btrfs snapshots and recovery.",
+      "details": "Uses the installed system and verifies its configuration. Filesystem conversion is not performed.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "system",
+        "check": "timeshift"
+      }
+    },
+    {
+      "id": "desktop-hot-corner",
+      "title": "Disable the hot corner",
+      "description": "Keep Activities from opening when the pointer reaches the corner.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Hot corner disabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nenable-hot-corners = false",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "enable-hot-corners",
+            "value": "false"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-screen-blanking",
+      "title": "Disable automatic screen blanking",
+      "description": "Keep the screen on while the session is idle.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Automatic screen blanking disabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nidle-delay = uint32 0",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.session",
+            "key": "idle-delay",
+            "value": "uint32 0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-titlebar",
+      "title": "Title bar buttons and middle-click action",
+      "description": "Show the window buttons on the right and minimise a window with a middle click.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Minimise, maximise and close buttons on the right; middle-clicking the title bar minimises the window.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\naction-middle-click-titlebar = 'minimize'\nbutton-layout = 'appmenu:minimize,maximize,close'",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.wm.preferences",
+            "key": "action-middle-click-titlebar",
+            "value": "'minimize'"
+          },
+          {
+            "schema": "org.gnome.desktop.wm.preferences",
+            "key": "button-layout",
+            "value": "'appmenu:minimize,maximize,close'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-mouse",
+      "title": "Flat mouse acceleration",
+      "description": "Keep pointer movement proportional to mouse movement.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Flat mouse acceleration.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\naccel-profile = 'flat'",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.peripherals.mouse",
+            "key": "accel-profile",
+            "value": "'flat'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-touchpad",
+      "title": "Two-finger touchpad scrolling",
+      "description": "Scroll with two fingers on the touchpad.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Two-finger scrolling enabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\ntwo-finger-scrolling-enabled = true",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.peripherals.touchpad",
+            "key": "two-finger-scrolling-enabled",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-input-sources",
+      "title": "Show extended keyboard input sources",
+      "description": "Make the full set of keyboard input sources available in Settings.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Extended keyboard input sources shown.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nshow-all-sources = true",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.input-sources",
+            "key": "show-all-sources",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-animation",
+      "title": "Enable desktop animations",
+      "description": "Animate desktop transitions and window movement.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Desktop animations enabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nenable-animations = true",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "enable-animations",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-mutter",
+      "title": "Miubian overview and edge tiling behaviour",
+      "description": "Use the left Super key for the overview and turn off GNOME edge tiling.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Left Super opens the overview; GNOME edge tiling disabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nedge-tiling = false\noverlay-key = 'Super_L'",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.mutter",
+            "key": "edge-tiling",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.mutter",
+            "key": "overlay-key",
+            "value": "'Super_L'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-dark",
+      "title": "Use dark mode",
+      "description": "Ask applications to use their dark appearance.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Dark colour scheme preferred.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\ncolor-scheme = 'prefer-dark'",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "color-scheme",
+            "value": "'prefer-dark'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-fonts",
+      "title": "Noto desktop fonts and full hinting",
+      "description": "Use Noto for interface, document and monospace text with full font hinting.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Noto Sans 11 interface, Noto Sans 12 documents, Noto Mono 11 monospace; full hinting.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\ndocument-font-name = 'Noto Sans 12'\nfont-hinting = 'full'\nfont-name = 'Noto Sans 11'\nmonospace-font-name = 'Noto Mono 11'",
+      "requires_admin": false,
+      "dependencies": [
+        "fonts-packages"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "document-font-name",
+            "value": "'Noto Sans 12'"
+          },
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "font-hinting",
+            "value": "'full'"
+          },
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "font-name",
+            "value": "'Noto Sans 11'"
+          },
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "monospace-font-name",
+            "value": "'Noto Mono 11'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-fluent",
+      "title": "Fluent themes, icons and cursors",
+      "description": "Use the compact dark Fluent theme with matching icons and cursors.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Fluent-round-Dark-compact theme, Fluent-dark icons and fluent-dark cursors.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\ncursor-theme = 'fluent-dark'\ngtk-theme = 'Fluent-round-Dark-compact'\nicon-theme = 'Fluent-dark'",
+      "requires_admin": false,
+      "dependencies": [
+        "appearance-fluent-install",
+        "appearance-fluent-icons"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "cursor-theme",
+            "value": "'fluent-dark'"
+          },
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "gtk-theme",
+            "value": "'Fluent-round-Dark-compact'"
+          },
+          {
+            "schema": "org.gnome.desktop.interface",
+            "key": "icon-theme",
+            "value": "'Fluent-dark'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-nautilus",
+      "title": "Permanent delete and image thumbnails",
+      "description": "Offer permanent deletion in Files and show image thumbnails for all locations.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Permanent-delete action shown; image thumbnails always enabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nshow-delete-permanently = true\nshow-image-thumbnails = 'always'",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.nautilus.preferences",
+            "key": "show-delete-permanently",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.nautilus.preferences",
+            "key": "show-image-thumbnails",
+            "value": "'always'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-hidden",
+      "title": "Show hidden files in GTK file choosers",
+      "description": "Include hidden files and folders in GTK file selection dialogs.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Hidden files shown in GTK file choosers.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nshow-hidden = true",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gtk.Settings.FileChooser",
+            "key": "show-hidden",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-hidden-gtk4",
+      "title": "Show hidden files in GTK 4 file choosers",
+      "description": "Include hidden files and folders in GTK 4 file selection dialogs.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Hidden files shown in GTK 4 file choosers.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nshow-hidden = true",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gtk.gtk4.Settings.FileChooser",
+            "key": "show-hidden",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "applications-text-editor",
+      "title": "Text Editor display and session preferences",
+      "description": "Show line numbers, the document map and right margin; start with a fresh session.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Current line highlighted; line numbers, document map and right margin shown; session restoration disabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nhighlight-current-line = true\nrestore-session = false\nshow-line-numbers = true\nshow-map = true\nshow-right-margin = true",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-gnome-utilities"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.TextEditor",
+            "key": "highlight-current-line",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.TextEditor",
+            "key": "restore-session",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.TextEditor",
+            "key": "show-line-numbers",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.TextEditor",
+            "key": "show-map",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.TextEditor",
+            "key": "show-right-margin",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-font-manager",
+      "title": "Font Manager display preferences",
+      "description": "Use a dark, wide grid view with white text on black previews.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Manage mode, grid browsing, wide layout and Adwaita styling; dark theme and white-on-black previews.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nbrowse-mode = 'grid'\nbrowse-pane-position = 54.94736842105263\ncontent-size = 39.909638554216869\nhor-content-size = 36.0\nhor-sidebar-size = 20.0\nmode = 'manage'\nprefer-dark-theme = true\npreview-background-color = 'rgb(0,0,0)'\npreview-foreground-color = 'rgb(255,255,255)'\nsidebar-size = 32.94736842105263\nuse-adwaita-stylesheet = true\nwide-layout = true",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-font-manager"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "browse-mode",
+            "value": "'grid'"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "browse-pane-position",
+            "value": "54.94736842105263"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "content-size",
+            "value": "39.909638554216869"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "hor-content-size",
+            "value": "36.0"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "hor-sidebar-size",
+            "value": "20.0"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "mode",
+            "value": "'manage'"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "prefer-dark-theme",
+            "value": "true"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "preview-background-color",
+            "value": "'rgb(0,0,0)'"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "preview-foreground-color",
+            "value": "'rgb(255,255,255)'"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "sidebar-size",
+            "value": "32.94736842105263"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "use-adwaita-stylesheet",
+            "value": "true"
+          },
+          {
+            "schema": "com.github.FontManager.FontManager",
+            "key": "wide-layout",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-console",
+      "title": "Unlimited Console scrollback",
+      "description": "Keep the full terminal scrollback instead of applying a line limit.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Console scrollback limit ignored.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nignore-scrollback-limit = true",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-console"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.Console",
+            "key": "ignore-scrollback-limit",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-blackbox",
+      "title": "Black Box font and window behaviour",
+      "description": "Use Noto Mono 12, remember the window size and hide the header bar.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Noto Mono 12; window size remembered; header bar and floating controls hidden; drag area enabled.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nfloating-controls = false\nfont = 'Noto Mono 12'\nheaderbar-drag-area = true\nremember-window-size = true\nshow-headerbar = false\nworking-directory-mode = uint32 1",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-blackbox"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "floating-controls",
+            "value": "false"
+          },
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "font",
+            "value": "'Noto Mono 12'"
+          },
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "headerbar-drag-area",
+            "value": "true"
+          },
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "remember-window-size",
+            "value": "true"
+          },
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "show-headerbar",
+            "value": "false"
+          },
+          {
+            "schema": "com.raggesilver.BlackBox",
+            "key": "working-directory-mode",
+            "value": "uint32 1"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-appindicator",
+      "title": "Application indicator preferences",
+      "description": "Keep indicator colours unchanged, with automatic sizing and slightly reduced opacity.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Automatic icon size, neutral colour adjustments and 240/255 opacity.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nicon-brightness = 0.0\nicon-contrast = 0.0\nicon-opacity = 240\nicon-saturation = 0.0\nicon-size = 0",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-appindicatorsupport"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.appindicator",
+            "key": "icon-brightness",
+            "value": "0.0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.appindicator",
+            "key": "icon-contrast",
+            "value": "0.0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.appindicator",
+            "key": "icon-opacity",
+            "value": "240"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.appindicator",
+            "key": "icon-saturation",
+            "value": "0.0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.appindicator",
+            "key": "icon-size",
+            "value": "0"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-arcmenu",
+      "title": "ArcMenu layout and appearance",
+      "description": "Miubian menu layout, appearance and placement beside the left panel button.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Miubian menu layout, appearance and placement beside the left panel button.",
+      "details": "Places the menu beside its left panel button instead of retaining a forced screen-centre position. Other settings outside this preset remain in place.\nforce-menu-location = 'Off'\nmenu-layout = 'arcmenu'\nposition-in-panel = 'Left'\nmenu-button-position-offset = 0\nmenu-position-alignment = 50\napplication-shortcuts = [{'id': 'ArcMenu_Software', 'name': 'Software'}, {'id': 'org.gnome.Settings.desktop'}, {'id': 'org.gnome.tweaks.desktop'}, {'id': 'org.gnome.Console.desktop'}, {'id': 'ArcMenu_ActivitiesOverview', 'name': 'Activities Overview', 'icon': 'view-fullscreen-symbolic'}]\napps-show-extra-details = true\ndefault-menu-view = 'All_Programs'\ngroup-apps-alphabetically-list-layouts = false\nhide-overview-on-startup = true\nhighlight-search-result-terms = true\nicon-size-apps = -1\nicon-size-buttons = -1\nicon-size-categories = -1\nicon-size-misc = -1\nicon-size-shortcuts = -1\nleft-panel-width = 375\nmenu-border-radius = 20\nmenu-border-width = 0\nmenu-button-icon = 'resource:///org/gnome/shell/extensions/arcmenu/icons/scalable/actions/distro-debian-symbolic.svg'\nmenu-button-icon-size = 32\nmenu-font-size = 12\nmenu-height = 600\nmulti-monitor = true\noverride-menu-theme = true\npinned-apps = @aa{ss} []\nright-panel-width = 200\nsearch-entry-border-radius = (true, 25)\nshow-search-result-details = true",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-arcmenu"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "force-menu-location",
+            "value": "'Off'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-layout",
+            "value": "'arcmenu'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "position-in-panel",
+            "value": "'Left'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-button-position-offset",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-position-alignment",
+            "value": "50"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "application-shortcuts",
+            "value": "[{'id': 'ArcMenu_Software', 'name': 'Software'}, {'id': 'org.gnome.Settings.desktop'}, {'id': 'org.gnome.tweaks.desktop'}, {'id': 'org.gnome.Console.desktop'}, {'id': 'ArcMenu_ActivitiesOverview', 'name': 'Activities Overview', 'icon': 'view-fullscreen-symbolic'}]"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "apps-show-extra-details",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "default-menu-view",
+            "value": "'All_Programs'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "group-apps-alphabetically-list-layouts",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "hide-overview-on-startup",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "highlight-search-result-terms",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "icon-size-apps",
+            "value": "-1"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "icon-size-buttons",
+            "value": "-1"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "icon-size-categories",
+            "value": "-1"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "icon-size-misc",
+            "value": "-1"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "icon-size-shortcuts",
+            "value": "-1"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "left-panel-width",
+            "value": "375"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-border-radius",
+            "value": "20"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-border-width",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-button-icon",
+            "value": "'resource:///org/gnome/shell/extensions/arcmenu/icons/scalable/actions/distro-debian-symbolic.svg'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-button-icon-size",
+            "value": "32"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-font-size",
+            "value": "12"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "menu-height",
+            "value": "600"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "multi-monitor",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "override-menu-theme",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "pinned-apps",
+            "value": "@aa{ss} []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "right-panel-width",
+            "value": "200"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "search-entry-border-radius",
+            "value": "(true, 25)"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.arcmenu",
+            "key": "show-search-result-details",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-panel",
+      "title": "Dash to Panel layout and behaviour",
+      "description": "Group running applications by workspace and monitor, with a translucent panel and hover effects.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Workspace and monitor isolation; app hotkeys and ripple effects; panel opacity 90%; count badges hidden.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nanimate-appicon-hover = true\nanimate-appicon-hover-animation-extent = {'RIPPLE': 4, 'PLANK': 4, 'SIMPLE': 1}\nanimate-appicon-hover-animation-type = 'RIPPLE'\nappicon-margin = 0\ndot-color-dominant = true\ndot-color-override = false\ndot-position = 'RIGHT'\ndot-style-focused = 'SEGMENTED'\ndot-style-unfocused = 'DASHES'\nfocus-highlight-dominant = true\nfocus-highlight-opacity = 15\nglobal-border-radius = 4\nhide-overview-on-startup = true\nhot-keys = true\nhotkeys-overlay-combo = 'TEMPORARILY'\nisolate-monitors = true\nisolate-workspaces = true\nleftbox-padding = 2\nleftbox-size = 16\noverview-click-to-exit = true\nprogress-show-count = false\nsecondarymenu-contains-showdetails = true\nshow-apps-icon-file = ''\nstatus-icon-padding = 2\nstockgs-panelbtn-click-only = true\ntrans-panel-opacity = 0.90000000000000002\ntrans-use-custom-bg = false\ntrans-use-custom-opacity = true\ntrans-use-dynamic-opacity = false\ntray-padding = 2\ntray-size = 16\nwindow-preview-title-position = 'TOP'\n\nApplies the centred anchor and documented element layout to every connected monitor using Dash to Panel monitor identities. The panel is at the bottom with size 48 and the default full length. Existing global position and size preferences are replaced by these Miubian defaults. Settings for disconnected monitors are retained. Detection requires an active GNOME session with Mutter display information.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-dash-to-panel"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-position",
+            "value": "'BOTTOM'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-size",
+            "value": "48"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "animate-appicon-hover",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "animate-appicon-hover-animation-extent",
+            "value": "{'RIPPLE': 4, 'PLANK': 4, 'SIMPLE': 1}"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "animate-appicon-hover-animation-type",
+            "value": "'RIPPLE'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "appicon-margin",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "dot-color-dominant",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "dot-color-override",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "dot-position",
+            "value": "'RIGHT'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "dot-style-focused",
+            "value": "'SEGMENTED'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "dot-style-unfocused",
+            "value": "'DASHES'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "focus-highlight-dominant",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "focus-highlight-opacity",
+            "value": "15"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "global-border-radius",
+            "value": "4"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "hide-overview-on-startup",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "hot-keys",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "hotkeys-overlay-combo",
+            "value": "'TEMPORARILY'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "isolate-monitors",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "isolate-workspaces",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "leftbox-padding",
+            "value": "2"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "leftbox-size",
+            "value": "16"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "overview-click-to-exit",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-anchors",
+            "monitor_layout": {
+              "value": "MIDDLE",
+              "default": "MIDDLE"
+            }
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-element-positions",
+            "monitor_layout": {
+              "value": [
+                {
+                  "element": "showAppsButton",
+                  "visible": false,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "activitiesButton",
+                  "visible": false,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "leftBox",
+                  "visible": true,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "taskbar",
+                  "visible": true,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "centerBox",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "rightBox",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "dateMenu",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "systemMenu",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "desktopButton",
+                  "visible": true,
+                  "position": "stackedBR"
+                }
+              ],
+              "default": [
+                {
+                  "element": "showAppsButton",
+                  "visible": true,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "activitiesButton",
+                  "visible": false,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "leftBox",
+                  "visible": true,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "taskbar",
+                  "visible": true,
+                  "position": "stackedTL"
+                },
+                {
+                  "element": "centerBox",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "rightBox",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "dateMenu",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "systemMenu",
+                  "visible": true,
+                  "position": "stackedBR"
+                },
+                {
+                  "element": "desktopButton",
+                  "visible": true,
+                  "position": "stackedBR"
+                }
+              ]
+            }
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-lengths",
+            "monitor_layout": {
+              "default": 100
+            }
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-positions",
+            "monitor_layout": {
+              "default": "BOTTOM",
+              "fallback_key": "panel-position"
+            }
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "panel-sizes",
+            "monitor_layout": {
+              "default": 48,
+              "fallback_key": "panel-size"
+            }
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "progress-show-count",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "secondarymenu-contains-showdetails",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "show-apps-icon-file",
+            "value": "''"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "status-icon-padding",
+            "value": "2"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "stockgs-panelbtn-click-only",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "trans-panel-opacity",
+            "value": "0.90000000000000002"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "trans-use-custom-bg",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "trans-use-custom-opacity",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "trans-use-dynamic-opacity",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "tray-padding",
+            "value": "2"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "tray-size",
+            "value": "16"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.dash-to-panel",
+            "key": "window-preview-title-position",
+            "value": "'TOP'"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-icons",
+      "title": "Desktop Icons NG network volumes",
+      "description": "Show mounted network volumes on the desktop.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Desktop Icons NG network volumes shown.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nshow-network-volumes = true",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-ding"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.ding",
+            "key": "show-network-volumes",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-forcequit",
+      "title": "Show Force Quit button",
+      "description": "Keep the Force Quit button visible for closing unresponsive applications.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Force Quit button shown.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nhide-button = false",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-fq"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.forcequit",
+            "key": "hide-button",
+            "value": "false"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-startup",
+      "title": "Desktop startup and attention focus",
+      "description": "Start at the desktop and focus windows that demand attention.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Desktop shown on startup; attention requests focus their window.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nstartup-status = 0\nwindow-demands-attention-focus = true",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-just-perfection-desktop"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.just-perfection",
+            "key": "startup-status",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.just-perfection",
+            "key": "window-demands-attention-focus",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-tiling",
+      "title": "Disable Tiling Assistant keybindings",
+      "description": "Clear Tiling Assistant’s keyboard shortcuts and turn off its focus hint.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Tiling Assistant keybindings cleared; default move behaviour and no focus hint.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nactivate-layout0 = @as []\nactivate-layout1 = @as []\nactivate-layout2 = @as []\nactivate-layout3 = @as []\nauto-tile = @as []\ncenter-window = @as []\ndebugging-free-rects = @as []\ndebugging-show-tiled-rects = @as []\ndefault-move-mode = 0\ndynamic-keybinding-behavior = 0\nfocus-hint = 0\nfocus-hint-color = 'rgb(53,132,228)'\nimport-layout-examples = false\nrestore-window = @as []\nsearch-popup-layout = @as []\ntile-bottom-half = @as []\ntile-bottom-half-ignore-ta = @as []\ntile-bottomleft-quarter = @as []\ntile-bottomleft-quarter-ignore-ta = @as []\ntile-bottomright-quarter = @as []\ntile-bottomright-quarter-ignore-ta = @as []\ntile-edit-mode = @as []\ntile-left-half = @as []\ntile-left-half-ignore-ta = @as []\ntile-maximize = @as []\ntile-maximize-horizontally = @as []\ntile-maximize-vertically = @as []\ntile-right-half = @as []\ntile-right-half-ignore-ta = @as []\ntile-top-half = @as []\ntile-top-half-ignore-ta = @as []\ntile-topleft-quarter = @as []\ntile-topleft-quarter-ignore-ta = @as []\ntile-topright-quarter = @as []\ntile-topright-quarter-ignore-ta = @as []\ntoggle-always-on-top = @as []\ntoggle-tiling-popup = @as []",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-tiling-assistant"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout0",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout1",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout2",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout3",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "auto-tile",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "center-window",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "debugging-free-rects",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "debugging-show-tiled-rects",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "default-move-mode",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "dynamic-keybinding-behavior",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "focus-hint",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "focus-hint-color",
+            "value": "'rgb(53,132,228)'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "import-layout-examples",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "restore-window",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "search-popup-layout",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottom-half",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottom-half-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottomleft-quarter",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottomleft-quarter-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottomright-quarter",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-bottomright-quarter-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-edit-mode",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-left-half",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-left-half-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-maximize",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-maximize-horizontally",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-maximize-vertically",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-right-half",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-right-half-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-top-half",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-top-half-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-topleft-quarter",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-topleft-quarter-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-topright-quarter",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "tile-topright-quarter-ignore-ta",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "toggle-always-on-top",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "toggle-tiling-popup",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout4",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout5",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout6",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout7",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout8",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout9",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout10",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout11",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout12",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout13",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout14",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout15",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout16",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout17",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout18",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.tiling-assistant",
+            "key": "activate-layout19",
+            "value": "@as []"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-blur",
+      "title": "Blur My Shell preferences",
+      "description": "Application blur with solid text and DING exclusions.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Application blur with solid text and DING exclusions.",
+      "details": "Excludes both DING application identifiers and legacy desktop windows identified as gjs. Other gjs windows are also excluded because Blur My Shell identifies them by the same class. Existing personal exclusions are retained. Requires a compatible installed Blur My Shell extension.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-blur-my-shell"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell",
+            "key": "rounded-blur-found",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell",
+            "key": "settings-version",
+            "value": "2"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.appfolder",
+            "key": "brightness",
+            "value": "0.59999999999999998"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.appfolder",
+            "key": "sigma",
+            "value": "30"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "blacklist",
+            "value": "['Plank', 'com.desktop.ding', 'Conky', 'com.rastersoft.ding', 'gjs']",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "blur",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "dynamic-opacity",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "enable-all",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "opacity",
+            "value": "255"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.applications",
+            "key": "whitelist",
+            "value": "['org.gnome.tweaks', 'gnome-tweaks', 'org.gnome.Settings', 'gnome-control-center']"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.coverflow-alt-tab",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "blur",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "brightness",
+            "value": "0.59999999999999998"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "pipeline",
+            "value": "'pipeline_default_rounded'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "sigma",
+            "value": "30"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "static-blur",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.dash-to-dock",
+            "key": "style-dash-to-dock",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.lockscreen",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.overview",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.panel",
+            "key": "brightness",
+            "value": "0.59999999999999998"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.panel",
+            "key": "corner-radius",
+            "value": "0"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.panel",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.panel",
+            "key": "sigma",
+            "value": "30"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.screenshot",
+            "key": "pipeline",
+            "value": "'pipeline_default'"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.window-list",
+            "key": "brightness",
+            "value": "0.59999999999999998"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.window-list",
+            "key": "sigma",
+            "value": "30"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-clear-favourites",
+      "title": "Start with no pinned favourites",
+      "description": "Clear the list of applications pinned to the GNOME dash.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "No pinned favourite applications.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nfavorite-apps = @as []",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "favorite-apps",
+            "value": "@as []"
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-extensions",
+      "title": "Enable Miubian GNOME extensions",
+      "description": "Enable the Miubian extension collection while retaining unrelated enabled extensions.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Miubian extensions saved as enabled; stock Apps Menu removed from the enabled list.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nenabled-extensions = ['appindicatorsupport@rgcjonas.gmail.com', 'arcmenu@arcmenu.com', 'color-picker@tuberry', 'lockkeys@vaina.lt', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'smile-extension@mijorus.it', 'just-perfection-desktop@just-perfection', 'tiling-assistant@leleat-on-github', 'window-on-top@yousafesaeed.github.io', 'fq@megh', 'dash-to-panel@jderose9.github.com', 'blur-my-shell@aunetx', 'ding@rastersoft.com']\n\nMatching confirms the extension settings are saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-appindicatorsupport",
+        "extension-arcmenu",
+        "extension-blur-my-shell",
+        "extension-color-picker",
+        "extension-dash-to-panel",
+        "extension-ding",
+        "extension-drive-menu",
+        "extension-fq",
+        "extension-just-perfection-desktop",
+        "extension-lockkeys",
+        "extension-smile-extension",
+        "extension-tiling-assistant",
+        "extension-window-on-top"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "['appindicatorsupport@rgcjonas.gmail.com', 'arcmenu@arcmenu.com', 'color-picker@tuberry', 'lockkeys@vaina.lt', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'smile-extension@mijorus.it', 'just-perfection-desktop@just-perfection', 'tiling-assistant@leleat-on-github', 'window-on-top@yousafesaeed.github.io', 'fq@megh', 'dash-to-panel@jderose9.github.com', 'blur-my-shell@aunetx', 'ding@rastersoft.com']",
+            "merge": true,
+            "remove": [
+              "apps-menu@gnome-shell-extensions.gcampax.github.com"
+            ]
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "appindicatorsupport@rgcjonas.gmail.com",
+              "arcmenu@arcmenu.com",
+              "color-picker@tuberry",
+              "lockkeys@vaina.lt",
+              "drive-menu@gnome-shell-extensions.gcampax.github.com",
+              "smile-extension@mijorus.it",
+              "just-perfection-desktop@just-perfection",
+              "tiling-assistant@leleat-on-github",
+              "window-on-top@yousafesaeed.github.io",
+              "fq@megh",
+              "dash-to-panel@jderose9.github.com",
+              "blur-my-shell@aunetx",
+              "ding@rastersoft.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop-disable-apps-menu",
+      "title": "Disable the stock Apps Menu extension",
+      "description": "Keep the stock Apps Menu extension disabled.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Stock Apps Menu included in disabled extensions.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\ndisabled-extensions = ['apps-menu@gnome-shell-extensions.gcampax.github.com']",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "['apps-menu@gnome-shell-extensions.gcampax.github.com']",
+            "merge": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-keyboard-builtins",
+      "title": "Browser shortcut and disabled built-in shortcuts",
+      "description": "Open the default browser with Super+B and clear the Help and Home shortcuts.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Super+B opens the browser; built-in Help and Home shortcuts cleared.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nhelp = @as []\nhome = @as []\nwww = ['<Super>b']",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys",
+            "key": "help",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys",
+            "key": "home",
+            "value": "@as []"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys",
+            "key": "www",
+            "value": "['<Super>b']"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-emoji-picker",
+      "title": "IBus emoji picker shortcut",
+      "description": "Open the IBus emoji picker with Super+semicolon.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "IBus emoji shortcut set to Super+semicolon.",
+      "details": "Writes only the listed preferences. Existing unrelated settings remain in place.\nhotkey = ['<Super>semicolon']",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.freedesktop.ibus.panel.emoji",
+            "key": "hotkey",
+            "value": "['<Super>semicolon']"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-keyboard-custom",
+      "title": "Miubian keyboard shortcuts",
+      "description": "Home and terminal tabs, Smile, brightness and System Monitor.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Home and terminal tabs, Smile, brightness and System Monitor.",
+      "details": "Existing unrelated custom shortcuts are retained. The monitor shortcuts zero supported brightness, contrast and RGB gains, then restore their reported maximum with contrast at 75%. These need accessible DDC/CI monitors. Smile is installed from Flathub.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-console",
+        "apps-gnome-utilities",
+        "system-monitor-controls",
+        "flatpak-it-mijorus-smile"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-max/",
+            "key": "binding",
+            "value": "'<Super>equal'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-max/",
+            "key": "command",
+            "value": "'$LIBEXEC/gnome-shortcut-helper brightness 100'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-max/",
+            "key": "name",
+            "value": "'All monitors — brightness 100%'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-min/",
+            "key": "binding",
+            "value": "'<Super>minus'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-min/",
+            "key": "command",
+            "value": "'$LIBEXEC/gnome-shortcut-helper brightness 0'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-min/",
+            "key": "name",
+            "value": "'All monitors — brightness 0%'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-home-tab/",
+            "key": "binding",
+            "value": "'<Super>e'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-home-tab/",
+            "key": "command",
+            "value": "'$LIBEXEC/gnome-shortcut-helper files'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-home-tab/",
+            "key": "name",
+            "value": "'Home folder — new tab'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-smile/",
+            "key": "binding",
+            "value": "'<Super>period'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-smile/",
+            "key": "command",
+            "value": "'/usr/bin/flatpak run it.mijorus.smile'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-smile/",
+            "key": "name",
+            "value": "'Smile'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-system-monitor/",
+            "key": "binding",
+            "value": "'<Control><Shift>Escape'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-system-monitor/",
+            "key": "command",
+            "value": "'/usr/bin/gnome-system-monitor'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-system-monitor/",
+            "key": "name",
+            "value": "'System Monitor'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-terminal-tab/",
+            "key": "binding",
+            "value": "'<Super>t'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-terminal-tab/",
+            "key": "command",
+            "value": "'$LIBEXEC/gnome-shortcut-helper terminal'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
+            "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-terminal-tab/",
+            "key": "name",
+            "value": "'Default terminal — new tab'"
+          },
+          {
+            "schema": "org.gnome.settings-daemon.plugins.media-keys",
+            "key": "custom-keybindings",
+            "value": "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-home-tab/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-terminal-tab/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-smile/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-min/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-brightness-max/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-system-monitor/']",
+            "merge": true
+          }
+        ],
+        "required_paths": [
+          "$LIBEXEC/gnome-shortcut-helper"
+        ]
+      }
+    },
+    {
+      "id": "browsers-firefox",
+      "title": "Firefox preferences",
+      "description": "Vertical tabs, privacy preferences, DRM and visible scrollbars.",
+      "category": "browsers",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Vertical tabs, privacy preferences, DRM and visible scrollbars.",
+      "details": "Close Firefox before applying. If there is no profile, creates a clean default profile. Only the managed preference block is replaced; personal data stays in the profile.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-firefox",
+        "browsers-firefox-theme"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$FIREFOX/user.js",
+            "format": "firefox",
+            "payload": "firefox/user.js"
+          }
+        ]
+      }
+    },
+    {
+      "id": "browsers-firefox-theme",
+      "title": "Biscuit Firefox theme",
+      "description": "Install the Biscuit theme supplied with Miubian.",
+      "category": "browsers",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Biscuit XPI installed and selected as the active theme",
+      "details": "Downloads Biscuit 1.0 directly from Mozilla Add-ons and verifies its recorded SHA-256 digest before installation. Keeps other extensions and personal profile data. Close Firefox before applying and restart it afterwards. A valid existing Biscuit extension is reused without replacing it; unrelated extensions and browser profile data are retained.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-firefox",
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$FIREFOX/extensions/{9e0d0c26-e659-4f2d-bbeb-25b86baae860}.xpi",
+            "format": "binary",
+            "url": "https://addons.mozilla.org/firefox/downloads/file/4307110/biscuit_mojas84-1.0.xpi",
+            "sha256": "ccb168560029fe7bb9d4a57a956d20068665895a3b18ef5f1d996129494e79b5",
+            "extension_id": "{9e0d0c26-e659-4f2d-bbeb-25b86baae860}"
+          },
+          {
+            "path": "$FIREFOX/user.js",
+            "format": "firefox",
+            "payload": "firefox/theme.js"
+          }
+        ]
+      }
+    },
+    {
+      "id": "browsers-vivaldi",
+      "title": "Vivaldi layout and preferences",
+      "description": "Left tabs, auto-hide, dark theme, panels and the documented browsing preferences.",
+      "category": "browsers",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Left tabs, auto-hide, dark theme, panels and the documented browsing preferences.",
+      "details": "Close Vivaldi first. Merges only shipped preferences; bookmarks, history, passwords and unrelated profile settings are retained. These preferences include disabling phishing protection and allowing pop-ups and insecure content, as in the setup specification. Ordinary, new-window and private-window launchers use the documented X11 and VivaldiCssMods flags. Existing search engines, dashboard widgets, custom web panels, toolbar identifiers and sign-in metadata are retained.",
+      "requires_admin": false,
+      "dependencies": [
+        "browsers-vivaldi-install"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/vivaldi/Default/Preferences",
+            "format": "json",
+            "payload": "vivaldi/Preferences"
+          },
+          {
+            "path": "$CONFIG/miuutil/vivaldi/persistent-horizontal-menu.css",
+            "format": "copy",
+            "payload": "vivaldi/persistent-horizontal-menu.css"
+          },
+          {
+            "path": "$DATA/applications/vivaldi-stable.desktop",
+            "format": "desktop",
+            "base_path": "/usr/share/applications/vivaldi-stable.desktop",
+            "payload": "vivaldi/launcher.ini",
+            "launch_flags": [
+              "--ozone-platform=x11",
+              "--enable-features=VivaldiCssMods"
+            ]
+          },
+          {
+            "path": "$CONFIG/vivaldi/Local State",
+            "format": "json",
+            "payload": "vivaldi/Local State"
+          },
+          {
+            "path": "$CONFIG/vivaldi/First Run",
+            "format": "copy",
+            "payload": "vivaldi/First Run"
+          }
+        ],
+        "required_programs": [
+          "vivaldi-stable"
+        ],
+        "preserve_arrays": true
+      }
+    },
+    {
+      "id": "browsers-default",
+      "title": "Use Vivaldi as the default browser",
+      "description": "Set Vivaldi for web pages and HTTP/HTTPS links.",
+      "category": "browsers",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Set Vivaldi for web pages and HTTP/HTTPS links.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "browsers-vivaldi-install"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "ini",
+            "payload": "mimeapps.list"
+          }
+        ],
+        "required_programs": [
+          "vivaldi-stable"
+        ]
+      }
+    },
+    {
+      "id": "applications-mpv",
+      "title": "mpv window and controller preferences",
+      "description": "Keep the mpv window open and let uosc provide the controller.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Keep the mpv window open and let uosc provide the controller.",
+      "details": "Preserves unrelated mpv options. Install uosc before disabling the built-in controller.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-mpv",
+        "applications-uosc"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mpv/mpv.conf",
+            "format": "text-keys",
+            "payload": "mpv/mpv.conf"
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-mc",
+      "title": "Midnight Commander skin",
+      "description": "Use the yadt256-defbg skin for your account.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Use the yadt256-defbg skin for your account.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-files-tools"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mc/ini",
+            "format": "ini",
+            "payload": "mc/ini"
+          }
+        ]
+      }
+    },
+    {
+      "id": "applications-copyq-startup",
+      "title": "Start CopyQ automatically",
+      "description": "Enable CopyQ when you sign in.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Enable CopyQ when you sign in.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-copyq"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/autostart/com.github.hluk.copyq.desktop",
+            "format": "copy",
+            "payload": "copyq.desktop"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-bash",
+      "title": "Bash prompt, history and tool environment",
+      "description": "Unlimited deduplicated history, Starship, ble.sh, fetch and tool activation.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Unlimited deduplicated history, Starship, ble.sh, fetch and tool activation.",
+      "details": "Appends a managed block and backs up the previous .bashrc. Optional supplied tools activate when installed. Existing shell customisations remain before this block.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-packages",
+        "development-starship",
+        "development-mise-install",
+        "development-easyvenv",
+        "development-fetch",
+        "development-blesh",
+        "development-homebrew",
+        "development-rustup"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$HOME/.bashrc",
+            "format": "block",
+            "payload": "bash/setup.bash"
+          }
+        ],
+        "required_paths": [
+          "$LIBEXEC/deduplicate-history.py"
+        ]
+      }
+    },
+    {
+      "id": "development-git",
+      "title": "Store Git credentials locally",
+      "description": "Use Git’s credential.helper=store.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "current": "",
+      "desired": "Use Git’s credential.helper=store.",
+      "details": "Saved credentials are stored unencrypted by Git. Existing name, email, repository settings and saved credentials are retained.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-packages"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$HOME/.gitconfig",
+            "format": "ini",
+            "payload": "git.ini"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-mise",
+      "title": "Mise tool selections",
+      "description": "Python 3.11 and latest Go, Java, Node and Rust.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Python 3.11 and latest Go, Java, Node and Rust.",
+      "details": "Updates only tool selections. Installing runtimes is a separate operation and requires internet access.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-mise-install"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mise/config.toml",
+            "format": "ini",
+            "payload": "mise/config.toml"
+          }
+        ],
+        "required_programs": [
+          "mise"
+        ]
+      }
+    },
+    {
+      "id": "files-nautilus-actions",
+      "title": "Nautilus context-menu actions",
+      "description": "Copy details, Console, command runner and Visual Studio Code actions.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Copy details, Console, command runner and Visual Studio Code actions.",
+      "details": "Requires the Actions for Nautilus extension. Keeps existing unrelated menu actions. Commands use the installed helper with URI arguments. Matching confirms the menu configuration is saved. Newly installed extension code becomes available after restarting Files or signing out and in.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-files-tools",
+        "apps-console",
+        "apps-blackbox",
+        "development-vscode",
+        "files-nautilus-extension"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$DATA/actions-for-nautilus/config.json",
+            "format": "nautilus",
+            "payload": "nautilus.json"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-default-terminal",
+      "title": "Console as the default desktop terminal",
+      "description": "Prefer GNOME Console for xdg-terminal-exec and desktop terminal actions.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Prefer GNOME Console for xdg-terminal-exec and desktop terminal actions.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-console"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/xdg-terminals.list",
+            "format": "terminal-list",
+            "payload": "terminal.list"
+          }
+        ]
+      }
+    },
+    {
+      "id": "development-starship",
+      "title": "Install Starship",
+      "description": "Install Starship.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Starship.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "starship"
+      }
+    },
+    {
+      "id": "development-mise-install",
+      "title": "Install Mise",
+      "description": "Install Mise.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Mise.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "mise"
+      }
+    },
+    {
+      "id": "development-easyvenv",
+      "title": "Install easyvenv",
+      "description": "Install easyvenv.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install easyvenv.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "easyvenv"
+      }
+    },
+    {
+      "id": "development-pacstall",
+      "title": "Install Pacstall",
+      "description": "Install Pacstall.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Pacstall.",
+      "details": "Installs the official Pacstall release package using its verified SHA-256 digest through the administrator helper.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "pacstall"
+      }
+    },
+    {
+      "id": "development-fetch",
+      "title": "Install fetch",
+      "description": "Install fetch.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install fetch.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "fetch"
+      }
+    },
+    {
+      "id": "development-rustup",
+      "title": "Install rustup",
+      "description": "Install rustup.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install rustup.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "rustup"
+      }
+    },
+    {
+      "id": "browsers-vivaldi-install",
+      "title": "Install Vivaldi",
+      "description": "Install Vivaldi.",
+      "category": "browsers",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Vivaldi.",
+      "details": "Installs the official vendor package and repository through the administrator helper. APT handles later updates.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "vivaldi"
+      }
+    },
+    {
+      "id": "development-vscode",
+      "title": "Install Visual Studio Code",
+      "description": "Install Visual Studio Code.",
+      "category": "development",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Visual Studio Code.",
+      "details": "Installs the official vendor package and repository through the administrator helper. APT handles later updates.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "vscode"
+      }
+    },
+    {
+      "id": "appearance-fluent-install",
+      "title": "Install Fluent themes and icons",
+      "description": "Install Fluent themes and icons.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Fluent themes and icons.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools",
+        "appearance-theme-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "fluent-gtk"
+      }
+    },
+    {
+      "id": "applications-uosc",
+      "title": "Install uosc for mpv",
+      "description": "Install uosc for mpv.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install uosc for mpv.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "uosc"
+      }
+    },
+    {
+      "id": "applications-qview",
+      "title": "Install qView AppImage",
+      "description": "Install qView AppImage.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install qView AppImage.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "qview"
+      }
+    },
+    {
+      "id": "development-blesh",
+      "title": "Install ble.sh",
+      "description": "Install ble.sh.",
+      "category": "development",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install ble.sh.",
+      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "blesh"
+      }
+    },
+    {
+      "id": "development-homebrew",
+      "title": "Install Homebrew and GCC",
+      "description": "Install Homebrew and GCC.",
+      "category": "development",
+      "scope": "System and your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Homebrew and GCC.",
+      "details": "The administrator helper prepares the standard /home/linuxbrew/.linuxbrew directory and Debian build prerequisites for your account. Homebrew and GCC install as your account from the official upstream release.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "homebrew"
+      }
+    },
+    {
+      "id": "appearance-fluent-icons",
+      "title": "Install Fluent icons and cursors",
+      "description": "Install the official Fluent icon and cursor theme.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Install Fluent themes and icons.",
+      "details": "",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "fluent-icons"
+      }
+    },
+    {
+      "id": "extension-appindicatorsupport",
+      "title": "Install AppIndicator and KStatusNotifierItem Support",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "AppIndicator and KStatusNotifierItem Support installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools",
+        "desktop-extension-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "appindicatorsupport@rgcjonas.gmail.com"
+      }
+    },
+    {
+      "id": "extension-arcmenu",
+      "title": "Install ArcMenu",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "ArcMenu installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools",
+        "desktop-extension-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "arcmenu@arcmenu.com"
+      }
+    },
+    {
+      "id": "extension-blur-my-shell",
+      "title": "Install Blur My Shell",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Blur My Shell installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "blur-my-shell@aunetx"
+      }
+    },
+    {
+      "id": "extension-color-picker",
+      "title": "Install Color Picker",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Color Picker installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "color-picker@tuberry"
+      }
+    },
+    {
+      "id": "extension-dash-to-panel",
+      "title": "Install Dash to Panel",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Dash to Panel installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "dash-to-panel@jderose9.github.com"
+      }
+    },
+    {
+      "id": "extension-ding",
+      "title": "Install Desktop Icons NG",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Desktop Icons NG installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "ding@rastersoft.com"
+      }
+    },
+    {
+      "id": "extension-drive-menu",
+      "title": "Install Removable Drive Menu",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Removable Drive Menu installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "drive-menu@gnome-shell-extensions.gcampax.github.com"
+      }
+    },
+    {
+      "id": "extension-fq",
+      "title": "Install Force Quit",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Force Quit installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "fq@megh"
+      }
+    },
+    {
+      "id": "extension-just-perfection-desktop",
+      "title": "Install Just Perfection",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Just Perfection installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "just-perfection-desktop@just-perfection"
+      }
+    },
+    {
+      "id": "extension-lockkeys",
+      "title": "Install Lock Keys",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Lock Keys installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "lockkeys@vaina.lt"
+      }
+    },
+    {
+      "id": "extension-smile-extension",
+      "title": "Install Smile extension",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Smile extension installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "smile-extension@mijorus.it"
+      }
+    },
+    {
+      "id": "extension-tiling-assistant",
+      "title": "Install Tiling Assistant",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Tiling Assistant installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "tiling-assistant@leleat-on-github"
+      }
+    },
+    {
+      "id": "extension-window-on-top",
+      "title": "Install Window on Top",
+      "description": "Install a compatible official GNOME extension release.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Window on Top installed for your GNOME Shell version",
+      "details": "Selects an official GNOME Extensions release compatible with your installed Shell. Matching confirms the extension files are installed on disk. Sign out and sign in to let GNOME Shell load newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "extension",
+        "uuid": "window-on-top@yousafesaeed.github.io"
+      }
+    },
+    {
+      "id": "recovery-grub-snapshots",
+      "title": "Bootable GRUB snapshot previews",
+      "description": "List Timeshift snapshots in GRUB and preview root changes in RAM.",
+      "category": "recovery",
+      "scope": "System",
+      "risk": "High",
+      "desired": "Five-second GRUB menu with Timeshift snapshot previews",
+      "details": "Requires an existing compatible Btrfs @/@home layout, /boot inside root, GRUB and initramfs-tools. Home and other separately mounted data remain writable in previews. Permanent restore stays a separate Timeshift operation.",
+      "requires_admin": true,
+      "dependencies": [
+        "recovery-timeshift"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "grub-snapshots"
+      }
+    },
+    {
+      "id": "appearance-gtk4-theme",
+      "title": "Apply Fluent to GTK 4",
+      "description": "Use Fluent dark theme styles for GTK 4 applications.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "GTK 4 stylesheet and assets linked to Fluent dark theme",
+      "details": "Existing GTK 4 files are backed up before replacing these selected links.",
+      "requires_admin": false,
+      "dependencies": [
+        "appearance-fluent-install"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/gtk-4.0/gtk.css",
+            "format": "link",
+            "target": "$DATA/themes/Fluent-round-Dark-compact/gtk-4.0/gtk.css",
+            "alternatives": [
+              "/usr/share/themes/Fluent-round-Dark-compact/gtk-4.0/gtk.css"
+            ]
+          },
+          {
+            "path": "$CONFIG/gtk-4.0/gtk-dark.css",
+            "format": "link",
+            "target": "$DATA/themes/Fluent-round-Dark-compact/gtk-4.0/gtk-dark.css",
+            "alternatives": [
+              "/usr/share/themes/Fluent-round-Dark-compact/gtk-4.0/gtk-dark.css"
+            ]
+          },
+          {
+            "path": "$CONFIG/gtk-4.0/assets",
+            "format": "link",
+            "target": "$DATA/themes/Fluent-round-Dark-compact/gtk-4.0/assets",
+            "alternatives": [
+              "/usr/share/themes/Fluent-round-Dark-compact/gtk-4.0/assets"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "applications-gearlever",
+      "title": "Gear Lever update preferences",
+      "description": "Keep foreground AppImage updates and disable background update checks.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Background updates disabled",
+      "details": "Existing AppImage registrations remain intact.",
+      "requires_admin": false,
+      "dependencies": [
+        "flatpak-it-mijorus-gearlever"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$HOME/.var/app/it.mijorus.gearlever/config/gearlever.conf",
+            "format": "ini",
+            "payload": "gearlever.ini"
+          }
+        ]
+      }
+    },
+    {
+      "id": "appearance-theme-tools",
+      "title": "Fluent theme build dependencies",
+      "description": "Install the native theme build and GTK compatibility packages.",
+      "category": "appearance",
+      "scope": "System",
+      "risk": "Low",
+      "desired": "sassc, GTK theme engines and GNOME theme assets installed",
+      "details": "Required by the official Fluent theme installer.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "sassc",
+          "gtk2-engines-murrine",
+          "gnome-themes-extra"
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-appindicatorsupport",
+      "title": "Enable AppIndicator and KStatusNotifierItem Support",
+      "description": "Enable the installed AppIndicator and KStatusNotifierItem Support extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "AppIndicator and KStatusNotifierItem Support saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-appindicatorsupport"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"appindicatorsupport@rgcjonas.gmail.com\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "appindicatorsupport@rgcjonas.gmail.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-arcmenu",
+      "title": "Enable ArcMenu",
+      "description": "Enable the installed ArcMenu extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "ArcMenu saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-arcmenu"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"arcmenu@arcmenu.com\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "arcmenu@arcmenu.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-blur-my-shell",
+      "title": "Enable Blur My Shell",
+      "description": "Enable the installed Blur My Shell extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Blur My Shell saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-blur-my-shell"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"blur-my-shell@aunetx\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "blur-my-shell@aunetx"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-color-picker",
+      "title": "Enable Color Picker",
+      "description": "Enable the installed Color Picker extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Color Picker saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-color-picker"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"color-picker@tuberry\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "color-picker@tuberry"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-dash-to-panel",
+      "title": "Enable Dash to Panel",
+      "description": "Enable the installed Dash to Panel extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Dash to Panel saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-dash-to-panel"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"dash-to-panel@jderose9.github.com\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "dash-to-panel@jderose9.github.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-ding",
+      "title": "Enable Desktop Icons NG",
+      "description": "Enable the installed Desktop Icons NG extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Desktop Icons NG saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-ding"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"ding@rastersoft.com\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "ding@rastersoft.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-drive-menu",
+      "title": "Enable Removable Drive Menu",
+      "description": "Enable the installed Removable Drive Menu extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Removable Drive Menu saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-drive-menu"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"drive-menu@gnome-shell-extensions.gcampax.github.com\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "drive-menu@gnome-shell-extensions.gcampax.github.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-fq",
+      "title": "Enable Force Quit",
+      "description": "Enable the installed Force Quit extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Force Quit saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-fq"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"fq@megh\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "fq@megh"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-just-perfection-desktop",
+      "title": "Enable Just Perfection",
+      "description": "Enable the installed Just Perfection extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Just Perfection saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-just-perfection-desktop"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"just-perfection-desktop@just-perfection\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "just-perfection-desktop@just-perfection"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-lockkeys",
+      "title": "Enable Lock Keys",
+      "description": "Enable the installed Lock Keys extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Lock Keys saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-lockkeys"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"lockkeys@vaina.lt\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "lockkeys@vaina.lt"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-smile-extension",
+      "title": "Enable Smile extension",
+      "description": "Enable the installed Smile extension extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Smile extension saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-smile-extension"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"smile-extension@mijorus.it\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "smile-extension@mijorus.it"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-tiling-assistant",
+      "title": "Enable Tiling Assistant",
+      "description": "Enable the installed Tiling Assistant extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Tiling Assistant saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-tiling-assistant"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"tiling-assistant@leleat-on-github\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "tiling-assistant@leleat-on-github"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "enable-extension-window-on-top",
+      "title": "Enable Window on Top",
+      "description": "Enable the installed Window on Top extension.",
+      "category": "desktop",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "Window on Top saved as enabled in GNOME settings.",
+      "details": "Preserves other enabled extensions and removes this extension from the disabled list. Matching confirms the enabled setting is saved. Sign out and sign in to activate newly installed or replaced extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "extension-window-on-top"
+      ],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell",
+            "key": "disable-user-extensions",
+            "value": "false"
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "enabled-extensions",
+            "value": "[\"window-on-top@yousafesaeed.github.io\"]",
+            "merge": true
+          },
+          {
+            "schema": "org.gnome.shell",
+            "key": "disabled-extensions",
+            "value": "@as []",
+            "merge": true,
+            "remove": [
+              "window-on-top@yousafesaeed.github.io"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "files-nautilus-extension",
+      "title": "Install Actions for Nautilus",
+      "description": "Install the official Actions for Nautilus extension for your account.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Moderate",
+      "desired": "Actions for Nautilus extension installed",
+      "details": "Installs a verified upstream source release. Matching confirms the extension files are installed. Restart the Files application, or sign out and sign in, to load newly installed extension code.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "nautilus-actions"
+      }
+    },
+    {
+      "id": "system-default-terminal",
+      "title": "Console as x-terminal-emulator",
+      "description": "Console as x-terminal-emulator.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Moderate",
+      "desired": "Console as x-terminal-emulator",
+      "details": "Updates only the selected system default through the administrator helper.",
+      "requires_admin": true,
+      "dependencies": [
+        "apps-console"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "console-default"
+      }
+    },
+    {
+      "id": "system-default-editor",
+      "title": "mcedit as the default terminal editor",
+      "description": "mcedit as the default terminal editor.",
+      "category": "system",
+      "scope": "System",
+      "risk": "Moderate",
+      "desired": "mcedit as the default terminal editor",
+      "details": "Updates only the selected system default through the administrator helper.",
+      "requires_admin": true,
+      "dependencies": [
+        "apps-files-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "editor-default"
+      }
+    },
+    {
+      "id": "system-root-mc-skin",
+      "title": "Midnight Commander skin for sudo",
+      "description": "Midnight Commander skin for sudo.",
+      "category": "files",
+      "scope": "System",
+      "risk": "Moderate",
+      "desired": "Midnight Commander skin for sudo",
+      "details": "Updates only the selected system default through the administrator helper.",
+      "requires_admin": true,
+      "dependencies": [
+        "apps-files-tools"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "mc-skin"
+      }
+    },
+    {
+      "id": "desktop-extension-tools",
+      "title": "GNOME extension libraries",
+      "description": "Install GNOME menu and appindicator libraries for desktop extensions.",
+      "category": "desktop",
+      "scope": "System",
+      "risk": "Low",
+      "desired": "GNOME menu and AppIndicator introspection libraries installed",
+      "details": "Used by ArcMenu and the Application Indicator extension.",
+      "requires_admin": true,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "libgnome-menu-3-0",
+          "gir1.2-gmenu-3.0",
+          "gir1.2-ayatanaappindicator3-0.1",
+          "gir1.2-ayatanaido3-0.4"
+        ]
+      }
+    },
+    {
+      "id": "applications-qview-gearlever",
+      "title": "Register qView with Gear Lever",
+      "description": "Manage the qView AppImage and updates through Gear Lever.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "desired": "qView registered with its actual account AppImage path",
+      "details": "Keeps other AppImage registrations and adapts qView’s registration key to your own home directory.",
+      "requires_admin": false,
+      "dependencies": [
+        "applications-qview",
+        "flatpak-it-mijorus-gearlever"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$HOME/.var/app/it.mijorus.gearlever/config/gearlever.conf",
+            "format": "gearlever",
+            "payload": "gearlever-register.ini"
+          }
+        ]
+      }
+    }
+  ]
+}

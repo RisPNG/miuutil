@@ -1,0 +1,9 @@
+data/com.rispeng.MiuUtil.desktop
+src/application.vala
+src/core/change-plan.vala
+src/ui/window.vala
+src/ui/window.blp
+src/ui/option-row.vala
+src/ui/option-row.blp
+src/ui/review-page.vala
+src/ui/review-page.blp

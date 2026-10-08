@@ -1,0 +1,38 @@
+miuutil (0.1.4-1) unstable; urgency=medium
+
+  * Zero supported monitor brightness, contrast and RGB gains together.
+  * Restore each monitor's range and verify the resulting control values.
+  * Consolidate maintenance and developer documentation.
+
+ -- Ris Peng <hello@rispeng.com>  Thu, 08 Oct 2026 16:36:05 +0800
+
+miuutil (0.1.3-1) unstable; urgency=medium
+
+  * Restore Miubian menu and panel defaults on customised desktops.
+  * Retain personal blur exclusions and exclude legacy DING windows.
+  * Enable selected extensions consistently and disable all tiling shortcuts.
+  * Remove separate documentation and update package documentation inputs.
+
+ -- Ris Peng <hello@rispeng.com>  Thu, 08 Oct 2026 15:55:00 +0800
+
+miuutil (0.1.2-1) unstable; urgency=medium
+
+  * Remove the installer-only layout from setup options.
+
+ -- Ris Peng <hello@rispeng.com>  Thu, 08 Oct 2026 15:20:26 +0800
+
+miuutil (0.1.1-1) unstable; urgency=medium
+
+  * Preserve browser panels, launch options and existing extensions.
+  * Resolve supported Debian packages consistently before installation.
+  * Keep package-query diagnostics separate and verify running services.
+  * Preserve sibling configuration blocks and use native monitor identities.
+  * Select Firefox's installation profile and honour native profile locks.
+
+ -- Ris Peng <hello@rispeng.com>  Thu, 08 Oct 2026 14:04:22 +0800
+
+miuutil (0.1.0-1) unstable; urgency=medium
+
+  * Add the native application and selectable Miubian setup operations.
+
+ -- Ris Peng <hello@rispeng.com>  Thu, 08 Oct 2026 12:00:00 +0800

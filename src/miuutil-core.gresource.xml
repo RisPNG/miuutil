@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/rispeng/MiuUtil">
+    <file alias="catalogue.json">../data/catalogue.json</file>
+    <file alias="upstreams.json">../data/upstreams.json</file>
+    <file alias="payloads/bash/setup.bash">../data/payloads/bash/setup.bash</file>
+    <file alias="payloads/copyq.desktop">../data/payloads/copyq.desktop</file>
+    <file alias="payloads/firefox/theme.js">../data/payloads/firefox/theme.js</file>
+    <file alias="payloads/firefox/user.js">../data/payloads/firefox/user.js</file>
+    <file alias="payloads/gearlever.ini">../data/payloads/gearlever.ini</file>
+    <file alias="payloads/gearlever-register.ini">../data/payloads/gearlever-register.ini</file>
+    <file alias="payloads/git.ini">../data/payloads/git.ini</file>
+    <file alias="payloads/mc/ini">../data/payloads/mc/ini</file>
+    <file alias="payloads/mimeapps.list">../data/payloads/mimeapps.list</file>
+    <file alias="payloads/mise/config.toml">../data/payloads/mise/config.toml</file>
+    <file alias="payloads/mpv/mpv.conf">../data/payloads/mpv/mpv.conf</file>
+    <file alias="payloads/nautilus.json">../data/payloads/nautilus.json</file>
+    <file alias="payloads/terminal.list">../data/payloads/terminal.list</file>
+    <file alias="payloads/vivaldi/Local State">../data/payloads/vivaldi/Local State</file>
+    <file alias="payloads/vivaldi/First Run">../data/payloads/vivaldi/First Run</file>
+    <file alias="payloads/vivaldi/Preferences">../data/payloads/vivaldi/Preferences</file>
+    <file alias="payloads/vivaldi/launcher.ini">../data/payloads/vivaldi/launcher.ini</file>
+    <file alias="payloads/vivaldi/persistent-horizontal-menu.css">../data/payloads/vivaldi/persistent-horizontal-menu.css</file>
+    <file alias="keys/microsoft.asc">../data/keys/microsoft.asc</file>
+    <file alias="keys/vivaldi.asc">../data/keys/vivaldi.asc</file>
+    <file alias="recovery/grub-btrfs/41_snapshots-btrfs">../data/recovery/grub-btrfs/41_snapshots-btrfs</file>
+    <file alias="recovery/grub-btrfs/config">../data/recovery/grub-btrfs/config</file>
+    <file alias="recovery/grub-btrfs/grub-btrfs.LICENSE">../data/recovery/grub-btrfs/grub-btrfs.LICENSE</file>
+    <file alias="recovery/grub-btrfs/grub-btrfsd">../data/recovery/grub-btrfs/grub-btrfsd</file>
+  </gresource>
+</gresources>

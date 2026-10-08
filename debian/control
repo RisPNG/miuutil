@@ -1,0 +1,19 @@
+Source: miuutil
+Section: admin
+Priority: optional
+Maintainer: Ris Peng <hello@rispeng.com>
+Build-Depends: debhelper-compat (= 13), meson, ninja-build, valac, pkg-config,
+ blueprint-compiler (>= 0.16), libgtk-4-dev (>= 4.18), libadwaita-1-dev (>= 1.7),
+ libglib2.0-dev (>= 2.84), libjson-glib-dev, gettext, python3, xvfb, xauth, dbus-x11
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://github.com/RisPNG/miuutil
+
+Package: miuutil
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, polkitd, pkexec, kmod, python3,
+ python3-gi, gir1.2-glib-2.0, gir1.2-gtk-4.0
+Recommends: gnome-shell, gsettings-desktop-schemas
+Description: Selectable Miubian setup for Debian GNOME
+ Detects desktop, application and system preferences, reviews chosen changes,
+ and applies and verifies their desired state through native GNOME interfaces.

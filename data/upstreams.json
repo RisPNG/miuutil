@@ -1,0 +1,398 @@
+{
+  "schema": 1,
+  "artifacts": {
+    "fluent-gtk": {
+      "url": "https://codeload.github.com/vinceliuice/Fluent-gtk-theme/tar.gz/7a49a464b0188c340101c52965c18190b1c694cf",
+      "version": "7a49a464b0188c340101c52965c18190b1c694cf",
+      "format": "tar-source",
+      "sha256": "5d78245fee456dd2d2992c4186a8188b59f87839e7bd5905c56bea00c2446dd4",
+      "bytes": 3033007
+    },
+    "fluent-icons": {
+      "url": "https://codeload.github.com/vinceliuice/Fluent-icon-theme/tar.gz/c8a244f571ef8fb47812bdc9dbce76546cedce69",
+      "version": "c8a244f571ef8fb47812bdc9dbce76546cedce69",
+      "format": "tar-source",
+      "sha256": "07b6b593ab557e07f0a7cdb232cda99214af13fb74ad6ce1e77d666057647767",
+      "bytes": 7025209
+    },
+    "blesh": {
+      "url": "https://github.com/akinomyoga/ble.sh/releases/download/v0.4.0-devel3/ble-0.4.0-devel3-2.tar.xz",
+      "sha256": "bdcdcfff216495403adf82a701fe41675f64b64644dc77caabd3e015871ebd61",
+      "version": "0.4.0-devel3-2",
+      "format": "tar-prebuilt"
+    },
+    "easyvenv": {
+      "url": "https://github.com/RisPNG/easyvenv/releases/download/v1.0.0/easyvenv-linux-amd64.tar.gz",
+      "sha256": "bae13b1c19bf4878f0a878428a2e15f972e7ea74b16d63f4d9c38f3133d475f1",
+      "version": "1.0.0",
+      "format": "tar-binary"
+    },
+    "fetch": {
+      "url": "https://codeload.github.com/areofyl/fetch/tar.gz/7b19d22c2d8e4b7b2295cc625c9fdf87adcabbcd",
+      "version": "7b19d22c2d8e4b7b2295cc625c9fdf87adcabbcd",
+      "format": "tar-source",
+      "sha256": "bd0c04ddbf589825016306431b55f16a58816c9608b6167a8687bd1988d8a3e2",
+      "bytes": 3988483
+    },
+    "homebrew": {
+      "url": "https://codeload.github.com/Homebrew/brew/tar.gz/refs/tags/7.0.8",
+      "version": "7.0.8",
+      "format": "tar-source",
+      "sha256": "2823a11d81e7582d7ef9c44a85187462db92184133f9c9927f853b5c38d9538e",
+      "bytes": 4171783,
+      "commit": "a57af195cf9d7addb48bdb1204c9151313cd0057"
+    },
+    "qview": {
+      "url": "https://github.com/jurplel/qView/releases/download/7.1/qView-7.1-x86_64.AppImage",
+      "version": "7.1",
+      "format": "binary",
+      "sha256": "f02db7a00a689a9ded6bcbd9be5b9d3ea0379b7c5123f8bfaac4749025a6051a"
+    },
+    "starship": {
+      "url": "https://github.com/starship/starship/releases/download/v1.26.0/starship-x86_64-unknown-linux-musl.tar.gz",
+      "version": "v1.26.0",
+      "format": "tar-binary",
+      "sha256": "b7c232b0e8249d8e55a40beb79c5c43a7d370f3f9408bd215deb0170daeaadf3"
+    },
+    "mise": {
+      "url": "https://github.com/jdx/mise/releases/download/v2026.10.4/mise-v2026.10.4-linux-x64-musl.tar.gz",
+      "version": "v2026.10.4",
+      "format": "tar-binary",
+      "sha256": "593d57eaa0b6c1b8d3bb9eaa3a1c16b081cea10599276ce69bed2ad5dbe7c361"
+    },
+    "uosc": {
+      "url": "https://github.com/tomasklaen/uosc/releases/download/5.13.0/uosc.zip",
+      "version": "5.13.0",
+      "format": "zip",
+      "sha256": "4be9da3289285300fa374496c3f1bfd7bb20ac08e890d25bd5a06b28eebe4882"
+    },
+    "rustup": {
+      "url": "https://static.rust-lang.org/rustup/archive/1.29.1/x86_64-unknown-linux-gnu/rustup-init",
+      "version": "1.29.1",
+      "format": "binary",
+      "sha256": "dda7234360b7f578ca8b0ddcb80145646fa61a67c1720a5abc7051b35c9fcb71"
+    },
+    "nautilus-actions": {
+      "url": "https://codeload.github.com/bassmanitram/actions-for-nautilus/tar.gz/3b518ac02fe92f8f0a4733e799b0689f505fea95",
+      "version": "2.0.1",
+      "format": "tar-source",
+      "sha256": "6f056a611972543b2ef9f020ef4c2b0ae1bb79588ee3c0b692d864eafbf63f14"
+    }
+  },
+  "extensions": {
+    "appindicatorsupport@rgcjonas.gmail.com": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/appindicatorsupport@rgcjonas.gmail.com.shell-extension.zip?version_tag=75340",
+        "sha256": "94fe0ef32b84f184fee0ce2bb0edca7020a99e48210c43bbfc0c884a5c4660de",
+        "version": "66",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/appindicatorsupport@rgcjonas.gmail.com.shell-extension.zip?version_tag=75340",
+        "sha256": "94fe0ef32b84f184fee0ce2bb0edca7020a99e48210c43bbfc0c884a5c4660de",
+        "version": "66",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/appindicatorsupport@rgcjonas.gmail.com.shell-extension.zip?version_tag=75340",
+        "sha256": "94fe0ef32b84f184fee0ce2bb0edca7020a99e48210c43bbfc0c884a5c4660de",
+        "version": "66",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/appindicatorsupport@rgcjonas.gmail.com.shell-extension.zip?version_tag=75340",
+        "sha256": "94fe0ef32b84f184fee0ce2bb0edca7020a99e48210c43bbfc0c884a5c4660de",
+        "version": "66",
+        "format": "zip"
+      }
+    },
+    "arcmenu@arcmenu.com": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/arcmenu@arcmenu.com.shell-extension.zip?version_tag=75483",
+        "sha256": "ef414c90dcb5f2b0c6ccb5f8e59fd9963c584789d3d8d26740ddb731100c4b40",
+        "version": "74",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/arcmenu@arcmenu.com.shell-extension.zip?version_tag=75483",
+        "sha256": "ef414c90dcb5f2b0c6ccb5f8e59fd9963c584789d3d8d26740ddb731100c4b40",
+        "version": "74",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/arcmenu@arcmenu.com.shell-extension.zip?version_tag=75483",
+        "sha256": "ef414c90dcb5f2b0c6ccb5f8e59fd9963c584789d3d8d26740ddb731100c4b40",
+        "version": "74",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/arcmenu@arcmenu.com.shell-extension.zip?version_tag=75483",
+        "sha256": "ef414c90dcb5f2b0c6ccb5f8e59fd9963c584789d3d8d26740ddb731100c4b40",
+        "version": "74",
+        "format": "zip"
+      }
+    },
+    "blur-my-shell@aunetx": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/blur-my-shell@aunetx.shell-extension.zip?version_tag=75939",
+        "sha256": "9ad74044e7ece1e9a2025ddab107240fcc9b5e33ed2b2b651ea97ae7b8a29df4",
+        "version": "74",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/blur-my-shell@aunetx.shell-extension.zip?version_tag=75939",
+        "sha256": "9ad74044e7ece1e9a2025ddab107240fcc9b5e33ed2b2b651ea97ae7b8a29df4",
+        "version": "74",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/blur-my-shell@aunetx.shell-extension.zip?version_tag=75939",
+        "sha256": "9ad74044e7ece1e9a2025ddab107240fcc9b5e33ed2b2b651ea97ae7b8a29df4",
+        "version": "74",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/blur-my-shell@aunetx.shell-extension.zip?version_tag=75939",
+        "sha256": "9ad74044e7ece1e9a2025ddab107240fcc9b5e33ed2b2b651ea97ae7b8a29df4",
+        "version": "74",
+        "format": "zip"
+      }
+    },
+    "color-picker@tuberry": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/color-picker@tuberry.shell-extension.zip?version_tag=63086",
+        "sha256": "b03d20ac72cf7b0348fd6dc00061816ee966500f84615366f31791816c9c9a7b",
+        "version": "46",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/color-picker@tuberry.shell-extension.zip?version_tag=65432",
+        "sha256": "daa8f92961c09eb5b26c3cda390d3fff4f83395171b817774ea12397175cbdf1",
+        "version": "47",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/color-picker@tuberry.shell-extension.zip?version_tag=71307",
+        "sha256": "a59d3a6d792e6a7373b482e478340c8a26339063507a02ef8e71d855d909b198",
+        "version": "49",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/color-picker@tuberry.shell-extension.zip?version_tag=75553",
+        "sha256": "4e680b3c6988d7815d6df428d0411938af2db4e2d56fa8c2379edc1a4fa7c4e1",
+        "version": "50",
+        "format": "zip"
+      }
+    },
+    "dash-to-panel@jderose9.github.com": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/dash-to-panel@jderose9.github.com.shell-extension.zip?version_tag=75054",
+        "sha256": "8989c892f9795948e4490f47dc092218e42d771a6fec3dd44431cb48700ac2e5",
+        "version": "74",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/dash-to-panel@jderose9.github.com.shell-extension.zip?version_tag=75054",
+        "sha256": "8989c892f9795948e4490f47dc092218e42d771a6fec3dd44431cb48700ac2e5",
+        "version": "74",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/dash-to-panel@jderose9.github.com.shell-extension.zip?version_tag=75054",
+        "sha256": "8989c892f9795948e4490f47dc092218e42d771a6fec3dd44431cb48700ac2e5",
+        "version": "74",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/dash-to-panel@jderose9.github.com.shell-extension.zip?version_tag=75054",
+        "sha256": "8989c892f9795948e4490f47dc092218e42d771a6fec3dd44431cb48700ac2e5",
+        "version": "74",
+        "format": "zip"
+      }
+    },
+    "ding@rastersoft.com": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/ding@rastersoft.com.shell-extension.zip?version_tag=72024",
+        "sha256": "429171dda75a6d449650679c77370fb7edd17b9b183d68e54ab6892ab478a3f3",
+        "version": "85",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/ding@rastersoft.com.shell-extension.zip?version_tag=72024",
+        "sha256": "429171dda75a6d449650679c77370fb7edd17b9b183d68e54ab6892ab478a3f3",
+        "version": "85",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/ding@rastersoft.com.shell-extension.zip?version_tag=75576",
+        "sha256": "f5f80d3371f00b7f3fd073d33c90f1c18750f006a284e76f37c1973685a33acc",
+        "version": "99",
+        "format": "zip"
+      }
+    },
+    "drive-menu@gnome-shell-extensions.gcampax.github.com": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/drive-menu@gnome-shell-extensions.gcampax.github.com.shell-extension.zip?version_tag=63733",
+        "sha256": "c421a536229cae72ad05991895ed6d8f7493425f3e133f850e109f01c8cbe37a",
+        "version": "67",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/drive-menu@gnome-shell-extensions.gcampax.github.com.shell-extension.zip?version_tag=75088",
+        "sha256": "6a1335630ec7d4bfafb13746374fb6bb75e9e2e40d8db88a2b1975505ca26324",
+        "version": "83",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/drive-menu@gnome-shell-extensions.gcampax.github.com.shell-extension.zip?version_tag=75079",
+        "sha256": "577d6f6b03272c3f237ef76e0c8b7171855430e2b567f7c3d9f5fefa14a0bec1",
+        "version": "82",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/drive-menu@gnome-shell-extensions.gcampax.github.com.shell-extension.zip?version_tag=75030",
+        "sha256": "0615647b0ea13c73b92555ede40e47d89871f21056faf322ad0ea3d3ab1d013d",
+        "version": "81",
+        "format": "zip"
+      }
+    },
+    "fq@megh": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/fq@megh.shell-extension.zip?version_tag=69616",
+        "sha256": "1baf368db58c2367b0f98eb65063ee1d4f207613063f17bc24801cee965a1b6b",
+        "version": "45",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/fq@megh.shell-extension.zip?version_tag=69616",
+        "sha256": "1baf368db58c2367b0f98eb65063ee1d4f207613063f17bc24801cee965a1b6b",
+        "version": "45",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/fq@megh.shell-extension.zip?version_tag=70956",
+        "sha256": "43b9cdb81ca5f67d79395fa72ed602e3dea5ece8bc8bfc3f4a77c7d91343416c",
+        "version": "47",
+        "format": "zip"
+      }
+    },
+    "just-perfection-desktop@just-perfection": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/just-perfection-desktop@just-perfection.shell-extension.zip?version_tag=74466",
+        "sha256": "c54ccd627540d86e6baf06c699f624ba7d5229aedfc8b00b0dc7182c6538eda8",
+        "version": "37",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/just-perfection-desktop@just-perfection.shell-extension.zip?version_tag=74466",
+        "sha256": "c54ccd627540d86e6baf06c699f624ba7d5229aedfc8b00b0dc7182c6538eda8",
+        "version": "37",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/just-perfection-desktop@just-perfection.shell-extension.zip?version_tag=74466",
+        "sha256": "c54ccd627540d86e6baf06c699f624ba7d5229aedfc8b00b0dc7182c6538eda8",
+        "version": "37",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/just-perfection-desktop@just-perfection.shell-extension.zip?version_tag=74466",
+        "sha256": "c54ccd627540d86e6baf06c699f624ba7d5229aedfc8b00b0dc7182c6538eda8",
+        "version": "37",
+        "format": "zip"
+      }
+    },
+    "lockkeys@vaina.lt": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/lockkeys@vaina.lt.shell-extension.zip?version_tag=75259",
+        "sha256": "205a89ba1698c64d9f14a555c89e5020d33e2feb7f54fe7bb0244ae5958b8b54",
+        "version": "72",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/lockkeys@vaina.lt.shell-extension.zip?version_tag=75259",
+        "sha256": "205a89ba1698c64d9f14a555c89e5020d33e2feb7f54fe7bb0244ae5958b8b54",
+        "version": "72",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/lockkeys@vaina.lt.shell-extension.zip?version_tag=75259",
+        "sha256": "205a89ba1698c64d9f14a555c89e5020d33e2feb7f54fe7bb0244ae5958b8b54",
+        "version": "72",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/lockkeys@vaina.lt.shell-extension.zip?version_tag=75259",
+        "sha256": "205a89ba1698c64d9f14a555c89e5020d33e2feb7f54fe7bb0244ae5958b8b54",
+        "version": "72",
+        "format": "zip"
+      }
+    },
+    "smile-extension@mijorus.it": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/smile-extension@mijorus.it.shell-extension.zip?version_tag=70078",
+        "sha256": "e23cf17f1216c099215c6b458e96913f277a371bc770759ca56b858d98651b42",
+        "version": "13",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/smile-extension@mijorus.it.shell-extension.zip?version_tag=70078",
+        "sha256": "e23cf17f1216c099215c6b458e96913f277a371bc770759ca56b858d98651b42",
+        "version": "13",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/smile-extension@mijorus.it.shell-extension.zip?version_tag=70078",
+        "sha256": "e23cf17f1216c099215c6b458e96913f277a371bc770759ca56b858d98651b42",
+        "version": "13",
+        "format": "zip"
+      }
+    },
+    "tiling-assistant@leleat-on-github": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/tiling-assistant@leleat-on-github.shell-extension.zip?version_tag=75405",
+        "sha256": "4cd9b848e399b0bdcf09302044f2420cf86c63fef2857a70a5be88ca04ad88de",
+        "version": "55",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/tiling-assistant@leleat-on-github.shell-extension.zip?version_tag=75405",
+        "sha256": "4cd9b848e399b0bdcf09302044f2420cf86c63fef2857a70a5be88ca04ad88de",
+        "version": "55",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/tiling-assistant@leleat-on-github.shell-extension.zip?version_tag=75405",
+        "sha256": "4cd9b848e399b0bdcf09302044f2420cf86c63fef2857a70a5be88ca04ad88de",
+        "version": "55",
+        "format": "zip"
+      },
+      "51": {
+        "url": "https://extensions.gnome.org/download-extension/tiling-assistant@leleat-on-github.shell-extension.zip?version_tag=75405",
+        "sha256": "4cd9b848e399b0bdcf09302044f2420cf86c63fef2857a70a5be88ca04ad88de",
+        "version": "55",
+        "format": "zip"
+      }
+    },
+    "window-on-top@yousafesaeed.github.io": {
+      "48": {
+        "url": "https://extensions.gnome.org/download-extension/window-on-top@yousafesaeed.github.io.shell-extension.zip?version_tag=72008",
+        "sha256": "63c78454304cda08d04117cddb628eb014cd6b1ec0829a23d7c543369a9c7c89",
+        "version": "9",
+        "format": "zip"
+      },
+      "49": {
+        "url": "https://extensions.gnome.org/download-extension/window-on-top@yousafesaeed.github.io.shell-extension.zip?version_tag=72008",
+        "sha256": "63c78454304cda08d04117cddb628eb014cd6b1ec0829a23d7c543369a9c7c89",
+        "version": "9",
+        "format": "zip"
+      },
+      "50": {
+        "url": "https://extensions.gnome.org/download-extension/window-on-top@yousafesaeed.github.io.shell-extension.zip?version_tag=72008",
+        "sha256": "63c78454304cda08d04117cddb628eb014cd6b1ec0829a23d7c543369a9c7c89",
+        "version": "9",
+        "format": "zip"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+namespace MiuUtil.Config {
+    public const string VERSION = "@VERSION@";
+    public const string LOCALE_DIR = "@LOCALE_DIR@";
+    public const string DATA_DIR = "@DATA_DIR@";
+    public const string LIBEXEC_DIR = "@LIBEXEC_DIR@";
+    public const string HELPER_PATH = "@HELPER_PATH@";
+}

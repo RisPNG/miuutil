@@ -1,0 +1,13 @@
+/build/
+/build-*/
+/obj-*/
+/dist/
+/debian/.debhelper/
+/debian/files
+/debian/miuutil/
+/debian/*.debhelper
+/debian/*.substvars
+/debian/*.log
+/debian/tmp/
+*.pyc
+__pycache__/

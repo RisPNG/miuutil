@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+set -- $(/usr/bin/findmnt --noheadings --output FSTYPE,FSROOT --target /)
+if [ "$1" = btrfs ] && [ "$2" = /@ ]; then
+    /usr/bin/timeshift --check --scripted
+fi
