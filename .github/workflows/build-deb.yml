@@ -3,7 +3,7 @@ name: Build Debian package
 on:
   push:
     branches: ['**']
-    tags: ['**', '!latest-build']
+    tags: ['**', '!latest-build', '!latest-release']
 
 permissions:
   contents: read
@@ -48,8 +48,9 @@ jobs:
     permissions:
       contents: write
     concurrency:
-      group: miuutil-publish-${{ github.ref }}
+      group: miuutil-publish-${{ github.ref_type == 'tag' && 'tags' || github.ref }}
       cancel-in-progress: false
+      queue: max
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:

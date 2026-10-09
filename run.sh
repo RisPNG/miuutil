@@ -2,6 +2,16 @@
 set -euo pipefail
 umask 077
 
+channel=latest-build
+if (( $# != 0 )); then
+    if [[ $# == 1 && "$1" == --release ]]; then
+        channel=latest-release
+    else
+        printf 'Usage: bash run.sh [--release]\n' >&2
+        exit 2
+    fi
+fi
+
 if [[ $(id -u) == 0 ]]; then
     printf 'Run this launcher from your desktop account, without sudo.\n' >&2
     exit 1
@@ -55,8 +65,22 @@ complete_package_transaction() {
     done
 }
 
-resolve_branch_head() {
-    curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$commit_url" -o "$session_directory/commit.json" || return
+resolve_source_commit() {
+    local reference=$1 encoded_reference response response_result=0
+    encoded_reference=$(python3 - "${reference#refs/}" <<'PY'
+import sys
+import urllib.parse
+
+print(urllib.parse.quote(sys.argv[1], safe=""))
+PY
+)
+    response=$(curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 --write-out '%{http_code}' "https://api.github.com/repos/$repository/commits/$encoded_reference" -o "$session_directory/commit.json") || response_result=$?
+    if (( response_result != 0 )); then
+        if [[ "$reference" == refs/tags/latest-release && "$response" == 404 ]]; then
+            printf 'No successful tagged release has been published yet.\n' >&2
+        fi
+        return "$response_result"
+    fi
     python3 - "$session_directory/commit.json" <<'PY'
 import json
 import re
@@ -144,12 +168,15 @@ trap 'request_stop 143' TERM
 trap 'request_stop 129' HUP
 
 repository=RisPNG/miuutil
-release=https://github.com/$repository/releases/download/latest-build
-curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "https://api.github.com/repos/$repository" -o "$session_directory/repository.json"
-branch_metadata=$(python3 - "$session_directory/repository.json" <<'PY'
+release=https://github.com/$repository/releases/download/$channel
+if [[ "$channel" == latest-release ]]; then
+    channel_ref=refs/tags/latest-release
+    source_name=latest-release
+else
+    curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "https://api.github.com/repos/$repository" -o "$session_directory/repository.json"
+    source_name=$(python3 - "$session_directory/repository.json" <<'PY'
 import json
 import sys
-import urllib.parse
 
 with open(sys.argv[1], encoding="utf-8") as source:
     repository = json.load(source)
@@ -157,13 +184,11 @@ if repository["full_name"] != "RisPNG/miuutil":
     raise SystemExit("GitHub returned a different repository.")
 branch = repository["default_branch"]
 print(branch)
-print("https://api.github.com/repos/RisPNG/miuutil/commits/" + urllib.parse.quote(branch, safe=""))
 PY
 )
-mapfile -t branch_fields <<<"$branch_metadata"
-branch=${branch_fields[0]}
-commit_url=${branch_fields[1]}
-commit=$(resolve_branch_head)
+    channel_ref=refs/heads/$source_name
+fi
+commit=$(resolve_source_commit "$channel_ref")
 deadline=$((SECONDS + 1200))
 waiting_polls=0
 while true; do
@@ -171,29 +196,36 @@ while true; do
         exit "$stop_requested"
     fi
     if (( SECONDS >= deadline )); then
-        printf 'The current commit has no published build yet. Try again after its GitHub Actions build finishes.\n' >&2
+        printf 'The current %s commit has no matching published package yet. Try again after its GitHub Actions build finishes.\n' "$source_name" >&2
         exit 1
     fi
     if (( waiting_polls >= 6 )); then
-        commit=$(resolve_branch_head)
+        commit=$(resolve_source_commit "$channel_ref")
         waiting_polls=0
     fi
     if curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$release/build.json" -o "$session_directory/build.json"; then
         manifest_result=0
-        python3 - "$session_directory/build.json" "$branch" "$commit" "$session_directory/package.txt" <<'PY' || manifest_result=$?
+        python3 - "$session_directory/build.json" "$channel" "$channel_ref" "$commit" "$session_directory/package.txt" <<'PY' || manifest_result=$?
 import json
 import re
 import sys
+import urllib.parse
 
 with open(sys.argv[1], encoding="utf-8") as source:
     build = json.load(source)
 if (build["schema"] != 1 or build["repository"] != "RisPNG/miuutil"
-        or build["tag"] != "latest-build" or build["ref"] != "refs/heads/" + sys.argv[2]
         or not re.fullmatch(r"[0-9a-f]{40}", build["commit"])
         or not isinstance(build["source_date_epoch"], int)
         or not re.fullmatch(r"https://github.com/RisPNG/miuutil/actions/runs/[0-9]+", build["workflow_run"])):
     raise SystemExit("The latest build has invalid source provenance.")
-if build["commit"] != sys.argv[3]:
+if sys.argv[2] == "latest-build":
+    if build["tag"] != "latest-build" or build["ref"] != sys.argv[3]:
+        raise SystemExit("The latest build has invalid branch provenance.")
+elif (not isinstance(build["tag"], str) or not build["tag"]
+        or build["tag"] in ("latest-build", "latest-release")
+        or build["ref"] != "refs/tags/" + build["tag"]):
+    raise SystemExit("The latest release does not identify an original source tag.")
+if build["commit"] != sys.argv[4]:
     raise SystemExit(75)
 if len(build["packages"]) != 1:
     raise SystemExit("The latest build does not identify one native package.")
@@ -204,8 +236,13 @@ if (package["package"] != "miuutil" or package["architecture"] != "amd64"
         or not isinstance(package["bytes"], int) or package["bytes"] <= 0
         or not re.fullmatch(r"[A-Za-z0-9.+:~_-]+", package["version"])):
     raise SystemExit("The latest build has invalid package metadata.")
-with open(sys.argv[4], "w", encoding="utf-8") as destination:
+launcher = build["launcher"]
+if (launcher["file"] != "run.sh" or not re.fullmatch(r"[0-9a-f]{64}", launcher["sha256"])
+        or not isinstance(launcher["bytes"], int) or launcher["bytes"] <= 0):
+    raise SystemExit("The latest build has invalid launcher metadata.")
+with open(sys.argv[5], "w", encoding="utf-8") as destination:
     destination.write("\n".join(str(package[field]) for field in ("file", "version", "sha256", "bytes")) + "\n")
+    destination.write(build["ref"] + "\nhttps://github.com/RisPNG/miuutil/releases/download/" + urllib.parse.quote(build["tag"], safe="") + "\n")
 PY
         if (( manifest_result != 0 && manifest_result != 75 )); then
             exit "$manifest_result"
@@ -216,42 +253,84 @@ PY
             package_version=${package_fields[1]}
             package_digest=${package_fields[2]}
             package_bytes=${package_fields[3]}
+            artifact_release=${package_fields[5]}
             download_result=0
-            if curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$release/SHA256SUMS" -o "$session_directory/SHA256SUMS" \
-                && curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 "$release/$package_file" -o "$session_directory/$package_file"; then
-                python3 - "$session_directory/SHA256SUMS" "$package_file" "$package_digest" <<'PY' || download_result=$?
+            if [[ "$channel" == latest-release ]]; then
+                original_commit=$(resolve_source_commit "${package_fields[4]}") || download_result=$?
+                if (( download_result == 0 )) && [[ "$original_commit" != "$commit" ]]; then
+                    printf 'The original release tag does not match the latest-release commit.\n' >&2
+                    download_result=1
+                fi
+                if (( download_result == 0 )); then
+                    if curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$artifact_release/build.json" -o "$session_directory/original-build.json"; then
+                        if ! cmp --silent "$session_directory/build.json" "$session_directory/original-build.json"; then
+                            printf 'The latest-release record does not match its immutable source release.\n' >&2
+                            download_result=1
+                        fi
+                    else
+                        download_result=$?
+                    fi
+                fi
+            fi
+            if (( download_result == 0 )); then
+                if curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$artifact_release/SHA256SUMS" -o "$session_directory/SHA256SUMS" \
+                    && curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 "$artifact_release/$package_file" -o "$session_directory/$package_file"; then
+                    python3 - "$session_directory/SHA256SUMS" "$package_file" "$package_digest" "$session_directory/build.json" <<'PY' || download_result=$?
+import hashlib
+import json
 import sys
 
 with open(sys.argv[1], encoding="utf-8") as source:
     records = [line.rstrip("\n") for line in source]
-if records.count(sys.argv[3] + "  " + sys.argv[2]) != 1:
-    raise SystemExit("SHA256SUMS does not agree with the build manifest.")
+with open(sys.argv[4], "rb") as source:
+    manifest_digest = hashlib.file_digest(source, "sha256").hexdigest()
+with open(sys.argv[4], encoding="utf-8") as source:
+    launcher_digest = json.load(source)["launcher"]["sha256"]
+for digest, name in ((sys.argv[3], sys.argv[2]), (launcher_digest, "run.sh"), (manifest_digest, "build.json")):
+    if records.count(digest + "  " + name) != 1:
+        raise SystemExit("SHA256SUMS does not agree with the build manifest.")
 PY
-                if (( download_result == 0 )) && [[ $(stat -c %s "$session_directory/$package_file") != "$package_bytes" ]]; then
-                    printf 'The downloaded package size does not match its build manifest.\n' >&2
-                    download_result=1
+                    if (( download_result == 0 )) && [[ $(stat -c %s "$session_directory/$package_file") != "$package_bytes" ]]; then
+                        printf 'The downloaded package size does not match its build manifest.\n' >&2
+                        download_result=1
+                    fi
+                    if (( download_result == 0 )); then
+                        (cd "$session_directory"; printf '%s  %s\n' "$package_digest" "$package_file" | sha256sum --check --status) || download_result=$?
+                    fi
+                    if (( download_result == 0 )) && [[ $(dpkg-deb --field "$session_directory/$package_file" Package) != miuutil || $(dpkg-deb --field "$session_directory/$package_file" Version) != "$package_version" || $(dpkg-deb --field "$session_directory/$package_file" Architecture) != "$architecture" ]]; then
+                        printf 'The package control metadata does not match its build manifest.\n' >&2
+                        download_result=1
+                    fi
+                else
+                    download_result=$?
                 fi
-                if (( download_result == 0 )); then
-                    (cd "$session_directory"; printf '%s  %s\n' "$package_digest" "$package_file" | sha256sum --check --status) || download_result=$?
-                fi
-                if (( download_result == 0 )) && [[ $(dpkg-deb --field "$session_directory/$package_file" Package) != miuutil || $(dpkg-deb --field "$session_directory/$package_file" Version) != "$package_version" || $(dpkg-deb --field "$session_directory/$package_file" Architecture) != "$architecture" ]]; then
-                    printf 'The package control metadata does not match its build manifest.\n' >&2
-                    download_result=1
-                fi
-            else
-                download_result=$?
             fi
-            current_commit=$(resolve_branch_head)
+            generation_changed=false
+            if [[ "$channel" == latest-release ]]; then
+                if curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 --max-time 60 "$release/build.json" -o "$session_directory/current-build.json"; then
+                    if ! cmp --silent "$session_directory/build.json" "$session_directory/current-build.json"; then
+                        generation_changed=true
+                    fi
+                else
+                    download_result=$?
+                fi
+            fi
+            current_commit=$(resolve_source_commit "$channel_ref")
             if [[ "$current_commit" != "$commit" ]]; then
                 commit=$current_commit
+            elif [[ "$generation_changed" == true ]]; then
+                waiting_polls=0
             elif (( download_result != 0 )); then
                 exit "$download_result"
             else
                 break
             fi
         fi
+    elif [[ "$channel" == latest-release ]]; then
+        printf 'No successful tagged release is available at latest-release yet.\n' >&2
+        exit 1
     fi
-    printf 'Waiting for the latest build of %s (%s).\n' "$branch" "${commit:0:12}"
+    printf 'Waiting for the latest build of %s (%s).\n' "$source_name" "${commit:0:12}"
     sleep 10
     waiting_polls=$((waiting_polls + 1))
 done

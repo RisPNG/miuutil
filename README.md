@@ -11,13 +11,23 @@ Miubian starts with Debian testing and GNOME, then adds its desktop setup, softw
 
 ## Installation
 
-Install the MiuUtil Debian package and open MiuUtil from your applications menu or run:
+Install the MiuUtil Debian package and open MiuUtil from your applications menu. For a temporary session, choose the latest tagged release or the current development build.
+
+Latest tagged release:
+
+```sh
+curl -fsSL https://github.com/RisPNG/miuutil/releases/download/latest-release/run.sh | bash -s -- --release
+```
+
+Current development build:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/RisPNG/miuutil/main/run.sh | bash
 ```
 
-Close any open MiuUtil window first. The launcher gets the current commit's build and asks for administrator access to install it temporarily.
+Close any open MiuUtil window first. Both commands ask for administrator access to install MiuUtil temporarily. Closing MiuUtil restores your previous installation, or removes the temporary package if it wasn't installed. Your applied changes remain.
+
+The release command becomes available after the first version-tag build succeeds.
 
 ## Development
 

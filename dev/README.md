@@ -64,15 +64,21 @@ git tag v0.1.4 <commit-sha>
 git push origin v0.1.4
 ```
 
-Each tagged GitHub release contains its `.deb`, `SHA256SUMS` and `build.json` with the source commit, package identity and digest. Releases remain drafts until their files upload successfully. A failed draft can be retried; a published tagged package is preserved.
+Each tagged GitHub release contains its `.deb`, the launcher from that commit, `SHA256SUMS` and `build.json` with the source commit, package and launcher identities, and digests. Releases remain drafts until their files upload successfully. A failed draft can be retried; a published tagged package and its launcher are preserved.
 
-Default-branch builds use the reserved `latest-build` prerelease. Their package version adds the commit timestamp and short hash in the disposable build tree. Publication checks the current branch head, so a delayed older build cannot replace the current build. The manifest uploads after the package and checksums. A repeated successful build of the same commit preserves its published files. Do not create or move `latest-build` manually. CI artifacts are retained for 14 days; the published release files remain available separately.
+Successful version-tag builds also update `latest-release`. Its manifest retains the original version tag and source commit. The original build's workflow run determines which tagged release is newer, so an older build that finishes later or a rerun of an older release cannot replace the newer alias. Tagged publication jobs share a [GitHub concurrency queue](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency) because they update the same alias.
+
+Default-branch builds use the `latest-build` prerelease. Their package version adds the commit timestamp and short hash in the disposable build tree. Publication checks the current branch head, so a delayed older build cannot replace the current build. Both aliases upload their manifest after the package, launcher and checksums. A repeated successful build of the same commit preserves its published files.
+
+`latest-build` and `latest-release` are reserved for CI. Do not create or move them manually. The workflow excludes them from tag triggers. CI artifacts are retained for 14 days; the published release files remain available separately.
 
 The package build has read-only repository access. The separate publication job receives release permissions. Official workflow actions use recorded commit hashes; update their hashes and the pinned host tools when maintaining CI.
 
 ## Temporary launcher
 
-[run.sh](../run.sh) is the curl entry point. It resolves the repository's current default-branch commit, waits up to 20 minutes for its `latest-build` manifest and verifies the downloaded package before installation. It rechecks the branch head before using the build and never substitutes an older successful build.
+[run.sh](../run.sh) is the shared curl entry point. With no arguments, it resolves the repository's current default-branch commit and waits up to 20 minutes for its matching `latest-build` manifest. With `--release`, it resolves `latest-release`, checks the original version tag and downloads the package from that tag's preserved release. A newer commit on the default branch does not change the selected tagged release.
+
+Both modes verify the package's source, metadata and checksums, and recheck their selected reference after downloading. Release downloads use the original tagged assets so replacing the alias cannot mix packages from two releases, even when their native package filenames are the same. The release command needs a successful version-tag build containing this workflow and launcher; it reports an unavailable release if that channel hasn't been published yet.
 
 Run it from the desktop account, without `sudo`. It requires Debian's APT and dpkg tools, Python 3, curl, sudo and GLib's `gapplication` and `gdbus` commands. It uses a native temporary package installation because the application's installed helper and polkit policy provide administrator operations.
 
@@ -117,7 +123,7 @@ The container account matches the host UID and GID so file ownership and session
 | `tests/` | Behaviour checks and the isolated build environment |
 | `dev/` | Development instructions |
 | `.github/` | Tagged and default-branch package workflows |
-| `run.sh` | Temporary launcher for the current default-branch build |
+| `run.sh` | Temporary launcher for the latest tagged release or current default-branch build |
 
 ## Maintaining options
 

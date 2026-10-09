@@ -65,6 +65,7 @@ fi
 mise exec -- dpkg-buildpackage -us -uc -b
 cp "$work"/miuutil_*.deb /output/
 BUILD
+cp "$scratch/run.sh" "$output_dir/run.sh"
 mise exec -- python3 dev/package-manifest.py "$output_dir" \
     --repository "$repository" --commit "$commit" --ref "$ref" --tag "$tag" \
     --source-date-epoch "$source_epoch" --workflow-run "$run_url"

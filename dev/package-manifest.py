@@ -32,6 +32,9 @@ if package != "miuutil" or architecture != "amd64":
     parser.error("Expected the native miuutil amd64 application package.")
 with archive.open("rb") as stream:
     package_digest = hashlib.file_digest(stream, "sha256").hexdigest()
+launcher = arguments.directory / "run.sh"
+with launcher.open("rb") as stream:
+    launcher_digest = hashlib.file_digest(stream, "sha256").hexdigest()
 manifest = {
     "schema": 1,
     "repository": arguments.repository,
@@ -40,6 +43,7 @@ manifest = {
     "tag": arguments.tag,
     "source_date_epoch": arguments.source_date_epoch,
     "workflow_run": arguments.workflow_run,
+    "launcher": {"file": launcher.name, "sha256": launcher_digest, "bytes": launcher.stat().st_size},
     "packages": [{
         "file": archive.name, "package": package, "version": version,
         "architecture": architecture, "sha256": package_digest, "bytes": archive.stat().st_size,
@@ -50,4 +54,4 @@ record.write_text(json.dumps(manifest, indent=2) + "\n")
 with record.open("rb") as stream:
     record_digest = hashlib.file_digest(stream, "sha256").hexdigest()
 (arguments.directory / "SHA256SUMS").write_text(
-    f"{package_digest}  {archive.name}\n{record_digest}  build.json\n")
+    f"{package_digest}  {archive.name}\n{launcher_digest}  run.sh\n{record_digest}  build.json\n")
