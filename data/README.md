@@ -11,7 +11,7 @@ Apply only the preferences that define the selected outcome. Preserve unrelated 
 | File | Purpose |
 | --- | --- |
 | `catalogue.json` | Option descriptions, desired values, dependencies and typed operations used for detection and application. |
-| `upstreams.json` | Official download URLs, exact versions or commits and SHA-256 digests for downloaded software. GNOME extension records select compatible releases by Shell major version. |
+| `upstreams.json` | Official download URLs, exact versions, or commits and SHA-256 digests for downloaded software. GNOME extension records select compatible releases by Shell major version. |
 | `com.rispeng.MiuUtil.desktop` | Registers the application with the desktop. |
 | `com.rispeng.MiuUtil.metainfo.xml` | AppStream description, project links, licensing and releases. |
 | `com.rispeng.MiuUtil.gschema.xml` | Stores MiuUtil's window size and maximised state. Setup preferences belong to their own application schemas. |
@@ -32,7 +32,7 @@ The monitor shortcut zeros supported brightness, contrast and RGB gain controls.
 
 `payloads/` contains the configuration adapted from Miubian's integration defaults:
 
-- `bash/` supplies the interactive prompt, tools and history setup through a managed block, preserving the rest of `.bashrc`. `mise/` supplies tool selections, and `git.ini` sets the credential helper without adding a personal name, email or credentials.
+- `bash/` supplies the interactive prompt, tools and history setup through a managed block, preserving the rest of `.bashrc`. `mise/` supplies tool selections, and `git.ini` sets the credential helper without adding a personal name, email, or credentials.
 - `firefox/` supplies separate preference and theme blocks in the selected installation's default profile. Keep their full-line markers distinct, hold the native profile lock while writing and preserve existing add-ons. Close Firefox before applying and restart it afterwards.
 - `vivaldi/` supplies selected preferences, launcher flags and the persistent horizontal-menu stylesheet. Merge custom panel and toolbar entries, and retain search-engine metadata, sign-in data and dashboard widgets. Check the stylesheet against Vivaldi's current UI structure after an update.
 - `mc/` and `mpv/` supply the selected terminal file-manager skin and playback preferences. Merge the defined settings with existing configuration.
