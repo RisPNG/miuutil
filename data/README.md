@@ -1,6 +1,6 @@
 # Data
 
-This folder defines the selectable changes MiuUtil applies from Miubian's setup on top of Debian testing and GNOME. Miubian's maintained `variants/miubian/documentation/setup.md`, integration defaults and software inputs are the reference. Keep each change that can be applied to an existing installation available as an option. When that setup changes, update the affected catalogue entries, payloads, dependencies and detection together.
+This folder defines the selectable changes MiuUtil applies from Miubian's setup on top of Debian testing and GNOME. Miubian's maintained `variants/miubian/dev/setup-manual-steps.md`, integration defaults and software inputs are the reference. Keep each change that can be applied to an existing installation available as an option. When that setup changes, update the affected catalogue entries, payloads, dependencies and detection together.
 
 An existing account can have settings that differ from the defaults Miubian relies on. Those defaults need to be explicit where they determine the selected outcome. For example, ArcMenu must open beside its left panel button rather than retain a forced screen-centre position. Dash to Panel needs the bottom position and size `48`, while records for disconnected monitors remain in place. Blur My Shell needs both DING application identifiers and the legacy `gjs` class excluded; that class also excludes other `gjs` windows. Check the installed extension's schema and behaviour when its version changes.
 
@@ -56,6 +56,8 @@ The local files are `keys/microsoft.asc` and `keys/vivaldi.asc`; `N/A` means no 
 ## Downloaded software
 
 The account installers download selected software from these official projects. Their exact references and digests are maintained in `upstreams.json`; incompatible GNOME extension releases remain unavailable. Verify the downloaded input when updating a record.
+
+Fluent cursor themes are linked from `~/.icons/fluent` and `~/.icons/fluent-dark`, where native Xcursor applications look for them. Their files remain under the account's data folder or an existing `/usr/share/icons` installation. The icon installer reuses installed assets when repairing these links. Selected cursor folders or links are backed up before replacement, and unrelated themes remain in place. Restart affected applications after applying the cursor setup.
 
 | Input | Official project |
 | --- | --- |

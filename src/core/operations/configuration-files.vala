@@ -468,7 +468,7 @@ namespace MiuUtil {
                         }
                     }
                     if (!FileUtils.test (target, FileTest.EXISTS))
-                        return new Assessment (OptionState.UNAVAILABLE, "Install the selected theme before applying GTK 4 links.", "", true);
+                        return new Assessment (OptionState.UNAVAILABLE, "Install the selected theme before applying its links.", "", true);
                     if (FileUtils.test (path, FileTest.IS_SYMLINK))
                         match = FileUtils.read_link (path) == target;
                 } else if (format == "binary") {

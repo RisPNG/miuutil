@@ -3,6 +3,47 @@ using MiuUtil;
 private string workspace;
 private string test_program;
 
+private const string CURSOR_FIXTURE = """
+import ctypes
+import os
+from pathlib import Path
+import struct
+import sys
+
+mode, root = sys.argv[1:]
+icons = Path(root) / 'data' / 'icons'
+pixels = {'fluent-dark': 0xff123456, 'fluent': 0xff654321}
+if mode == 'create':
+    (icons / 'Fluent-dark').mkdir(parents=True, exist_ok=True)
+    (icons / 'Fluent-dark' / 'index.theme').write_text('[Icon Theme]\nName=Fluent dark\n')
+    for theme, pixel in pixels.items():
+        directory = icons / theme / 'cursors'
+        directory.mkdir(parents=True, exist_ok=True)
+        (directory.parent / 'index.theme').write_text('[Icon Theme]\nName=' + theme + '\n')
+        (directory / 'left_ptr').write_bytes(struct.pack('<17I',
+            0x72756358, 16, 0x10000, 1, 0xfffd0002, 24, 28,
+            36, 0xfffd0002, 24, 1, 1, 1, 0, 0, 0, pixel))
+    sys.exit(0)
+
+assert os.environ['XCURSOR_PATH'] == '~/.icons:/usr/share/icons:/usr/share/pixmaps'
+class Image(ctypes.Structure):
+    _fields_ = [(name, ctypes.c_uint32) for name in
+                ('version', 'size', 'width', 'height', 'xhot', 'yhot', 'delay')]
+    _fields_.append(('pixels', ctypes.POINTER(ctypes.c_uint32)))
+
+library = ctypes.CDLL('libXcursor.so.1')
+library.XcursorLibraryLoadImage.argtypes = (ctypes.c_char_p, ctypes.c_char_p, ctypes.c_int)
+library.XcursorLibraryLoadImage.restype = ctypes.POINTER(Image)
+library.XcursorImageDestroy.argtypes = (ctypes.POINTER(Image),)
+for theme, pixel in pixels.items():
+    image = library.XcursorLibraryLoadImage(b'left_ptr', theme.encode(), 24)
+    matching = bool(image) and image.contents.width == 1 and image.contents.height == 1 \
+        and image.contents.pixels[0] == pixel
+    if image:
+        library.XcursorImageDestroy(image)
+    assert matching == (mode == 'published'), (theme, mode, matching)
+""";
+
 private void compile_sandbox_schema (string directory, string xml) throws Error {
     DirUtils.create_with_parents (directory, 0700);
     FileUtils.set_contents (directory + "/runtime.gschema.xml", xml);
@@ -789,6 +830,117 @@ int main (string[] arguments) {
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();
+        }
+    });
+
+    Test.add_func ("/options/fluent-cursors-legacy-search-path", () => {
+        var original_path = Environment.get_variable ("PATH");
+        try {
+            var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
+            launcher.setenv ("XCURSOR_PATH", "~/.icons:/usr/share/icons:/usr/share/pixmaps", true);
+            var creator = launcher.spawnv ({ "python3", "-c", CURSOR_FIXTURE, "create", workspace });
+            creator.wait_check ();
+            var unpublished = launcher.spawnv ({ "python3", "-c", CURSOR_FIXTURE, "unpublished", workspace });
+            unpublished.wait_check ();
+            var binaries = workspace + "/cursor-bin";
+            DirUtils.create_with_parents (binaries, 0700);
+            FileUtils.set_contents (binaries + "/curl", "#!/bin/sh\n: > \"" + workspace + "/cursor-download\"\nexit 1\n");
+            Posix.chmod (binaries + "/curl", 0700);
+            Environment.set_variable ("PATH", binaries + ":" + original_path, true);
+            var option = catalogue_option ("appearance-fluent-icons");
+            inspect_option (option);
+            assert (option.state == OptionState.PARTIAL);
+            uint applications = 0;
+            option.output.connect ((line) => {
+                if (line.has_prefix ("Applying "))
+                    applications++;
+            });
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            foreach (var theme in new string[] { "fluent-dark", "fluent" })
+                assert_cmpstr (FileUtils.read_link (workspace + "/.icons/" + theme), CompareOperator.EQ,
+                    workspace + "/data/icons/" + theme);
+            var published = launcher.spawnv ({ "python3", "-c", CURSOR_FIXTURE, "published", workspace });
+            published.wait_check ();
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert_cmpuint (applications, CompareOperator.EQ, 1);
+            assert (!FileUtils.test (workspace + "/cursor-download", FileTest.EXISTS));
+            assert (!FileUtils.test (workspace + "/state/miuutil/backups/appearance-fluent-icons", FileTest.EXISTS));
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        } finally {
+            Environment.set_variable ("PATH", original_path, true);
+            try {
+                var cleanup = new Subprocess.newv ({ "rm", "-rf", "--", workspace + "/.icons", workspace + "/cursor-bin" }, SubprocessFlags.NONE);
+                cleanup.wait_check ();
+            } catch (Error error) {
+                Test.message (error.message);
+                Test.fail ();
+            }
+        }
+    });
+
+    Test.add_func ("/options/fluent-cursors-preserve-shadowing-themes", () => {
+        var original_path = Environment.get_variable ("PATH");
+        try {
+            var launcher = new SubprocessLauncher (SubprocessFlags.NONE);
+            launcher.setenv ("XCURSOR_PATH", "~/.icons:/usr/share/icons:/usr/share/pixmaps", true);
+            var creator = launcher.spawnv ({ "python3", "-c", CURSOR_FIXTURE, "create", workspace });
+            creator.wait_check ();
+            var icons = workspace + "/.icons";
+            DirUtils.create_with_parents (icons + "/fluent-dark", 0700);
+            FileUtils.set_contents (icons + "/fluent-dark/personal.txt", "existing cursor collection");
+            DirUtils.create_with_parents (workspace + "/previous-cursors", 0700);
+            FileUtils.set_contents (workspace + "/previous-cursors/personal.txt", "existing symlink target");
+            File.new_for_path (icons + "/fluent").make_symbolic_link (workspace + "/previous-cursors");
+            DirUtils.create_with_parents (icons + "/personal-theme", 0700);
+            FileUtils.set_contents (icons + "/personal-theme/index.theme", "[Icon Theme]\nName=Personal theme\n");
+            var asset = File.new_for_path (workspace + "/data/icons/fluent-dark/cursors/left_ptr");
+            var before = Checksum.compute_for_bytes (ChecksumType.SHA256, asset.load_bytes ());
+            var binaries = workspace + "/cursor-bin";
+            DirUtils.create_with_parents (binaries, 0700);
+            FileUtils.set_contents (binaries + "/curl", "#!/bin/sh\n: > \"" + workspace + "/cursor-download\"\nexit 1\n");
+            Posix.chmod (binaries + "/curl", 0700);
+            Environment.set_variable ("PATH", binaries + ":" + original_path, true);
+            var option = catalogue_option ("appearance-fluent-icons");
+            inspect_option (option);
+            assert (option.state == OptionState.PARTIAL);
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            var published = launcher.spawnv ({ "python3", "-c", CURSOR_FIXTURE, "published", workspace });
+            published.wait_check ();
+            assert_cmpstr (Checksum.compute_for_bytes (ChecksumType.SHA256, asset.load_bytes ()), CompareOperator.EQ, before);
+            string retained;
+            FileUtils.get_contents (icons + "/personal-theme/index.theme", out retained);
+            assert_cmpstr (retained, CompareOperator.EQ, "[Icon Theme]\nName=Personal theme\n");
+            FileUtils.get_contents (workspace + "/previous-cursors/personal.txt", out retained);
+            assert_cmpstr (retained, CompareOperator.EQ, "existing symlink target");
+            var backups = Dir.open (workspace + "/state/miuutil/backups/appearance-fluent-icons");
+            var timestamp = backups.read_name ();
+            assert (timestamp != null);
+            var backup = workspace + "/state/miuutil/backups/appearance-fluent-icons/" + timestamp;
+            FileUtils.get_contents (backup + "/fluent-dark/personal.txt", out retained);
+            assert_cmpstr (retained, CompareOperator.EQ, "existing cursor collection");
+            assert_cmpstr (FileUtils.read_link (backup + "/fluent"), CompareOperator.EQ, workspace + "/previous-cursors");
+            assert (!FileUtils.test (workspace + "/cursor-download", FileTest.EXISTS));
+            apply_option (option);
+            inspect_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert (backups.read_name () == null);
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        } finally {
+            Environment.set_variable ("PATH", original_path, true);
+            try {
+                var cleanup = new Subprocess.newv ({ "rm", "-rf", "--", workspace + "/.icons", workspace + "/cursor-bin", workspace + "/previous-cursors" }, SubprocessFlags.NONE);
+                cleanup.wait_check ();
+            } catch (Error error) {
+                Test.message (error.message);
+                Test.fail ();
+            }
         }
     });
 

@@ -3672,20 +3672,38 @@
     {
       "id": "appearance-fluent-icons",
       "title": "Install Fluent icons and cursors",
-      "description": "Install the official Fluent icon and cursor theme.",
+      "description": "Make the official Fluent icons and cursors available to desktop applications.",
       "category": "appearance",
       "scope": "Your account",
       "risk": "Low",
       "current": "",
-      "desired": "Install Fluent themes and icons.",
-      "details": "",
+      "desired": "Fluent icons and cursor themes available to your account.",
+      "details": "Existing Fluent cursor folders or links are backed up before replacing them. Installed themes are reused. Restart affected applications to pick up the cursor theme.",
       "requires_admin": false,
       "dependencies": [
         "development-install-tools"
       ],
       "operation": {
         "kind": "upstream",
-        "upstream": "fluent-icons"
+        "upstream": "fluent-icons",
+        "files": [
+          {
+            "path": "$HOME/.icons/fluent-dark",
+            "format": "link",
+            "target": "$DATA/icons/fluent-dark",
+            "alternatives": [
+              "/usr/share/icons/fluent-dark"
+            ]
+          },
+          {
+            "path": "$HOME/.icons/fluent",
+            "format": "link",
+            "target": "$DATA/icons/fluent",
+            "alternatives": [
+              "/usr/share/icons/fluent"
+            ]
+          }
+        ]
       }
     },
     {

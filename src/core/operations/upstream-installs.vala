@@ -5,6 +5,7 @@ namespace MiuUtil {
         private Json.Object specification;
         private Json.Object manifest;
         private string shell_version = "";
+        private ConfigurationOperation? cursor_links;
 
         public UpstreamOperation (string identity, Json.Object specification) throws Error {
             this.identity = identity;
@@ -14,6 +15,14 @@ namespace MiuUtil {
             var parser = new Json.Parser ();
             parser.load_from_data ((string) bytes.get_data (), (ssize_t) bytes.get_size ());
             manifest = parser.get_root ().get_object ();
+            if (upstream == "fluent-icons" && specification.has_member ("files")) {
+                cursor_links = new ConfigurationOperation (identity, specification);
+                Signal.connect_object (cursor_links, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
+            }
+        }
+
+        private static void relay_output (UpstreamOperation operation, string text) {
+            operation.output (text);
         }
 
         public override async Assessment inspect (Cancellable? cancellable) throws Error {
@@ -29,12 +38,24 @@ namespace MiuUtil {
                         return new Assessment (OptionState.MATCHING, "Fluent GTK theme is installed system-wide.");
                     break;
                 case "fluent-icons":
-                    if (FileUtils.test ("/usr/share/icons/Fluent-dark/index.theme", FileTest.EXISTS) &&
-                        FileUtils.test ("/usr/share/icons/fluent-dark/cursors", FileTest.IS_DIR))
-                        return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed system-wide.");
-                    if (FileUtils.test (Path.build_filename (data, "icons", "Fluent-dark", "index.theme"), FileTest.EXISTS) &&
-                        FileUtils.test (Path.build_filename (data, "icons", "fluent-dark", "cursors"), FileTest.IS_DIR))
-                        return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed for your account.");
+                    bool icons_installed = FileUtils.test ("/usr/share/icons/Fluent-dark/index.theme", FileTest.EXISTS) ||
+                        FileUtils.test (Path.build_filename (data, "icons", "Fluent-dark", "index.theme"), FileTest.EXISTS);
+                    var dark = Path.build_filename (data, "icons", "fluent-dark");
+                    var light = Path.build_filename (data, "icons", "fluent");
+                    bool dark_installed = FileUtils.test (Path.build_filename (
+                        FileUtils.test (dark, FileTest.EXISTS) ? dark : "/usr/share/icons/fluent-dark", "cursors"), FileTest.IS_DIR);
+                    bool light_installed = FileUtils.test (Path.build_filename (
+                        FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
+                    if (icons_installed && dark_installed && light_installed) {
+                        if (cursor_links == null)
+                            return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed.");
+                        var links = yield cursor_links.inspect (cancellable);
+                        if (links.state == OptionState.UNAVAILABLE)
+                            return links;
+                        return new Assessment (links.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
+                            links.state == OptionState.MATCHING ? "Fluent icons and cursors are available to desktop applications." :
+                            "Fluent icons and cursors are installed; native cursor links need updating.", links.details);
+                    }
                     break;
                 case "blesh":
                     if (FileUtils.test ("/usr/share/blesh/ble.sh", FileTest.EXISTS))
@@ -114,6 +135,22 @@ namespace MiuUtil {
         }
 
         public override async void apply (Cancellable? cancellable) throws Error {
+            var data = Environment.get_user_data_dir ();
+            if (upstream == "fluent-icons") {
+                bool icons_installed = FileUtils.test ("/usr/share/icons/Fluent-dark/index.theme", FileTest.EXISTS) ||
+                    FileUtils.test (Path.build_filename (data, "icons", "Fluent-dark", "index.theme"), FileTest.EXISTS);
+                var dark = Path.build_filename (data, "icons", "fluent-dark");
+                var light = Path.build_filename (data, "icons", "fluent");
+                bool dark_installed = FileUtils.test (Path.build_filename (
+                    FileUtils.test (dark, FileTest.EXISTS) ? dark : "/usr/share/icons/fluent-dark", "cursors"), FileTest.IS_DIR);
+                bool light_installed = FileUtils.test (Path.build_filename (
+                    FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
+                if (icons_installed && dark_installed && light_installed) {
+                    if (cursor_links != null && (yield cursor_links.inspect (cancellable)).state != OptionState.MATCHING)
+                        yield cursor_links.apply (cancellable);
+                    return;
+                }
+            }
             Json.Object artifact;
             if (upstream == "extension") {
                 var uuid = specification.get_string_member ("uuid");
@@ -125,7 +162,6 @@ namespace MiuUtil {
             var archive = Path.build_filename (workspace, "release");
             var source = Path.build_filename (workspace, "source");
             var home = Environment.get_home_dir ();
-            var data = Environment.get_user_data_dir ();
             var config = Environment.get_user_config_dir ();
             var bin = Path.build_filename (home, ".local", "bin");
             string? extension_staging = null;
@@ -170,6 +206,8 @@ namespace MiuUtil {
                         DirUtils.create_with_parents (Path.build_filename (icons, "fluent"), 0755);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist-dark") + "/.", Path.build_filename (icons, "fluent-dark") }, cancellable);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist") + "/.", Path.build_filename (icons, "fluent") }, cancellable);
+                        if (cursor_links != null)
+                            yield cursor_links.apply (cancellable);
                         break;
                     case "blesh":
                         var blesh = Path.build_filename (data, "blesh");
