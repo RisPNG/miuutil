@@ -10,6 +10,8 @@ These tests are completely AI-generated and have not been audited. Passing them 
 | `helper-tests.vala` | Administrator permissions, approved system tasks, package and recovery previews, background services and useful failure messages. |
 | `helper-script-tests.py` | Permission rules, terminal history and unusual filenames; supported monitor controls, zeroing, restoration and failures; and required snapshots before updates without extra snapshots during recovery previews. |
 | `ui-tests.vala` | Searching, filtering, selection, review, applying and stopping changes, retrying unfinished choices and using narrow windows. |
+| `ci-build-tests.py` | Packages record their exact source and checksums. Tags retain their releases, failed drafts can be retried, and an older branch build cannot replace the latest build. |
+| `launcher-tests.py` | Temporary sessions verify the latest package, preserve existing installations, clean up after closure or interruptions, and retain recovery files if cleanup fails. Package and application commands are simulated. |
 | `upstream-smoke.vala` | Manual checks of real downloads and installations, followed by confirming the result. These use the network when needed and are not included in the default test run. |
 
 `Containerfile` provides a separate test environment, and `meson.build` organises the test runs. These files contain no behaviour tests.

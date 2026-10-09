@@ -6,7 +6,7 @@ File paths refer to the source checkout, and build commands run from the project
 
 ## Tools and building
 
-`mise.toml` pins Meson and Ninja. Python stays with Debian because Blueprint and the desktop checks need its GNOME bindings. Vala, Blueprint, the C compiler and Debian packaging tools also come from the distribution.
+`mise.toml` pins Meson, Ninja and the GitHub CLI used for release publication. Python stays with Debian because Blueprint and the desktop checks need its GNOME bindings. Vala, Blueprint, the C compiler and Debian packaging tools also come from the distribution.
 
 The Debian 13 build environment uses the following versions. These are the tested baseline; the requirements in `meson.build` and `debian/control` determine which later versions are compatible.
 
@@ -14,6 +14,7 @@ The Debian 13 build environment uses the following versions. These are the teste
 | --- | --- | --- |
 | Meson | 1.7.0 | Mise |
 | Ninja | 1.12.1 | Mise |
+| GitHub CLI | 2.102.0 | Mise |
 | Vala | 0.56.18 | Debian |
 | Blueprint | 0.16.0 | Debian |
 | Python | 3.13.5 | Debian |
@@ -52,16 +53,45 @@ miuutil
 
 Use the filename produced by the build if its version or architecture differs. The package installs the application, administrator helper, polkit policy, desktop entry, icons, settings schema and support scripts through Meson and debhelper. `debian/` contains the package metadata and build rules.
 
+## CI and releases
+
+[Build Debian package](../.github/workflows/build-deb.yml) builds when a tag is pushed or the default branch changes. It checks out the triggering commit and uses [build-package.sh](build-package.sh) to export that exact Git tree into the existing Debian 13 build container. Uncommitted files are excluded. Native Debian packaging runs the Meson tests before exporting the amd64 package.
+
+Tag builds retain the package version in the tagged commit's `debian/changelog`. Update that version and `meson.build` when preparing a new application release. The tag must point to a commit that contains the workflow. For example, replace `<commit-sha>` with the intended release commit:
+
+```sh
+git tag v0.1.4 <commit-sha>
+git push origin v0.1.4
+```
+
+Each tagged GitHub release contains its `.deb`, `SHA256SUMS` and `build.json` with the source commit, package identity and digest. Releases remain drafts until their files upload successfully. A failed draft can be retried; a published tagged package is preserved.
+
+Default-branch builds use the reserved `latest-build` prerelease. Their package version adds the commit timestamp and short hash in the disposable build tree. Publication checks the current branch head, so a delayed older build cannot replace the current build. The manifest uploads after the package and checksums. A repeated successful build of the same commit preserves its published files. Do not create or move `latest-build` manually. CI artifacts are retained for 14 days; the published release files remain available separately.
+
+The package build has read-only repository access. The separate publication job receives release permissions. Official workflow actions use recorded commit hashes; update their hashes and the pinned host tools when maintaining CI.
+
+## Temporary launcher
+
+[run.sh](../run.sh) is the curl entry point. It resolves the repository's current default-branch commit, waits up to 20 minutes for its `latest-build` manifest and verifies the downloaded package before installation. It rechecks the branch head before using the build and never substitutes an older successful build.
+
+Run it from the desktop account, without `sudo`. It requires Debian's APT and dpkg tools, Python 3, curl, sudo and GLib's `gapplication` and `gdbus` commands. It uses a native temporary package installation because the application's installed helper and polkit policy provide administrator operations.
+
+If MiuUtil is already installed, the launcher uses `dpkg-repack` to preserve its current package files, then restores them with the previous automatic, manual and held package status when the session ends. It installs `dpkg-repack` if needed. If MiuUtil was absent, it removes only that temporary package. It does not purge settings, remove dependencies or undo choices applied in the application.
+
+Recovery files are held under `~/.local/state/miuutil/launcher/`, or the equivalent `$XDG_STATE_HOME` directory. Normal completion removes the session files. If package cleanup fails, its archive and session record remain there for recovery. Reinstall the archive in `previous/` and restore its package status from `session.json`; if there was no previous package, remove MiuUtil with `sudo dpkg --remove miuutil`. Interruptions request the application's normal quit action and wait for its current operation before restoring or removing the package. Close an already running MiuUtil before starting the launcher.
+
 ## Isolated checks
 
 `tests/Containerfile` provides the Debian build dependencies and desktop testing tools. From the project root, with Docker and Mise available, build and run it as follows. These host commands leave the pinned tools for the container to install:
 
 ```sh
 MISE_DISABLE_TOOLS=pipx:meson,aqua:ninja-build/ninja,python mise exec -- \
-  docker build -f tests/Containerfile -t miuutil-build .
+  docker build -f tests/Containerfile -t miuutil-build \
+  --build-arg BUILD_UID="$(id -u)" --build-arg BUILD_GID="$(id -g)" .
 MISE_DISABLE_TOOLS=pipx:meson,aqua:ninja-build/ninja,python mise exec -- \
   docker run --rm -v "$PWD:/work" \
   -v "$(command -v mise):/usr/local/bin/mise:ro" \
+  -e MISE_DISABLE_TOOLS=python,aqua:cli/cli \
   -e MISE_TRUSTED_CONFIG_PATHS=/work miuutil-build \
   sh -ec '
     mise install
@@ -71,7 +101,7 @@ MISE_DISABLE_TOOLS=pipx:meson,aqua:ninja-build/ninja,python mise exec -- \
   '
 ```
 
-The native interface tests use a temporary Xvfb display and isolated settings. [tests/README.md](../tests/README.md) describes the coverage and audit status. `upstream-smoke.vala` is a separate manual check that can download and install software, so it belongs in a disposable container or test account.
+The container account matches the host UID and GID so file ownership and session D-Bus work on local and hosted runners. The native interface tests use a temporary Xvfb display and isolated settings. [tests/README.md](../tests/README.md) describes the coverage and audit status. `upstream-smoke.vala` is a separate manual check that can download and install software, so it belongs in a disposable container or test account.
 
 ## Project layout
 
@@ -86,6 +116,8 @@ The native interface tests use a temporary Xvfb display and isolated settings. [
 | `po/` | Gettext translation infrastructure |
 | `tests/` | Behaviour checks and the isolated build environment |
 | `dev/` | Development instructions |
+| `.github/` | Tagged and default-branch package workflows |
+| `run.sh` | Temporary launcher for the current default-branch build |
 
 ## Maintaining options
 

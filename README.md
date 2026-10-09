@@ -23,6 +23,18 @@ Close Firefox or Vivaldi before applying their profile preferences. MiuUtil keep
 
 Recovery options need an existing compatible disk layout. MiuUtil checks whether they are available before you can select them.
 
+## Try the latest build
+
+On a supported Debian GNOME desktop with an amd64 processor, run:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/RisPNG/miuutil/main/run.sh | bash
+```
+
+Close any open MiuUtil window first. The launcher gets the current commit's build and asks for administrator access to install it temporarily. If that build is still running, it waits for it to finish.
+
+When you close MiuUtil, the launcher restores the version you already had or removes the temporary package. Dependencies and any setup changes you apply remain. For a permanent installation, use a [tagged Debian package](https://github.com/RisPNG/miuutil/releases).
+
 ## Development
 
 [Development and installation](dev/README.md), [data maintenance](data/README.md) and [test coverage](tests/README.md) are documented separately.

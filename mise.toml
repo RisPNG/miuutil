@@ -4,6 +4,7 @@ disable_tools = ["python"]
 [tools]
 "pipx:meson" = { version = "1.7.0", uvx = "false", pipx_args = "--python /usr/bin/python3" }
 "aqua:ninja-build/ninja" = "1.12.1"
+"aqua:cli/cli" = "2.102.0"
 
 [tasks.configure]
 description = "Configure the native application build"

@@ -10,5 +10,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 WORKDIR /work
 
-RUN useradd --create-home --uid 1000 miuutil
+ARG BUILD_UID=1000
+ARG BUILD_GID=1000
+RUN groupadd --gid "$BUILD_GID" miuutil && \
+    useradd --create-home --uid "$BUILD_UID" --gid "$BUILD_GID" miuutil
 USER miuutil
