@@ -44,6 +44,8 @@ elif command == "pgrep":
         (root / "state.json").write_text(json.dumps(state))
         with (root / "events.jsonl").open("a") as log:
             log.write(json.dumps({"command": "external-app-operation-finished", "arguments": []}) + "\n")
+    if state.get("external_app_open") and scenario.get("external_global_only"):
+        (root / "external-app-observed").touch()
     sys.exit(0 if state.get("external_app_open") else 1)
 elif command == "gapplication":
     assert arguments == ["action", "com.rispeng.MiuUtil", "quit"]
@@ -108,6 +110,7 @@ elif command == "dpkg-query":
             sys.exit(1)
         print("installed\t" + state["version"] + "\tamd64")
     elif arguments == ["--listfiles", "miuutil"]:
+        time.sleep(scenario.get("listfiles_delay", 0))
         print(root / "bin" / "miuutil")
     else:
         raise SystemExit("Unexpected dpkg-query invocation")
@@ -420,10 +423,10 @@ class LauncherTests(unittest.TestCase):
         self.assertEqual(self.sessions(), [])
 
     def test_other_account_instance_opened_during_install_is_allowed_to_finish(self):
-        self.scenario.update(opened_during_install=True, external_global_only=True)
+        self.scenario.update(opened_during_install=True, external_global_only=True, listfiles_delay=0.25)
         process = self.start()
         self.await_marker("external-app-started")
-        time.sleep(0.05)
+        self.await_marker("external-app-observed")
         self.assertIsNone(process.poll())
         self.assertFalse((self.root / "app-started").exists())
         self.assertFalse(any(event["command"] == "gapplication" for event in self.events()))
