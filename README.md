@@ -25,10 +25,6 @@ Current development build:
 curl -fsSL https://raw.githubusercontent.com/RisPNG/miuutil/main/run.sh | bash
 ```
 
-Close any open MiuUtil window first. Both commands ask for administrator access to install MiuUtil temporarily. Closing MiuUtil restores your previous installation, or removes the temporary package if it wasn't installed. Your applied changes remain.
-
-The release command becomes available after the first version-tag build succeeds.
-
 ## Development
 
 [Development and installation](dev/README.md), [data maintenance](data/README.md) and [test coverage](tests/README.md) are documented separately.
