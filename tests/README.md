@@ -2,7 +2,7 @@ These tests are completely AI-generated and have not been audited. Passing them 
 
 | File | Behaviour covered |
 | --- | --- |
-| `options.vala` | Loading choices, detecting and applying preferences, preserving personal files and browser data, and reporting changes or failures. Includes menu positioning, desktop blur exclusions and consistent cursors across applications, while preserving existing themes. |
+| `options.vala` | Loading choices, detecting and applying preferences, preserving personal files and browser data, and reporting changes or failures. Includes menu positioning, blur artefact handling and desktop exclusions, and consistent cursors across applications, while preserving existing themes. |
 | `desktop-settings.vala` | Applying panel layouts across monitors, enabling selected extensions and clearing tiling shortcuts while retaining unrelated settings and saved layouts. |
 | `options-packages.vala` | Recognising installed software, finding available packages and distinguishing missing requirements from optional omissions. |
 | `plan-tests.vala` | Applying prerequisites first, avoiding repeats, rejecting invalid plans and keeping unfinished choices selected after a failure. |

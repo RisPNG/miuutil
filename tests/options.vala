@@ -587,7 +587,7 @@ int main (string[] arguments) {
         }
     });
 
-    Test.add_func ("/options/blur-retains-personal-application-exclusions", () => {
+    Test.add_func ("/options/blur-restores-artifact-handling-and-retains-exclusions", () => {
         try {
             var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/catalogue.json", ResourceLookupFlags.NONE);
             var parser = new Json.Parser ();
@@ -617,6 +617,8 @@ int main (string[] arguments) {
             var directory = workspace + "/data/glib-2.0/schemas";
             compile_sandbox_schema (directory, xml.str);
             var source = new SettingsSchemaSource.from_directory (directory, null, false);
+            var general = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell", false), null, null);
+            general.set_int ("hacks-level", 0);
             var settings = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell.applications", false), null, null);
             settings.set_strv ("blacklist", { "org.example.PersonalNotes", "Plank", "org.example.PrivateTerminal" });
             settings.set_string ("personal-preference", "Retain my unrelated blur preference");
@@ -626,6 +628,7 @@ int main (string[] arguments) {
             option.selected = true;
             apply_option (option);
             assert (option.state == OptionState.MATCHING);
+            assert_cmpint (general.get_int ("hacks-level"), CompareOperator.EQ, 1);
             var exclusions = settings.get_strv ("blacklist");
             assert_cmpuint (exclusions.length, CompareOperator.EQ, 7);
             foreach (var identity in new string[] { "Plank", "com.desktop.ding", "Conky", "com.rastersoft.ding", "gjs", "org.example.PersonalNotes", "org.example.PrivateTerminal" })
@@ -649,6 +652,14 @@ int main (string[] arguments) {
             assert_cmpuint (exclusions.length, CompareOperator.EQ, 8);
             foreach (var identity in new string[] { "Plank", "com.desktop.ding", "Conky", "com.rastersoft.ding", "gjs", "org.example.PersonalNotes", "org.example.PrivateTerminal", "org.example.AdditionalExclusion" })
                 assert (identity in exclusions);
+            assert_cmpstr (settings.get_string ("personal-preference"), CompareOperator.EQ, "Retain my unrelated blur preference");
+            general.set_int ("hacks-level", 0);
+            inspect_option (option);
+            assert (option.state == OptionState.PARTIAL);
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert_cmpint (general.get_int ("hacks-level"), CompareOperator.EQ, 1);
+            assert_cmpuint (settings.get_strv ("blacklist").length, CompareOperator.EQ, 8);
             assert_cmpstr (settings.get_string ("personal-preference"), CompareOperator.EQ, "Retain my unrelated blur preference");
         } catch (Error error) {
             Test.message (error.message);

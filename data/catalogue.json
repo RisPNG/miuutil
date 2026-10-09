@@ -2605,7 +2605,7 @@
       "risk": "Low",
       "current": "",
       "desired": "Application blur with solid text and DING exclusions.",
-      "details": "Excludes both DING application identifiers and legacy desktop windows identified as gjs. Other gjs windows are also excluded because Blur My Shell identifies them by the same class. Existing personal exclusions are retained. Requires a compatible installed Blur My Shell extension.",
+      "details": "Uses Default artefact handling to repaint application blur and prevent window-button hover flashing. Excludes both DING application identifiers and legacy desktop windows identified as gjs. Other gjs windows are also excluded because Blur My Shell identifies them by the same class. Existing personal exclusions are retained. Requires a compatible installed Blur My Shell extension.",
       "requires_admin": false,
       "dependencies": [
         "extension-blur-my-shell"
@@ -2613,6 +2613,11 @@
       "operation": {
         "kind": "settings",
         "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell",
+            "key": "hacks-level",
+            "value": "1"
+          },
           {
             "schema": "org.gnome.shell.extensions.blur-my-shell",
             "key": "rounded-blur-found",
