@@ -1,0 +1,6 @@
+[Desktop Entry]
+Exec=/usr/bin/kgx --tab
+DBusActivatable=false
+X-TerminalArgExec=--
+X-TerminalArgDir=--working-directory=
+X-TerminalArgTitle=--title=

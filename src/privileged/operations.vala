@@ -29,6 +29,8 @@ namespace MiuUtil {
                         case "browsers-vivaldi-install":
                         case "development-vscode":
                         case "development-pacstall":
+                        case "applications-harmonoid":
+                        case "system-default-browser":
                         case "system-default-terminal":
                         case "system-default-editor":
                         case "system-root-mc-skin":
@@ -124,9 +126,17 @@ namespace MiuUtil {
                         files.add_string_element ("/etc/apt/sources.list.d/vscode.sources");
                         break;
                     case "development-pacstall":
+                    case "applications-harmonoid":
                         packages.add_string_element ("curl");
                         packages.add_string_element ("ca-certificates");
-                        services.add_string_element ("Install verified official Pacstall 6.4.2 release package");
+                        if (id == "applications-harmonoid") {
+                            packages.add_string_element ("mpv");
+                            packages.add_string_element ("libmpv-dev");
+                            packages.add_string_element ("xdg-desktop-portal");
+                            packages.add_string_element ("xdg-desktop-portal-gtk");
+                            services.add_string_element ("Install verified official Harmonoid 0.3.32 release package");
+                        } else
+                            services.add_string_element ("Install verified official Pacstall 6.4.2 release package");
                         break;
                     case "development-homebrew":
                         packages.add_string_element ("build-essential");
@@ -140,7 +150,12 @@ namespace MiuUtil {
                         break;
                     case "system-default-terminal":
                         packages.add_string_element ("gnome-console");
-                        services.add_string_element ("Set x-terminal-emulator to GNOME Console through update-alternatives");
+                        packages.add_string_element ("xdg-terminal-exec");
+                        services.add_string_element ("Set x-terminal-emulator to the Console tab preference through xdg-terminal-exec and update-alternatives");
+                        break;
+                    case "system-default-browser":
+                        packages.add_string_element ("vivaldi-stable");
+                        services.add_string_element ("Set x-www-browser and gnome-www-browser to Vivaldi through update-alternatives");
                         break;
                     case "system-default-editor":
                         packages.add_string_element ("mc");
@@ -328,12 +343,26 @@ namespace MiuUtil {
                                FileUtils.test ("/usr/bin/pacstall", FileTest.IS_EXECUTABLE);
                     result.set_string_member ("details", "Installs the verified official Pacstall 6.4.2 release package through APT.");
                     break;
+                case "applications-harmonoid":
+                    matching = execute ({"/usr/bin/dpkg-query", "--show", "--showformat=${db:Status-Status}", "harmonoid"}, false, false).strip () == "installed";
+                    if (!matching && execute ({"/usr/bin/dpkg", "--print-architecture"}, false, true).strip () != "amd64") {
+                        result.set_string_member ("state", "unavailable");
+                        result.set_string_member ("current", "This verified Harmonoid package supports x86-64 systems.");
+                        return result;
+                    }
+                    result.set_string_member ("details", "Installs the verified official Harmonoid 0.3.32 release package and its dependencies through APT. Existing installations are preserved.");
+                    break;
                 case "development-homebrew":
                     matching = FileUtils.test ("/home/linuxbrew/.linuxbrew/bin/brew", FileTest.IS_EXECUTABLE);
                     result.set_string_member ("details", "Homebrew and GCC are installed as the signed-in user after the standard prefix is prepared.");
                     break;
                 case "system-default-terminal":
-                    matching = execute ({"/usr/bin/update-alternatives", "--query", "x-terminal-emulator"}, false, false).contains ("\nValue: /usr/bin/kgx\n");
+                    matching = execute ({"/usr/bin/update-alternatives", "--query", "x-terminal-emulator"}, false, false).contains ("\nValue: /usr/bin/xdg-terminal-exec\n");
+                    break;
+                case "system-default-browser":
+                    matching = true;
+                    foreach (var alternative in new string[] { "x-www-browser", "gnome-www-browser" })
+                        matching = execute ({"/usr/bin/update-alternatives", "--query", alternative}, false, false).contains ("\nValue: /usr/bin/vivaldi-stable\n") && matching;
                     break;
                 case "system-default-editor":
                     matching = execute ({"/usr/bin/update-alternatives", "--query", "editor"}, false, false).contains ("\nValue: /usr/bin/mcedit\n");
@@ -366,6 +395,12 @@ namespace MiuUtil {
             FileUtils.get_contents ("/proc/cmdline", out command_line);
             if (command_line.contains ("boot=live") || command_line.contains ("boot=casper") || command_line.contains ("overlayroot="))
                 throw new IOError.NOT_SUPPORTED ("Boot the installed system before applying administrator operations");
+            if (id == "applications-harmonoid") {
+                if (execute ({"/usr/bin/dpkg-query", "--show", "--showformat=${db:Status-Status}", "harmonoid"}, false, false).strip () == "installed")
+                    return;
+                if (execute ({"/usr/bin/dpkg", "--print-architecture"}, false, true).strip () != "amd64")
+                    throw new IOError.NOT_SUPPORTED ("This verified Harmonoid package supports x86-64 systems.");
+            }
             if (id == "system-zram" || id == "system-monitor-controls") {
                 var module = id == "system-zram" ? "zram" : "i2c-dev";
                 if (!kernel_supports (module))
@@ -560,17 +595,23 @@ namespace MiuUtil {
                     stdout.printf ("GRUB snapshot previews configured. Use Timeshift Restore for a permanent rollback.\n");
                     break;
                 case "development-pacstall":
-                    var temporary = DirUtils.make_tmp ("miuutil-pacstall-XXXXXX");
-                    var archive = Path.build_filename (temporary, "pacstall.deb");
+                case "applications-harmonoid":
+                    var release_name = id == "applications-harmonoid" ? "harmonoid" : "pacstall";
+                    var inputs = resources_lookup_data ("/com/rispeng/MiuUtil/upstreams.json", ResourceLookupFlags.NONE);
+                    var manifest = new Json.Parser ();
+                    manifest.load_from_data ((string) inputs.get_data (), (ssize_t) inputs.get_size ());
+                    var artifact = manifest.get_root ().get_object ().get_object_member ("artifacts").get_object_member (release_name);
+                    var temporary = DirUtils.make_tmp ("miuutil-" + release_name + "-XXXXXX");
+                    var archive = Path.build_filename (temporary, release_name + ".deb");
                     try {
-                        execute ({"/usr/bin/curl", "--fail", "--location", "--proto", "=https", "--tlsv1.2", "--max-filesize", "119686", "--output", archive,
-                            "https://github.com/pacstall/pacstall/releases/download/6.4.2/pacstall_6.4.2-pacstall1_all.deb"}, true, true);
+                        execute ({"/usr/bin/curl", "--fail", "--location", "--proto", "=https", "--tlsv1.2", "--max-filesize", artifact.get_int_member ("bytes").to_string (), "--output", archive,
+                            artifact.get_string_member ("url")}, true, true);
                         var file = File.new_for_path (archive);
                         uint8[] contents;
                         file.load_contents (null, out contents, null);
                         var checksum = Checksum.compute_for_data (ChecksumType.SHA256, contents);
-                        if (checksum != "4bb216d8ec79d098d47d065ec0befe7173cb93890e43f14746425868a5e6a69e")
-                            throw new IOError.INVALID_DATA ("The Pacstall release package failed SHA-256 verification");
+                        if (checksum != artifact.get_string_member ("sha256"))
+                            throw new IOError.INVALID_DATA ("The %s release package failed SHA-256 verification", release_name);
                         execute ({"/usr/bin/apt-get", "--yes", "--no-remove", "-o", "Dpkg::Options::=--force-confold", "install", archive}, true, true);
                     } finally {
                         FileUtils.unlink (archive);
@@ -597,12 +638,17 @@ namespace MiuUtil {
                     break;
                 case "system-default-terminal":
                 case "system-default-editor":
-                    var alternative = id == "system-default-terminal" ? "x-terminal-emulator" : "editor";
-                    var destination = id == "system-default-terminal" ? "/usr/bin/kgx" : "/usr/bin/mcedit";
-                    var registered = execute ({"/usr/bin/update-alternatives", "--query", alternative}, false, false);
-                    if (!registered.contains ("\nAlternative: " + destination + "\n"))
-                        execute ({"/usr/bin/update-alternatives", "--install", "/usr/bin/" + alternative, alternative, destination, "40"}, true, true);
-                    execute ({"/usr/bin/update-alternatives", "--set", alternative, destination}, true, true);
+                case "system-default-browser":
+                    string[] alternatives = id == "system-default-browser" ? new string[] { "x-www-browser", "gnome-www-browser" } :
+                        id == "system-default-terminal" ? new string[] { "x-terminal-emulator" } : new string[] { "editor" };
+                    var destination = id == "system-default-browser" ? "/usr/bin/vivaldi-stable" :
+                        id == "system-default-terminal" ? "/usr/bin/xdg-terminal-exec" : "/usr/bin/mcedit";
+                    foreach (var alternative in alternatives) {
+                        var registered = execute ({"/usr/bin/update-alternatives", "--query", alternative}, false, false);
+                        if (!registered.contains ("\nAlternative: " + destination + "\n"))
+                            execute ({"/usr/bin/update-alternatives", "--install", "/usr/bin/" + alternative, alternative, destination, "40"}, true, true);
+                        execute ({"/usr/bin/update-alternatives", "--set", alternative, destination}, true, true);
+                    }
                     break;
                 case "system-root-mc-skin":
                     var preferences = new KeyFile ();

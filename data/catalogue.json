@@ -1455,6 +1455,58 @@
       }
     },
     {
+      "id": "apps-nautilus",
+      "title": "Nautilus file manager",
+      "description": "Install Files for folder and file-manager requests.",
+      "category": "files",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Nautilus installed.",
+      "details": "Package: nautilus. APT resolves dependencies using your configured repositories.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "apt",
+        "packages": [
+          "nautilus"
+        ]
+      }
+    },
+    {
+      "id": "files-nautilus-tabs",
+      "title": "Open file-manager requests in Nautilus tabs",
+      "description": "Append folders and file reveals to the existing Files window.",
+      "category": "files",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "External folder requests and Show in File Manager open new Nautilus tabs.",
+      "details": "Uses Nautilus's native tab navigation and item selection. Opens a window when needed. Restart Files or sign out and in after applying to load the extension; installing MiuUtil alone does not enable it.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-nautilus"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/miu/nautilus-tabs.conf",
+            "format": "ini",
+            "payload": "nautilus-tabs.conf"
+          },
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "mimeapps",
+            "payload": "default-applications/files.list"
+          }
+        ],
+        "required_applications": [
+          "org.gnome.Nautilus.desktop"
+        ]
+      }
+    },
+    {
       "id": "files-hidden",
       "title": "Show hidden files in GTK file choosers",
       "description": "Include hidden files and folders in GTK file selection dialogs.",
@@ -2936,10 +2988,11 @@
       "risk": "Low",
       "current": "",
       "desired": "Home and terminal tabs, Smile, brightness and System Monitor.",
-      "details": "Existing unrelated custom shortcuts are retained. The monitor shortcuts zero supported brightness, contrast and RGB gains, then restore their reported maximum with contrast at 75%. These need accessible DDC/CI monitors. Smile is installed from Flathub.",
+      "details": "Existing unrelated custom shortcuts are retained. Restart Files or sign out and in to load the Home tab extension. The monitor shortcuts zero supported brightness, contrast and RGB gains, then restore their reported maximum with contrast at 75%. These need accessible DDC/CI monitors. Smile is installed from Flathub.",
       "requires_admin": false,
       "dependencies": [
         "apps-console",
+        "files-nautilus-tabs",
         "apps-gnome-utilities",
         "system-monitor-controls",
         "flatpak-it-mijorus-smile"
@@ -3053,7 +3106,7 @@
             "schema": "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding",
             "path": "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/desktop-terminal-tab/",
             "key": "name",
-            "value": "'Default terminal — new tab'"
+            "value": "'Console — new tab'"
           },
           {
             "schema": "org.gnome.settings-daemon.plugins.media-keys",
@@ -3189,7 +3242,7 @@
       "risk": "Low",
       "current": "",
       "desired": "Set Vivaldi for web pages and HTTP/HTTPS links.",
-      "details": "",
+      "details": "Sets web-page and link associations and the session browser preference. Sign out and back in so applications that use BROWSER receive Vivaldi.",
       "requires_admin": false,
       "dependencies": [
         "browsers-vivaldi-install"
@@ -3199,12 +3252,149 @@
         "files": [
           {
             "path": "$CONFIG/mimeapps.list",
-            "format": "ini",
-            "payload": "mimeapps.list"
+            "format": "mimeapps",
+            "payload": "default-applications/browser.list"
+          },
+          {
+            "path": "$CONFIG/environment.d/90-miuutil-browser.conf",
+            "format": "text-keys",
+            "payload": "default-applications/browser.conf"
           }
         ],
         "required_programs": [
           "vivaldi-stable"
+        ],
+        "required_applications": [
+          "vivaldi-stable.desktop"
+        ]
+      }
+    },
+    {
+      "id": "system-default-browser",
+      "title": "Vivaldi as the system browser",
+      "description": "Use Vivaldi for the standard Debian browser commands.",
+      "category": "browsers",
+      "scope": "System",
+      "risk": "Low",
+      "desired": "Vivaldi as x-www-browser and gnome-www-browser",
+      "details": "Sets Debian browser alternatives together with your account browser preference.",
+      "requires_admin": true,
+      "dependencies": [
+        "browsers-default"
+      ],
+      "operation": {
+        "kind": "system",
+        "check": "browser-default"
+      }
+    },
+    {
+      "id": "applications-default-video",
+      "title": "Use mpv for videos",
+      "description": "Open videos with mpv.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Open videos with mpv.",
+      "details": "Sets the selected file associations and preserves unrelated defaults.",
+      "requires_admin": false,
+      "dependencies": [
+        "apps-mpv"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "mimeapps",
+            "payload": "default-applications/video.list"
+          }
+        ],
+        "required_applications": [
+          "mpv.desktop"
+        ]
+      }
+    },
+    {
+      "id": "applications-default-audio",
+      "title": "Use Harmonoid for audio",
+      "description": "Open audio files and playlists with Harmonoid, with mpv as fallback.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Open audio files and playlists with Harmonoid, with mpv as fallback.",
+      "details": "Uses Harmonoid when installed and mpv otherwise. Preserves unrelated defaults.",
+      "requires_admin": false,
+      "dependencies": [
+        "applications-harmonoid",
+        "apps-mpv"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "mimeapps",
+            "payload": "default-applications/audio.list"
+          }
+        ],
+        "required_applications": [
+          "harmonoid.desktop",
+          "mpv.desktop"
+        ]
+      }
+    },
+    {
+      "id": "applications-default-image",
+      "title": "Use qView for images",
+      "description": "Open images with qView.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Open images with qView.",
+      "details": "Sets the selected file associations and preserves unrelated defaults.",
+      "requires_admin": false,
+      "dependencies": [
+        "applications-qview"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "mimeapps",
+            "payload": "default-applications/image.list"
+          }
+        ],
+        "required_applications": [
+          "qview.desktop"
+        ]
+      }
+    },
+    {
+      "id": "applications-default-pdf",
+      "title": "Use Evince for PDF documents",
+      "description": "Open PDF documents with Evince.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Open PDF documents with Evince.",
+      "details": "Sets the selected file associations and preserves unrelated defaults. Sign in again after first installing Flatpak support so the desktop can find its exported applications.",
+      "requires_admin": false,
+      "dependencies": [
+        "flatpak-org-gnome-evince"
+      ],
+      "operation": {
+        "kind": "configuration",
+        "files": [
+          {
+            "path": "$CONFIG/mimeapps.list",
+            "format": "mimeapps",
+            "payload": "default-applications/pdf.list"
+          }
         ]
       }
     },
@@ -3386,7 +3576,6 @@
       "dependencies": [
         "apps-files-tools",
         "apps-console",
-        "apps-blackbox",
         "development-vscode",
         "files-nautilus-extension"
       ],
@@ -3404,13 +3593,13 @@
     {
       "id": "development-default-terminal",
       "title": "Console as the default desktop terminal",
-      "description": "Prefer GNOME Console for xdg-terminal-exec and desktop terminal actions.",
+      "description": "Open desktop terminal requests in a new GNOME Console tab.",
       "category": "development",
       "scope": "Your account",
       "risk": "Low",
       "current": "",
-      "desired": "Prefer GNOME Console for xdg-terminal-exec and desktop terminal actions.",
-      "details": "",
+      "desired": "GNOME Console opens a tab in its most recently active window, or a window if needed.",
+      "details": "Selects org.gnome.Console.desktop with its New Tab action for generic and GNOME terminal requests. Desktop launches also use Console's native tab option.",
       "requires_admin": false,
       "dependencies": [
         "apps-console"
@@ -3422,6 +3611,22 @@
             "path": "$CONFIG/xdg-terminals.list",
             "format": "terminal-list",
             "payload": "terminal.list"
+          },
+          {
+            "path": "$CONFIG/gnome-xdg-terminals.list",
+            "format": "terminal-list",
+            "payload": "terminal.list"
+          },
+          {
+            "path": "$DATA/applications/org.gnome.Console.desktop",
+            "format": "desktop",
+            "base_path": "/usr/share/applications/org.gnome.Console.desktop",
+            "payload": "console.desktop"
+          },
+          {
+            "path": "$CONFIG/environment.d/10-miuutil-terminal.conf",
+            "format": "text-keys",
+            "payload": "terminal-environment.conf"
           }
         ]
       }
@@ -3615,6 +3820,22 @@
       "operation": {
         "kind": "upstream",
         "upstream": "uosc"
+      }
+    },
+    {
+      "id": "applications-harmonoid",
+      "title": "Install Harmonoid",
+      "description": "Install Harmonoid from its official Debian package.",
+      "category": "applications",
+      "scope": "System",
+      "risk": "Low",
+      "current": "",
+      "desired": "Harmonoid music player",
+      "details": "Downloads the verified official Harmonoid 0.3.32 package directly from its publisher. APT installs its mpv and desktop dependencies. Network access is required; existing installations are preserved.",
+      "requires_admin": true,
+      "dependencies": [],
+      "operation": {
+        "kind": "system"
       }
     },
     {
@@ -4595,15 +4816,15 @@
     {
       "id": "system-default-terminal",
       "title": "Console as x-terminal-emulator",
-      "description": "Console as x-terminal-emulator.",
+      "description": "Use the selected Console tab action for x-terminal-emulator requests.",
       "category": "system",
       "scope": "System",
       "risk": "Moderate",
-      "desired": "Console as x-terminal-emulator",
-      "details": "Updates only the selected system default through the administrator helper.",
+      "desired": "x-terminal-emulator opens a GNOME Console tab.",
+      "details": "Uses xdg-terminal-exec through the system alternative so the desktop's Console tab preference also applies to terminal commands.",
       "requires_admin": true,
       "dependencies": [
-        "apps-console"
+        "development-default-terminal"
       ],
       "operation": {
         "kind": "system",

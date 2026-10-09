@@ -6,6 +6,16 @@ An existing account can have settings that differ from the defaults Miubian reli
 
 Apply only the preferences that define the selected outcome. Preserve unrelated settings and existing personal data, including browser profiles, sign-ins, bookmarks, history, extensions and custom panels. A clean Miubian profile is a reference for the intended preferences, so it must not replace an existing user's profile.
 
+Default applications are separate choices: Vivaldi for browsers, mpv for video, Harmonoid with mpv fallback for audio, qView for images, Evince for PDFs, and Nautilus for folders. Media choices expand registered MIME families and aliases through GIO, while preserving unrelated associations. Reapply a choice after installing new MIME definitions.
+
+The audio preference lists Harmonoid first and mpv next. mpv handles audio while Harmonoid's desktop entry is unavailable; installing a package that registers `harmonoid.desktop` makes Harmonoid preferred without reapplying the saved associations.
+
+Harmonoid's optional installation downloads its verified official Debian package directly from the publisher; its binary is not bundled in MiuUtil or the Miubian ISO.
+
+The Console default selects its native New Tab action for generic and GNOME terminal requests and uses `kgx --tab` for desktop launches. Super+T activates Console's New Tab action over D-Bus, preserving its most recently active tab's directory. The system terminal alternative uses `xdg-terminal-exec` to share that preference. Browser alternatives are a separate system choice. `BROWSER` and `TERMINAL` environment changes take effect in a new session.
+
+The Nautilus tab choice enables the packaged native extension through the account's `miu/nautilus-tabs.conf` file. Installing MiuUtil alone leaves it disabled; Miubian enables the same preference system-wide. It handles ordinary folder launches and FileManager1 file reveals, including Vivaldi's Show in File Manager, through native navigation and selection. Restart Files or sign out and in to load it. Nautilus's command runner also uses a Console tab.
+
 ## Configuration and build inputs
 
 | File | Purpose |
@@ -36,7 +46,7 @@ The monitor shortcut zeros supported brightness, contrast and RGB gain controls.
 - `firefox/` supplies separate preference and theme blocks in the selected installation's default profile. Keep their full-line markers distinct, hold the native profile lock while writing and preserve existing add-ons. Close Firefox before applying and restart it afterwards.
 - `vivaldi/` supplies selected preferences, launcher flags and the persistent horizontal-menu stylesheet. Merge custom panel and toolbar entries, and retain search-engine metadata, sign-in data and dashboard widgets. Check the stylesheet against Vivaldi's current UI structure after an update.
 - `mc/` and `mpv/` supply the selected terminal file-manager skin and playback preferences. Merge the defined settings with existing configuration.
-- The remaining files supply Nautilus menus, default browser and terminal associations, CopyQ autostart, Gear Lever preferences and qView registration. Resolve account and installed-helper paths when applying them. Restart Files or start a new session after installing its extension.
+- The remaining files supply Nautilus menus, default application and terminal associations, CopyQ autostart, Gear Lever preferences and qView registration. Resolve account and installed-helper paths when applying them. Restart Files or start a new session after installing its extension.
 
 `recovery/` contains the bundled grub-btrfs sources and configuration. Recovery options require an existing compatible Btrfs `@` and `@home` layout; GRUB previews also require `/boot` inside the root subvolume. The snapshot preview holds root writes in RAM while separately mounted data remains writable. Permanent restoration is a separate Timeshift action.
 
@@ -70,6 +80,7 @@ Fluent cursor themes are linked from `~/.icons/fluent` and `~/.icons/fluent-dark
 | fetch | [fetch](https://github.com/areofyl/fetch) |
 | qView | [qView](https://github.com/jurplel/qView) |
 | uosc | [uosc](https://github.com/tomasklaen/uosc) |
+| Harmonoid | [Official downloads](https://harmonoid.com/downloads/) and [release licence](https://github.com/harmonoid/harmonoid/blob/v0.3.32/LICENSE) |
 | Actions for Nautilus | [Actions for Nautilus](https://github.com/bassmanitram/actions-for-nautilus) |
 | Homebrew | [Homebrew](https://github.com/Homebrew/brew) |
 | rustup | [rustup installation](https://rust-lang.github.io/rustup/installation/other.html) |

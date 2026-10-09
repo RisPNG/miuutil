@@ -234,6 +234,7 @@ namespace MiuUtil {
                         launcher.set_string ("Desktop Entry", "Exec", "\"" + appimage.replace ("\\", "\\\\").replace ("\"", "\\\"").replace ("$", "\\$").replace ("`", "\\`") + "\" %F");
                         launcher.set_string ("Desktop Entry", "Icon", "image-x-generic");
                         launcher.set_string ("Desktop Entry", "Categories", "Graphics;Viewer;");
+                        launcher.set_string ("Desktop Entry", "MimeType", "image/bmp;image/x-win-bitmap;image/gif;image/icns;image/x-icon;image/jpeg;image/jpg;image/x-portable-bitmap;image/x-portable-graymap;image/png;image/x-portable-pixmap;image/svg+xml;image/tiff;image/vnd.wap.wbmp;image/webp;image/x-xbitmap;image/x-xpixmap;application/x-navi-animation;image/apng;image/avif;image/avif-sequence;image/x-sgi-bw;image/aces;image/x-exr;image/vnd.radiance;image/heic;image/heif;image/jxl;application/x-krita;image/openraster;image/vnd.zbrush.pcx;image/x-pcx;image/x-pic;image/vnd.adobe.photoshop;application/x-photoshop;application/photoshop;application/psd;image/psd;image/x-sun-raster;image/x-rgb;image/x-sgi-rgba;image/sgi;image/x-tga;image/x-xcf;");
                         FileUtils.set_contents (Path.build_filename (launchers, "qview.desktop"), launcher.to_data ());
                         break;
                     case "uosc":

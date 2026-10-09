@@ -1,6 +1,20 @@
 {
   "schema": 1,
   "artifacts": {
+    "harmonoid": {
+      "url": "https://github.com/alexmercerind2/harmonoid-releases/releases/download/v0.3.32/harmonoid-linux-x86_64.deb",
+      "version": "0.3.32-1",
+      "format": "deb",
+      "sha256": "a190e9b700542ec8d78b84f99b3cb2a9d6bff192909ece46b482a1e839cf164e",
+      "bytes": 19660856
+    },
+    "pacstall": {
+      "url": "https://github.com/pacstall/pacstall/releases/download/6.4.2/pacstall_6.4.2-pacstall1_all.deb",
+      "version": "6.4.2-pacstall1",
+      "format": "deb",
+      "sha256": "4bb216d8ec79d098d47d065ec0befe7173cb93890e43f14746425868a5e6a69e",
+      "bytes": 119686
+    },
     "fluent-gtk": {
       "url": "https://codeload.github.com/vinceliuice/Fluent-gtk-theme/tar.gz/7a49a464b0188c340101c52965c18190b1c694cf",
       "version": "7a49a464b0188c340101c52965c18190b1c694cf",

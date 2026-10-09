@@ -27,7 +27,7 @@ Install the native dependencies on Debian 13 or a newer compatible system, then 
 
 ```sh
 sudo apt install valac build-essential pkg-config blueprint-compiler \
-  libgtk-4-dev libadwaita-1-dev libjson-glib-dev gettext \
+  libgtk-4-dev libadwaita-1-dev libjson-glib-dev libnautilus-extension-dev gettext \
   debhelper desktop-file-utils appstream dbus-x11 xvfb xauth \
   python3 python3-gi python3-venv pipx
 mise trust

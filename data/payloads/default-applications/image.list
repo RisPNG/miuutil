@@ -1,0 +1,7 @@
+[Default Applications]
+image/*=qview.desktop;
+application/x-navi-animation=qview.desktop;
+application/x-krita=qview.desktop;
+application/x-photoshop=qview.desktop;
+application/photoshop=qview.desktop;
+application/psd=qview.desktop;

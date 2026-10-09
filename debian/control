@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Ris Peng <hello@rispeng.com>
 Build-Depends: debhelper-compat (= 13), meson, ninja-build, valac, pkg-config,
  blueprint-compiler (>= 0.16), libgtk-4-dev (>= 4.18), libadwaita-1-dev (>= 1.7),
- libglib2.0-dev (>= 2.84), libjson-glib-dev, gettext, python3, xvfb, xauth, dbus-x11
+ libglib2.0-dev (>= 2.84), libjson-glib-dev, libnautilus-extension-dev,
+ gettext, python3, xvfb, xauth, dbus-x11
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Homepage: https://github.com/RisPNG/miuutil

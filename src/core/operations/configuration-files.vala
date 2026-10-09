@@ -295,7 +295,7 @@ namespace MiuUtil {
                     merge_configuration (current.get_root ().get_object (), target.get_root ().get_object ());
                 return Json.to_string (current.get_root (), true) + "\n";
             }
-            if (kind == "ini" || kind == "desktop" || kind == "gearlever") {
+            if (kind == "ini" || kind == "desktop" || kind == "gearlever" || kind == "mimeapps") {
                 if (kind == "gearlever")
                     desired = desired.replace ("$QVIEW_ID", Checksum.compute_for_string (ChecksumType.MD5,
                         Path.build_filename (Environment.get_home_dir (), "AppImages", "qview.appimage")));
@@ -310,6 +310,45 @@ namespace MiuUtil {
                         .replace ("$LIBEXEC", Config.LIBEXEC_DIR), KeyFileFlags.KEEP_COMMENTS);
                 var target = new KeyFile ();
                 target.load_from_data (desired, desired.length, KeyFileFlags.NONE);
+                if (kind == "mimeapps") {
+                    var types = ContentType.list_registered ();
+                    types.sort ((left, right) => strcmp (left, right));
+                    foreach (var family in target.get_keys ("Default Applications")) {
+                        if (!family.has_suffix ("/*"))
+                            continue;
+                        var application = target.get_value ("Default Applications", family);
+                        target.remove_key ("Default Applications", family);
+                        foreach (var type in types) {
+                            var mime = ContentType.get_mime_type (type);
+                            bool media_type = mime.has_prefix ("audio/") || mime.has_prefix ("video/") || mime.has_prefix ("image/");
+                            if (mime.has_prefix (family.substring (0, family.length - 1)) ||
+                                (!media_type && ContentType.is_a (type, family)))
+                                target.set_value ("Default Applications", mime, application);
+                        }
+                    }
+                    foreach (var type in target.get_keys ("Default Applications")) {
+                        var applications = target.get_string_list ("Default Applications", type);
+                        string[] associated = applications;
+                        if (current.has_group ("Added Associations") && current.has_key ("Added Associations", type)) {
+                            foreach (var application in current.get_string_list ("Added Associations", type)) {
+                                if (!(application in associated))
+                                    associated += application;
+                            }
+                        }
+                        current.set_string_list ("Added Associations", type, associated);
+                        if (current.has_group ("Removed Associations") && current.has_key ("Removed Associations", type)) {
+                            string[] removed = {};
+                            foreach (var application in current.get_string_list ("Removed Associations", type)) {
+                                if (!(application in applications))
+                                    removed += application;
+                            }
+                            if (removed.length == 0)
+                                current.remove_key ("Removed Associations", type);
+                            else
+                                current.set_string_list ("Removed Associations", type, removed);
+                        }
+                    }
+                }
                 foreach (var group in target.get_groups ()) {
                     foreach (var key in target.get_keys (group)) {
                         if (kind == "desktop" && key == "Exec" && entry.has_member ("launch_flags")) {
@@ -418,6 +457,12 @@ namespace MiuUtil {
                 foreach (var node in specification.get_array_member ("required_programs").get_elements ()) {
                     if (Environment.find_program_in_path (node.get_string ()) == null)
                         return new Assessment (OptionState.UNAVAILABLE, "Install %s before applying this setup.".printf (node.get_string ()), "", true);
+                }
+            }
+            if (specification.has_member ("required_applications")) {
+                foreach (var node in specification.get_array_member ("required_applications").get_elements ()) {
+                    if (new DesktopAppInfo (node.get_string ()) == null)
+                        return new Assessment (OptionState.UNAVAILABLE, "Install the selected application before applying its file associations.", "", true);
                 }
             }
             uint matches = 0;

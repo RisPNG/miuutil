@@ -132,6 +132,13 @@ private void apply_option (Option option) {
 }
 
 int main (string[] arguments) {
+    if (arguments.length > 1 && arguments[1] == "--default-application") {
+        var application = AppInfo.get_default_for_type (arguments[2], false);
+        if (application == null)
+            return 1;
+        stdout.printf ("%s\n", application.get_id ());
+        return 0;
+    }
     if (arguments.length > 1 && (arguments[1] == "--stream-fixture" || arguments[1] == "--stream-failure")) {
         stdout.printf ("first line\n");
         stdout.flush ();
@@ -287,6 +294,122 @@ int main (string[] arguments) {
             Test.message (error.message);
             Test.fail ();
         }
+    });
+
+    Test.add_func ("/options/default-applications-cover-installed-mime-types", () => {
+        try {
+            var directory = workspace + "/data/mime/packages";
+            DirUtils.create_with_parents (directory, 0700);
+            FileUtils.set_contents (directory + "/defaults-fixture.xml", """
+                <?xml version="1.0" encoding="UTF-8"?>
+                <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+                  <mime-type type="audio/vnd.miuutil-fixture"><glob pattern="*.miuaudio"/></mime-type>
+                  <mime-type type="video/vnd.miuutil-fixture"><glob pattern="*.miuvideo"/></mime-type>
+                  <mime-type type="image/vnd.miuutil-fixture"><glob pattern="*.miuimage"/></mime-type>
+                  <mime-type type="application/vnd.miuutil-image"><sub-class-of type="image/png"/></mime-type>
+                </mime-info>
+                """.strip ());
+            var database = new Subprocess.newv ({ "update-mime-database", workspace + "/data/mime" }, SubprocessFlags.NONE);
+            database.wait_check ();
+            ContentType.set_mime_dirs ({ workspace + "/data/mime", "/usr/share/mime" });
+            var launchers = workspace + "/data/applications";
+            DirUtils.create_with_parents (launchers, 0700);
+            foreach (var desktop in new string[] { "mpv.desktop", "harmonoid.desktop", "qview.desktop", "vivaldi-stable.desktop" })
+                FileUtils.set_contents (launchers + "/" + desktop, "[Desktop Entry]\nType=Application\nName=Default fixture\nExec=/bin/true %U\n");
+            var exports = workspace + "/data/flatpak/exports/share/applications";
+            DirUtils.create_with_parents (exports, 0700);
+            var exported_pdf = exports + "/org.gnome.Evince.desktop";
+            FileUtils.set_contents (exported_pdf, "[Desktop Entry]\nType=Application\nName=Evince export fixture\nExec=/bin/true %U\n");
+            DirUtils.create_with_parents (workspace + "/config", 0700);
+            var path = workspace + "/config/mimeapps.list";
+            FileUtils.set_contents (path, """
+                [Default Applications]
+                text/plain=personal-editor.desktop;
+                audio/webm=old-audio.desktop;
+                [Added Associations]
+                video/mp4=other-video.desktop;
+                audio/mpeg=other-audio.desktop;
+                [Removed Associations]
+                video/mp4=mpv.desktop;blocked-video.desktop;
+                audio/mpeg=mpv.desktop;blocked-audio.desktop;
+                text/plain=blocked-editor.desktop;
+                """);
+            var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/catalogue.json", ResourceLookupFlags.NONE);
+            var parser = new Json.Parser ();
+            parser.load_from_data ((string) bytes.get_data (), (ssize_t) bytes.get_size ());
+            foreach (var id in new string[] { "applications-default-audio", "applications-default-image", "applications-default-video", "applications-default-pdf", "browsers-default" }) {
+                foreach (var node in parser.get_root ().get_object ().get_array_member ("options").get_elements ()) {
+                    var definition = node.get_object ();
+                    if (definition.get_string_member ("id") != id)
+                        continue;
+                    definition.get_object_member ("operation").remove_member ("required_programs");
+                    var option = new Option (definition);
+                    if (id == "applications-default-pdf") {
+                        assert (new DesktopAppInfo.from_filename (exported_pdf) != null);
+                        inspect_option (option);
+                        assert (option.state == OptionState.DIFFERENT);
+                    }
+                    apply_option (option);
+                    assert (option.state == OptionState.MATCHING);
+                    if (id == "applications-default-pdf")
+                        File.new_for_path (exported_pdf).copy (File.new_for_path (launchers + "/org.gnome.Evince.desktop"), FileCopyFlags.NONE);
+                }
+            }
+            var associations = new KeyFile ();
+            associations.load_from_file (path, KeyFileFlags.NONE);
+            foreach (var type in new string[] { "audio/mpeg", "audio/webm", "audio/vnd.miuutil-fixture", "application/xspf+xml" })
+                assert_cmpstr (associations.get_string ("Default Applications", type), CompareOperator.EQ, "harmonoid.desktop;mpv.desktop;");
+            foreach (var type in new string[] { "video/mp4", "video/x-mjpeg", "video/vnd.miuutil-fixture", "application/ogg" })
+                assert_cmpstr (associations.get_string ("Default Applications", type), CompareOperator.EQ, "mpv.desktop;");
+            foreach (var type in new string[] { "image/png", "image/avif", "image/vnd.miuutil-fixture", "application/vnd.miuutil-image", "application/x-krita" })
+                assert_cmpstr (associations.get_string ("Default Applications", type), CompareOperator.EQ, "qview.desktop;");
+            assert_cmpstr (associations.get_string ("Default Applications", "application/pdf"), CompareOperator.EQ, "org.gnome.Evince.desktop;");
+            assert_cmpstr (associations.get_string ("Default Applications", "application/xhtml+xml"), CompareOperator.EQ, "vivaldi-stable.desktop;");
+            assert_cmpstr (associations.get_string ("Default Applications", "text/plain"), CompareOperator.EQ, "personal-editor.desktop;");
+            assert_cmpstr (associations.get_string ("Added Associations", "video/mp4"), CompareOperator.EQ, "mpv.desktop;other-video.desktop;");
+            assert_cmpstr (associations.get_string ("Added Associations", "audio/mpeg"), CompareOperator.EQ, "harmonoid.desktop;mpv.desktop;other-audio.desktop;");
+            assert_cmpstr (associations.get_string ("Removed Associations", "video/mp4"), CompareOperator.EQ, "blocked-video.desktop;");
+            assert_cmpstr (associations.get_string ("Removed Associations", "audio/mpeg"), CompareOperator.EQ, "blocked-audio.desktop;");
+            assert_cmpstr (associations.get_string ("Removed Associations", "text/plain"), CompareOperator.EQ, "blocked-editor.desktop;");
+            assert (!associations.has_key ("Default Applications", "video/*"));
+            assert (!associations.has_key ("Default Applications", "audio/*"));
+            assert (!associations.has_key ("Default Applications", "image/*"));
+            foreach (var type in new string[] { "audio/vnd.miuutil-fixture", "video/vnd.miuutil-fixture", "image/vnd.miuutil-fixture", "application/pdf", "text/html" }) {
+                var application = AppInfo.get_default_for_type (type, false);
+                assert (application != null);
+                assert_cmpstr (application.get_id (), CompareOperator.EQ, associations.get_string_list ("Default Applications", type)[0]);
+            }
+            var fallback_data = workspace + "/audio-fallback-data";
+            DirUtils.create_with_parents (fallback_data + "/applications", 0700);
+            File.new_for_path (launchers + "/mpv.desktop").copy (
+                File.new_for_path (fallback_data + "/applications/mpv.desktop"), FileCopyFlags.NONE);
+            string saved;
+            FileUtils.get_contents (path, out saved);
+            foreach (var desktop in new string[] { "mpv.desktop", "harmonoid.desktop" }) {
+                if (desktop == "harmonoid.desktop")
+                    File.new_for_path (launchers + "/harmonoid.desktop").copy (
+                        File.new_for_path (fallback_data + "/applications/harmonoid.desktop"), FileCopyFlags.NONE);
+                foreach (var type in new string[] { "audio/mpeg", "application/xspf+xml" }) {
+                    var launcher = new SubprocessLauncher (SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
+                    launcher.setenv ("XDG_DATA_HOME", fallback_data, true);
+                    launcher.setenv ("XDG_DATA_DIRS", workspace + "/system-high:" + workspace + "/system-low", true);
+                    var probe = launcher.spawnv ({ test_program, "--default-application", type });
+                    string selected;
+                    probe.communicate_utf8 (null, null, out selected, null);
+                    assert (probe.get_successful ());
+                    assert_cmpstr (selected.strip (), CompareOperator.EQ, desktop);
+                }
+                string retained;
+                FileUtils.get_contents (path, out retained);
+                assert_cmpstr (retained, CompareOperator.EQ, saved);
+            }
+            foreach (var desktop in new string[] { "mpv.desktop", "harmonoid.desktop", "qview.desktop", "org.gnome.Evince.desktop", "vivaldi-stable.desktop" })
+                FileUtils.remove (launchers + "/" + desktop);
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        }
+        ContentType.set_mime_dirs (null);
     });
 
     Test.add_func ("/options/mpv-preserves-other-keys", () => {

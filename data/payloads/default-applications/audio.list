@@ -1,0 +1,9 @@
+[Default Applications]
+audio/*=harmonoid.desktop;mpv.desktop;
+application/x-ogm-audio=harmonoid.desktop;mpv.desktop;
+application/x-shorten=harmonoid.desktop;mpv.desktop;
+application/x-extension-m4a=harmonoid.desktop;mpv.desktop;
+application/vnd.apple.mpegurl=harmonoid.desktop;mpv.desktop;
+application/x-mpegurl=harmonoid.desktop;mpv.desktop;
+application/xspf+xml=harmonoid.desktop;mpv.desktop;
+application/x-cue=harmonoid.desktop;mpv.desktop;

@@ -3,7 +3,6 @@
 import argparse
 import html
 import os
-import shlex
 from pathlib import Path
 import subprocess
 import sys
@@ -19,7 +18,7 @@ else
 fi
 ( builtin eval -- "$1" )
 _action_status=$?
-printf '\nExit status: %s.\nPress any key to close this terminal...' "$_action_status"
+printf '\nExit status: %s.\nPress any key to close this tab...' "$_action_status"
 IFS= builtin read -r -s -n 1
 printf '\n'
 exit "$_action_status"
@@ -73,24 +72,13 @@ def selected_directory(uris):
     return directory
 
 
-def terminal_command(directory):
-    # org.gnome.Console.desktop uses kgx; its default shell is Bash.
-    return ["/usr/bin/kgx", "--working-directory=" + directory]
-
-
-def blackbox_command(directory, command):
-    # Black Box expects shell code for --command; encode each Bash argument.
-    shell_command = "exec " + shlex.join(["/bin/bash", "-ic", COMMAND_RUNNER, "nautilus-command", command])
-    # Debian's -c/-e alias entries duplicate --command; attach its value
-    # so GLib does not try to consume a separate argument twice.
-    return ["/usr/bin/blackbox-terminal", "--working-directory=" + directory,
-            "--command=" + shell_command]
-
-
-def launch_blackbox(directory, command):
+def launch_console(directory, command=None):
+    arguments = ["/usr/bin/kgx", "--tab", "--working-directory=" + directory]
+    if command is not None:
+        arguments.extend(["--", "/bin/bash", "-ic", COMMAND_RUNNER, "nautilus-command", command])
     # Report fast CLI failures while allowing the GUI to run independently.
     with tempfile.TemporaryFile() as diagnostics:
-        process = subprocess.Popen(blackbox_command(directory, command), cwd=directory,
+        process = subprocess.Popen(arguments, cwd=directory,
                                    stdout=subprocess.DEVNULL, stderr=diagnostics)
         try:
             status = process.wait(timeout=1)
@@ -99,13 +87,13 @@ def launch_blackbox(directory, command):
         if status != 0:
             diagnostics.seek(0)
             detail = diagnostics.read().decode("utf-8", errors="replace").strip()
-            raise RuntimeError("Black Box could not start (exit %s).\n%s" % (status, detail[-2000:]))
+            raise RuntimeError("Console could not start (exit %s).\n%s" % (status, detail[-2000:]))
 
 
 def ask_command(directory):
     result = subprocess.run(
         ["/usr/bin/zenity", "--entry", "--title=Execute command here", "--width=800",
-         "--text=" + html.escape(directory) + "\nEnter a Bash command. After it finishes, press any key to close Black Box."],
+         "--text=" + html.escape(directory) + "\nEnter a Bash command. After it finishes, press any key to close the Console tab."],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
@@ -120,11 +108,11 @@ def perform(action, uris):
         return
     directory = selected_directory(uris)
     if action == "terminal":
-        subprocess.Popen(terminal_command(directory), cwd=directory)
+        launch_console(directory)
     elif action == "execute":
         command = ask_command(directory)
         if command is not None:
-            launch_blackbox(directory, command)
+            launch_console(directory, command)
     elif action == "code":
         subprocess.Popen(["/usr/bin/code", "--new-window", directory], cwd=directory)
 

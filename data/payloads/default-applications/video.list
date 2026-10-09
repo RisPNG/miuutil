@@ -1,0 +1,11 @@
+[Default Applications]
+video/*=mpv.desktop;
+application/ogg=mpv.desktop;
+application/x-ogg=mpv.desktop;
+application/mxf=mpv.desktop;
+application/vnd.ms-asf=mpv.desktop;
+application/vnd.rn-realmedia=mpv.desktop;
+application/vnd.rn-realmedia-vbr=mpv.desktop;
+application/x-matroska=mpv.desktop;
+application/x-ogm=mpv.desktop;
+application/x-ogm-video=mpv.desktop;

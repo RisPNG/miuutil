@@ -29,72 +29,23 @@ def locked(name):
         yield
 
 
-def windows():
-    return call("org.gnome.Nautilus", "/org/freedesktop/FileManager1",
-                "org.freedesktop.DBus.Properties", "Get",
-                GLib.Variant("(ss)", ("org.freedesktop.FileManager1",
-                                      "OpenWindowsWithLocations"))).unpack()[0]
-
-
-def files():
-    with locked("files"):
-        opened = windows()
-        if not opened:
-            subprocess.Popen(["/usr/bin/nautilus", str(Path.home())])
-            deadline = time.monotonic() + 5
-            while not windows() and time.monotonic() < deadline:
-                time.sleep(0.1)
-            if not windows():
-                raise RuntimeError("Nautilus did not open a window.")
-            return
-        window = next(iter(opened))
-        count = len(opened[window])
-        platform = {key: GLib.Variant("s", os.environ[env]) for key, env in (
-            ("activation-token", "XDG_ACTIVATION_TOKEN"),
-            ("desktop-startup-id", "DESKTOP_STARTUP_ID")) if env in os.environ}
-
-        def activate(action):
-            call("org.gnome.Nautilus", window, "org.gtk.Actions", "Activate",
-                 GLib.Variant("(sava{sv})", (action, [], platform)))
-
-        activate("new-tab")
-        deadline = time.monotonic() + 3
-        while len(windows().get(window, [])) <= count:
-            if time.monotonic() >= deadline:
-                raise RuntimeError("Nautilus did not create a tab; retry after loading.")
-            time.sleep(0.1)
-        activate("go-home")
-        for _ in range(count):
-            activate("tab-move-right")
-
-
 def terminal():
-    desktop = subprocess.check_output(
-        ["/usr/bin/xdg-terminal-exec", "--print-id"], text=True, timeout=10
-    ).strip().split(":", 1)[0]
-    app = GioUnix.DesktopAppInfo.new(desktop)
-    if not app or "new-tab" not in app.list_actions():
-        raise RuntimeError(f"Default terminal {desktop} has no New Tab action.")
+    app = GioUnix.DesktopAppInfo.new("org.gnome.Console.desktop")
     gi.require_version("Gtk", "4.0")
     gi.require_version("Gdk", "4.0")
     from gi.repository import Gtk, Gdk
     Gtk.init()
     context = Gdk.Display.get_default().get_app_launch_context()
-    if app.get_boolean("DBusActivatable"):
-        platform = {key: GLib.Variant("s", os.environ[env]) for key, env in (
-            ("activation-token", "XDG_ACTIVATION_TOKEN"),
-            ("desktop-startup-id", "DESKTOP_STARTUP_ID")) if env in os.environ}
-        if not platform and app.get_boolean("StartupNotify"):
-            token = context.get_startup_notify_id(app, [])
-            if token:
-                platform = {key: GLib.Variant("s", token) for key in
-                            ("activation-token", "desktop-startup-id")}
-        name = Path(app.get_filename()).name.removesuffix(".desktop")
-        path = "/" + name.replace(".", "/").replace("-", "_")
-        call(name, path, "org.freedesktop.Application", "ActivateAction",
-             GLib.Variant("(sava{sv})", ("new-tab", [], platform)))
-    else:
-        app.launch_action("new-tab", context)
+    platform = {key: GLib.Variant("s", os.environ[env]) for key, env in (
+        ("activation-token", "XDG_ACTIVATION_TOKEN"),
+        ("desktop-startup-id", "DESKTOP_STARTUP_ID")) if env in os.environ}
+    if not platform and GioUnix.DesktopAppInfo.get_boolean(app, "StartupNotify"):
+        token = context.get_startup_notify_id(app, [])
+        if token:
+            platform = {key: GLib.Variant("s", token) for key in
+                        ("activation-token", "desktop-startup-id")}
+    call("org.gnome.Console", "/org/gnome/Console", "org.freedesktop.Application", "ActivateAction",
+         GLib.Variant("(sava{sv})", ("new-tab", [], platform)))
 
 
 def ddc(*args):
@@ -168,7 +119,7 @@ def brightness(percent):
 def main():
     action = sys.argv[1:]
     if action == ["files"]:
-        files()
+        subprocess.Popen(["/usr/bin/nautilus", str(Path.home())])
     elif action == ["terminal"]:
         terminal()
     elif action in (["brightness", "0"], ["brightness", "100"]):

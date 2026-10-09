@@ -7,7 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from xml.etree import ElementTree
 
 sys.dont_write_bytecode = True
@@ -96,6 +96,44 @@ class DDCMonitorCommands:
 
 
 class HelperScriptTest(unittest.TestCase):
+    def test_console_shortcut_uses_native_tab_action_with_cli_desktop_entry(self):
+        shortcut.gi.require_version("Gtk", "4.0")
+        shortcut.gi.require_version("Gdk", "4.0")
+        from gi.repository import Gtk, Gdk
+        app = MagicMock()
+        app.get_boolean.return_value = False
+        with patch.dict(os.environ, {"XDG_ACTIVATION_TOKEN": "test-token"}, clear=True), \
+                patch.object(shortcut.GioUnix.DesktopAppInfo, "new", return_value=app) as desktop, \
+                patch.object(Gtk, "init"), patch.object(Gdk.Display, "get_default"), \
+                patch.object(shortcut, "call") as activate:
+            shortcut.terminal()
+        desktop.assert_called_once_with("org.gnome.Console.desktop")
+        app.launch_action.assert_not_called()
+        self.assertEqual(activate.call_args.args[:4],
+                         ("org.gnome.Console", "/org/gnome/Console", "org.freedesktop.Application", "ActivateAction"))
+        self.assertEqual(activate.call_args.args[4].unpack(),
+                         ("new-tab", [], {"activation-token": "test-token"}))
+
+    def test_console_shortcut_creates_startup_token_from_native_desktop_entry(self):
+        shortcut.gi.require_version("Gtk", "4.0")
+        shortcut.gi.require_version("Gdk", "4.0")
+        from gi.repository import Gtk, Gdk
+        entry = shortcut.GLib.KeyFile()
+        text = "[Desktop Entry]\nType=Application\nName=Console\nExec=/bin/true --tab\nStartupNotify=true\nDBusActivatable=false\n"
+        entry.load_from_data(text, len(text), shortcut.GLib.KeyFileFlags.NONE)
+        app = shortcut.GioUnix.DesktopAppInfo.new_from_keyfile(entry)
+        display = MagicMock()
+        context = display.get_app_launch_context.return_value
+        context.get_startup_notify_id.return_value = "test-startup"
+        with patch.dict(os.environ, {}, clear=True), \
+                patch.object(shortcut.GioUnix.DesktopAppInfo, "new", return_value=app), \
+                patch.object(Gtk, "init"), patch.object(Gdk.Display, "get_default", return_value=display), \
+                patch.object(shortcut, "call") as activate:
+            shortcut.terminal()
+        context.get_startup_notify_id.assert_called_once_with(app, [])
+        self.assertEqual(activate.call_args.args[4].unpack(),
+                         ("new-tab", [], {"activation-token": "test-startup", "desktop-startup-id": "test-startup"}))
+
     def test_brightness_zero_updates_every_control_and_unique_monitor(self):
         controls = {code: 100 for code in ("10", "12", "16", "18", "1a")}
         first, second = ("--bus", "6"), ("--display", "2")
@@ -252,6 +290,29 @@ class HelperScriptTest(unittest.TestCase):
             nautilus.local_path("https://example.com/home/user")
         self.assertEqual(nautilus.copy_values("copy-name", ["file:///home/user/$(touch%20bad).txt"]),
                          "$(touch bad).txt")
+
+    def test_nautilus_terminal_opens_console_tab_in_selected_directory(self):
+        with tempfile.TemporaryDirectory(prefix="miuutil-console-") as directory:
+            process = MagicMock()
+            process.wait.return_value = 0
+            with patch.object(nautilus.subprocess, "Popen", return_value=process) as launch:
+                nautilus.perform("terminal", [Path(directory).as_uri()])
+            self.assertEqual(launch.call_args.args[0],
+                             ["/usr/bin/kgx", "--tab", "--working-directory=" + directory])
+            self.assertEqual(launch.call_args.kwargs["cwd"], directory)
+
+    def test_nautilus_command_runner_preserves_command_as_one_console_argument(self):
+        with tempfile.TemporaryDirectory(prefix="miuutil-console-") as directory:
+            command = "printf '%s\n' 'spaces; $(literal)'"
+            process = MagicMock()
+            process.wait.return_value = 0
+            with patch.object(nautilus, "ask_command", return_value=command), \
+                    patch.object(nautilus.subprocess, "Popen", return_value=process) as launch:
+                nautilus.perform("execute", [Path(directory).as_uri()])
+            self.assertEqual(launch.call_args.args[0],
+                             ["/usr/bin/kgx", "--tab", "--working-directory=" + directory,
+                              "--", "/bin/bash", "-ic", nautilus.COMMAND_RUNNER,
+                              "nautilus-command", command])
 
     def test_snapshot_failure_stops_package_transaction(self):
         class SystemFile:

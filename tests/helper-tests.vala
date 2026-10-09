@@ -63,6 +63,27 @@ void describes_recovery_without_mutation () {
     }
 }
 
+void describes_official_harmonoid_install () {
+    try {
+        var change = new MiuUtil.PrivilegedChange ("applications-harmonoid");
+        var plan = change.plan ();
+        assert (plan.get_boolean_member ("requires_admin"));
+        var packages = plan.get_array_member ("packages");
+        string[] requested = {};
+        foreach (var node in packages.get_elements ())
+            requested += node.get_string ();
+        assert ("mpv" in requested);
+        assert ("libmpv-dev" in requested);
+        assert ("xdg-desktop-portal" in requested);
+        assert (plan.get_array_member ("services").get_string_element (0).contains ("Harmonoid"));
+        var report = change.inspect ();
+        if (MiuUtil.PrivilegedChange.execute ({"/usr/bin/dpkg-query", "--show", "--showformat=${db:Status-Status}", "harmonoid"}, false, false).strip () == "installed")
+            assert (report.get_string_member ("state") == "matching");
+    } catch (Error error) {
+        critical ("%s", error.message);
+    }
+}
+
 void private_assessments_require_authorisation () {
     if (Posix.geteuid () == 0)
         return;
@@ -169,6 +190,7 @@ int main (string[] arguments) {
     Test.add_func ("/helper/rejects-user-operations", rejects_user_operations);
     Test.add_func ("/helper/describes-fixed-package-install", describes_fixed_package_install);
     Test.add_func ("/helper/describes-recovery-without-mutation", describes_recovery_without_mutation);
+    Test.add_func ("/helper/describes-official-harmonoid-install", describes_official_harmonoid_install);
     Test.add_func ("/helper/private-assessments-require-authorisation", private_assessments_require_authorisation);
     Test.add_func ("/helper/package-queries-preserve-stdout-and-drain-stderr", package_queries_preserve_stdout_and_drain_stderr);
     Test.add_func ("/helper/failed-commands-keep-bounded-diagnostics", failed_commands_keep_bounded_diagnostics);
