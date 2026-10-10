@@ -21,6 +21,7 @@
     <file alias="payloads/default-applications/pdf.list">../data/payloads/default-applications/pdf.list</file>
     <file alias="payloads/mise/config.toml">../data/payloads/mise/config.toml</file>
     <file alias="payloads/mpv/mpv.conf">../data/payloads/mpv/mpv.conf</file>
+    <file alias="payloads/mpv/modernz.conf">../data/payloads/mpv/modernz.conf</file>
     <file alias="payloads/nautilus.json">../data/payloads/nautilus.json</file>
     <file alias="payloads/nautilus-tabs.conf">../data/payloads/nautilus-tabs.conf</file>
     <file alias="payloads/terminal.list">../data/payloads/terminal.list</file>

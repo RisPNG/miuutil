@@ -47,7 +47,7 @@ Install Debian's `meson` and `ninja-build` packages as well before building a pa
 ```sh
 sudo apt install meson ninja-build
 mise run package
-sudo apt install ../miuutil_0.1.4-1_amd64.deb
+sudo apt install ../miuutil_0.1.5-1_amd64.deb
 miuutil
 ```
 
@@ -57,11 +57,11 @@ Use the filename produced by the build if its version or architecture differs. T
 
 [Build Debian package](../.github/workflows/build-deb.yml) builds when a tag is pushed or the default branch changes. It checks out the triggering commit and uses [build-package.sh](build-package.sh) to export that exact Git tree into the existing Debian 13 build container. Uncommitted files are excluded. Native Debian packaging runs the Meson tests before exporting the amd64 package.
 
-Tag builds retain the package version in the tagged commit's `debian/changelog`. Update that version and `meson.build` when preparing a new application release. The tag must point to a commit that contains the workflow. For example, replace `<commit-sha>` with the intended release commit:
+Tag builds retain the package version in the tagged commit's `debian/changelog`. Update that version, `meson.build` and the AppStream release metadata when preparing a new application release. The tag must point to a commit that contains the workflow. For example, replace `<commit-sha>` with the intended release commit:
 
 ```sh
-git tag v0.1.4 <commit-sha>
-git push origin v0.1.4
+git tag 0.1.5 <commit-sha>
+git push origin 0.1.5
 ```
 
 Each tagged GitHub release contains its `.deb`, the launcher from that commit, `SHA256SUMS` and `build.json` with the source commit, package and launcher identities, and digests. Releases remain drafts until their files upload successfully. A failed draft can be retried; a published tagged package and its launcher are preserved.

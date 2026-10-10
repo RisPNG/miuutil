@@ -375,9 +375,12 @@ int main (string[] arguments) {
             assert (!associations.has_key ("Default Applications", "audio/*"));
             assert (!associations.has_key ("Default Applications", "image/*"));
             foreach (var type in new string[] { "audio/vnd.miuutil-fixture", "video/vnd.miuutil-fixture", "image/vnd.miuutil-fixture", "application/pdf", "text/html" }) {
-                var application = AppInfo.get_default_for_type (type, false);
-                assert (application != null);
-                assert_cmpstr (application.get_id (), CompareOperator.EQ, associations.get_string_list ("Default Applications", type)[0]);
+                var probe = new Subprocess.newv ({ test_program, "--default-application", type },
+                    SubprocessFlags.STDOUT_PIPE | SubprocessFlags.STDERR_PIPE);
+                string selected;
+                probe.communicate_utf8 (null, null, out selected, null);
+                assert (probe.get_successful ());
+                assert_cmpstr (selected.strip (), CompareOperator.EQ, associations.get_string_list ("Default Applications", type)[0]);
             }
             var fallback_data = workspace + "/audio-fallback-data";
             DirUtils.create_with_parents (fallback_data + "/applications", 0700);
@@ -415,16 +418,101 @@ int main (string[] arguments) {
     Test.add_func ("/options/mpv-preserves-other-keys", () => {
         try {
             var directory = workspace + "/config/mpv";
-            DirUtils.create_with_parents (directory, 0700);
-            FileUtils.set_contents (directory + "/mpv.conf", "volume=42\nkeep-open=no\n");
+            DirUtils.create_with_parents (directory + "/script-opts", 0700);
+            FileUtils.set_contents (directory + "/mpv.conf",
+                "volume=42\nkeep-open=no\nwatch-later-options-remove=volume,speed\nwatch-later-options-remove=gamma\n");
+            FileUtils.set_contents (directory + "/script-opts/modernz.conf",
+                "window_top_bar=always\nlayout=compact\nicon_theme=material\nicon_style=outline\nseekbar_height=large\nnibbles_style=bar\n");
+            FileUtils.set_contents (directory + "/script-opts/thumbfast.conf", "network=yes\n");
             var option = catalogue_option ("applications-mpv");
+            assert ("applications-modernz" in option.dependencies);
+            assert ("applications-thumbfast" in option.dependencies);
             apply_option (option);
             string content;
             FileUtils.get_contents (directory + "/mpv.conf", out content);
             assert (content.contains ("volume=42"));
             assert (content.contains ("keep-open=always"));
             assert (!content.contains ("keep-open=no"));
+            assert (content.contains ("osc=no"));
+            assert (content.contains ("watch-later-options-remove=sub-pos"));
+            assert (content.contains ("watch-later-options-remove=volume,speed"));
+            assert (content.contains ("watch-later-options-remove=gamma"));
+            assert_cmpuint (content.split ("watch-later-options-remove=sub-pos").length, CompareOperator.EQ, 2);
+            var saved = content;
+            apply_option (option);
+            FileUtils.get_contents (directory + "/mpv.conf", out content);
+            assert_cmpstr (content, CompareOperator.EQ, saved);
+            FileUtils.get_contents (directory + "/script-opts/modernz.conf", out content);
+            assert (content.contains ("window_top_bar=always"));
+            assert (content.contains ("layout=default"));
+            assert (content.contains ("icon_theme=fluent"));
+            assert (content.contains ("icon_style=mixed"));
+            assert (content.contains ("seekbar_height=medium"));
+            assert (content.contains ("nibbles_style=triangle"));
+            assert (!content.contains ("layout=compact"));
+            assert (!content.contains ("icon_theme=material"));
+            FileUtils.get_contents (directory + "/script-opts/thumbfast.conf", out content);
+            assert_cmpstr (content, CompareOperator.EQ, "network=yes\n");
             assert (option.state == OptionState.MATCHING);
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        }
+    });
+
+    Test.add_func ("/options/modernz-requires-font-and-backs-up-uosc", () => {
+        try {
+            var directory = workspace + "/config/mpv";
+            DirUtils.create_with_parents (directory + "/scripts/uosc", 0700);
+            DirUtils.create_with_parents (directory + "/fonts", 0700);
+            DirUtils.create_with_parents (directory + "/script-opts", 0700);
+            FileUtils.set_contents (directory + "/scripts/modernz.lua", "existing ModernZ script");
+            FileUtils.set_contents (directory + "/scripts/thumbfast.lua", "existing thumbfast script");
+            FileUtils.set_contents (directory + "/scripts/uosc/main.lua", "old uosc script");
+            FileUtils.set_contents (directory + "/scripts/personal.lua", "personal script");
+            File.new_for_path (directory + "/scripts/uosc.lua").make_symbolic_link ("personal.lua");
+            FileUtils.set_contents (directory + "/scripts/uosc_shared.lua", "old uosc library");
+            FileUtils.set_contents (directory + "/script-opts/modernz.conf", "layout=compact\n");
+            FileUtils.set_contents (directory + "/fonts/personal.ttf", "personal font");
+            var option = catalogue_option ("applications-modernz");
+            inspect_option (option);
+            assert (option.state != OptionState.MATCHING);
+            FileUtils.set_contents (directory + "/fonts/modernz-icons.ttf", "existing ModernZ font");
+            inspect_option (option);
+            assert (option.state == OptionState.PARTIAL);
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert (!FileUtils.test (directory + "/scripts/uosc", FileTest.EXISTS));
+            assert (!FileUtils.test (directory + "/scripts/uosc.lua", FileTest.IS_SYMLINK));
+            assert (!FileUtils.test (directory + "/scripts/uosc_shared.lua", FileTest.EXISTS));
+            var backups = File.new_for_path (workspace + "/state/miuutil/backups/applications-modernz")
+                .enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
+            var saved = backups.next_file ();
+            assert (saved != null);
+            var backup = workspace + "/state/miuutil/backups/applications-modernz/" + saved.get_name ();
+            string content;
+            FileUtils.get_contents (backup + "/uosc/main.lua", out content);
+            assert_cmpstr (content, CompareOperator.EQ, "old uosc script");
+            assert_cmpstr (FileUtils.read_link (backup + "/uosc.lua"), CompareOperator.EQ, "personal.lua");
+            FileUtils.get_contents (backup + "/uosc_shared.lua", out content);
+            assert_cmpstr (content, CompareOperator.EQ, "old uosc library");
+            foreach (var retained in new string[] { "scripts/modernz.lua", "scripts/thumbfast.lua", "scripts/personal.lua",
+                "script-opts/modernz.conf", "fonts/modernz-icons.ttf", "fonts/personal.ttf" }) {
+                FileUtils.get_contents (directory + "/" + retained, out content);
+                assert_cmpstr (content, CompareOperator.EQ,
+                    retained == "scripts/modernz.lua" ? "existing ModernZ script" :
+                    retained == "scripts/thumbfast.lua" ? "existing thumbfast script" :
+                    retained == "scripts/personal.lua" ? "personal script" :
+                    retained == "script-opts/modernz.conf" ? "layout=compact\n" :
+                    retained == "fonts/modernz-icons.ttf" ? "existing ModernZ font" : "personal font");
+            }
+            var thumbfast = catalogue_option ("applications-thumbfast");
+            inspect_option (thumbfast);
+            assert (thumbfast.state == OptionState.MATCHING);
+            apply_option (thumbfast);
+            apply_option (option);
+            assert (backups.next_file () == null);
+            backups.close ();
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();

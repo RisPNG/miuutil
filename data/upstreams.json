@@ -74,12 +74,6 @@
       "format": "tar-binary",
       "sha256": "593d57eaa0b6c1b8d3bb9eaa3a1c16b081cea10599276ce69bed2ad5dbe7c361"
     },
-    "uosc": {
-      "url": "https://github.com/tomasklaen/uosc/releases/download/5.13.0/uosc.zip",
-      "version": "5.13.0",
-      "format": "zip",
-      "sha256": "4be9da3289285300fa374496c3f1bfd7bb20ac08e890d25bd5a06b28eebe4882"
-    },
     "rustup": {
       "url": "https://static.rust-lang.org/rustup/archive/1.29.1/x86_64-unknown-linux-gnu/rustup-init",
       "version": "1.29.1",
@@ -91,6 +85,18 @@
       "version": "2.0.1",
       "format": "tar-source",
       "sha256": "6f056a611972543b2ef9f020ef4c2b0ae1bb79588ee3c0b692d864eafbf63f14"
+    },
+    "modernz": {
+      "url": "https://codeload.github.com/Samillion/ModernZ/tar.gz/579897e8c974c380caa5017dc7b27a69123c1333",
+      "version": "579897e8c974c380caa5017dc7b27a69123c1333",
+      "format": "tar-source",
+      "sha256": "52085d596173f55efdb1c7ba195e2f9f8695872acb0a96960d77a6c6584f043c"
+    },
+    "thumbfast": {
+      "url": "https://codeload.github.com/po5/thumbfast/tar.gz/0f711de3138c9bd6718209d819ac54022c23ded2",
+      "version": "0f711de3138c9bd6718209d819ac54022c23ded2",
+      "format": "tar-source",
+      "sha256": "2d16e9172750c222f7357e3523e41ee9da8fc148fb1e4c0d5f6ac8a317c3a96e"
     }
   },
   "extensions": {

@@ -393,6 +393,11 @@ namespace MiuUtil {
             }
             if (kind == "text-keys") {
                 var keys = new HashTable<string, string> (str_hash, str_equal);
+                string[] repeatable = {};
+                if (entry.has_member ("repeatable_keys")) {
+                    foreach (var key in entry.get_array_member ("repeatable_keys").get_elements ())
+                        repeatable += key.get_string ();
+                }
                 foreach (var line in desired.split ("\n")) {
                     int separator = line.index_of ("=");
                     if (separator > 0)
@@ -401,8 +406,11 @@ namespace MiuUtil {
                 var merged = new StringBuilder ();
                 foreach (var line in existing.split ("\n")) {
                     int separator = line.index_of ("=");
-                    if (separator > 0 && keys.contains (line.substring (0, separator).strip ()))
-                        continue;
+                    if (separator > 0) {
+                        var key = line.substring (0, separator).strip ();
+                        if (keys.contains (key) && (!(key in repeatable) || line.strip () == keys.lookup (key).strip ()))
+                            continue;
+                    }
                     if (line != "" || merged.len > 0)
                         merged.append (line + "\n");
                 }
@@ -493,7 +501,9 @@ namespace MiuUtil {
                 if (path.contains ("/vivaldi/") && FileUtils.test (Path.build_filename (Environment.get_user_config_dir (), "vivaldi", "SingletonLock"), FileTest.IS_SYMLINK))
                     return new Assessment (OptionState.UNAVAILABLE, "Close Vivaldi before changing its profile preferences.");
                 bool match = false;
-                if (format == "link") {
+                if (format == "absent") {
+                    match = !FileUtils.test (path, FileTest.EXISTS) && !FileUtils.test (path, FileTest.IS_SYMLINK);
+                } else if (format == "link") {
                     var target = (entry.get_string_member ("target")).replace ("$HOME", Environment.get_home_dir ())
                         .replace ("$CONFIG", Environment.get_user_config_dir ())
                         .replace ("$DATA", Environment.get_user_data_dir ())
@@ -579,7 +589,7 @@ namespace MiuUtil {
                 }
                 if (match)
                     matches++;
-                else if (format != "link" && FileUtils.test (path, FileTest.EXISTS) &&
+                else if (format != "link" && format != "absent" && FileUtils.test (path, FileTest.EXISTS) &&
                     !File.new_for_path (path).query_info (FileAttribute.ACCESS_CAN_WRITE, FileQueryInfoFlags.NONE, cancellable).get_attribute_boolean (FileAttribute.ACCESS_CAN_WRITE))
                     return new Assessment (OptionState.UNAVAILABLE, "The selected configuration file is read-only: " + path);
                 observed += path;
@@ -612,6 +622,9 @@ namespace MiuUtil {
                         .replace ("$STATE", Environment.get_user_state_dir ())
                         .replace ("$LIBEXEC", Config.LIBEXEC_DIR);
                     var destination = File.new_for_path (path);
+                    var format = entry.get_string_member ("format");
+                    if (format == "absent" && !destination.query_exists () && !FileUtils.test (path, FileTest.IS_SYMLINK))
+                        continue;
                     if (entry.get_string_member ("format") == "binary" && entry.has_member ("extension_id") && destination.query_exists ()) {
                         if (!(yield browser_theme_is_installed (entry, path, cancellable)))
                             throw new IOError.NOT_SUPPORTED ("The existing theme extension cannot be verified and will be retained.");
@@ -626,12 +639,15 @@ namespace MiuUtil {
                         if (!backup.get_parent ().query_exists ())
                             backup.get_parent ().make_directory_with_parents (cancellable);
                         var flags = entry.get_string_member ("format") == "link" ? FileCopyFlags.NOFOLLOW_SYMLINKS | FileCopyFlags.OVERWRITE : FileCopyFlags.OVERWRITE;
-                        if (destination.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS, cancellable) == FileType.DIRECTORY)
+                        if (format == "absent" || destination.query_file_type (FileQueryInfoFlags.NOFOLLOW_SYMLINKS, cancellable) == FileType.DIRECTORY)
                             destination.move (backup, FileCopyFlags.OVERWRITE, cancellable);
                         else
                             destination.copy (backup, flags, cancellable);
                     }
-                    var format = entry.get_string_member ("format");
+                    if (format == "absent") {
+                        output ("Backed up " + path);
+                        continue;
+                    }
                     if (format == "link") {
                         var target = (entry.get_string_member ("target")).replace ("$HOME", Environment.get_home_dir ())
                             .replace ("$CONFIG", Environment.get_user_config_dir ())

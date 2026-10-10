@@ -5,7 +5,7 @@ namespace MiuUtil {
         private Json.Object specification;
         private Json.Object manifest;
         private string shell_version = "";
-        private ConfigurationOperation? cursor_links;
+        private ConfigurationOperation? installation_files;
 
         public UpstreamOperation (string identity, Json.Object specification) throws Error {
             this.identity = identity;
@@ -15,9 +15,9 @@ namespace MiuUtil {
             var parser = new Json.Parser ();
             parser.load_from_data ((string) bytes.get_data (), (ssize_t) bytes.get_size ());
             manifest = parser.get_root ().get_object ();
-            if (upstream == "fluent-icons" && specification.has_member ("files")) {
-                cursor_links = new ConfigurationOperation (identity, specification);
-                Signal.connect_object (cursor_links, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
+            if (specification.has_member ("files")) {
+                installation_files = new ConfigurationOperation (identity, specification);
+                Signal.connect_object (installation_files, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
             }
         }
 
@@ -47,9 +47,9 @@ namespace MiuUtil {
                     bool light_installed = FileUtils.test (Path.build_filename (
                         FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
                     if (icons_installed && dark_installed && light_installed) {
-                        if (cursor_links == null)
+                        if (installation_files == null)
                             return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed.");
-                        var links = yield cursor_links.inspect (cancellable);
+                        var links = yield installation_files.inspect (cancellable);
                         if (links.state == OptionState.UNAVAILABLE)
                             return links;
                         return new Assessment (links.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
@@ -62,8 +62,8 @@ namespace MiuUtil {
                         return new Assessment (OptionState.MATCHING, "ble.sh is installed system-wide.");
                     installed_path = Path.build_filename (data, "blesh", "ble.sh");
                     break;
-                case "uosc":
-                    installed_path = Path.build_filename (config, "mpv", "scripts", "uosc", "main.lua");
+                case "modernz": case "thumbfast":
+                    installed_path = Path.build_filename (config, "mpv", "scripts", upstream + ".lua");
                     break;
                 case "qview":
                     installed_path = Path.build_filename (home, "AppImages", "qview.appimage");
@@ -120,9 +120,20 @@ namespace MiuUtil {
                     return new Assessment (OptionState.UNAVAILABLE, "This upstream installer is not supported.");
             }
             bool executable_install = program != null || upstream == "qview";
-            if ((installed_path != null && FileUtils.test (installed_path, executable_install ? FileTest.IS_EXECUTABLE : FileTest.EXISTS)) ||
-                (program != null && Environment.find_program_in_path (program) != null))
+            bool installed = (installed_path != null && FileUtils.test (installed_path, executable_install ? FileTest.IS_EXECUTABLE : FileTest.EXISTS)) ||
+                (program != null && Environment.find_program_in_path (program) != null);
+            if (upstream == "modernz")
+                installed = installed && FileUtils.test (Path.build_filename (config, "mpv", "fonts", "modernz-icons.ttf"), FileTest.EXISTS);
+            if (installed) {
+                if (installation_files != null) {
+                    var files = yield installation_files.inspect (cancellable);
+                    if (files.state == OptionState.UNAVAILABLE)
+                        return files;
+                    return new Assessment (files.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
+                        files.state == OptionState.MATCHING ? "Already installed." : "Installed; account files need updating.", files.details);
+                }
                 return new Assessment (OptionState.MATCHING, "Already installed.");
+            }
             if (upstream == "qview" || upstream == "starship" || upstream == "mise" || upstream == "easyvenv" || upstream == "rustup") {
                 var architecture = (yield run_process ({ "uname", "-m" }, cancellable)).strip ();
                 if (architecture != "x86_64")
@@ -136,6 +147,7 @@ namespace MiuUtil {
 
         public override async void apply (Cancellable? cancellable) throws Error {
             var data = Environment.get_user_data_dir ();
+            var config = Environment.get_user_config_dir ();
             if (upstream == "fluent-icons") {
                 bool icons_installed = FileUtils.test ("/usr/share/icons/Fluent-dark/index.theme", FileTest.EXISTS) ||
                     FileUtils.test (Path.build_filename (data, "icons", "Fluent-dark", "index.theme"), FileTest.EXISTS);
@@ -146,10 +158,17 @@ namespace MiuUtil {
                 bool light_installed = FileUtils.test (Path.build_filename (
                     FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
                 if (icons_installed && dark_installed && light_installed) {
-                    if (cursor_links != null && (yield cursor_links.inspect (cancellable)).state != OptionState.MATCHING)
-                        yield cursor_links.apply (cancellable);
+                    if (installation_files != null && (yield installation_files.inspect (cancellable)).state != OptionState.MATCHING)
+                        yield installation_files.apply (cancellable);
                     return;
                 }
+            }
+            if (upstream == "modernz" &&
+                FileUtils.test (Path.build_filename (config, "mpv", "scripts", "modernz.lua"), FileTest.EXISTS) &&
+                FileUtils.test (Path.build_filename (config, "mpv", "fonts", "modernz-icons.ttf"), FileTest.EXISTS)) {
+                if (installation_files != null)
+                    yield installation_files.apply (cancellable);
+                return;
             }
             Json.Object artifact;
             if (upstream == "extension") {
@@ -162,7 +181,6 @@ namespace MiuUtil {
             var archive = Path.build_filename (workspace, "release");
             var source = Path.build_filename (workspace, "source");
             var home = Environment.get_home_dir ();
-            var config = Environment.get_user_config_dir ();
             var bin = Path.build_filename (home, ".local", "bin");
             string? extension_staging = null;
             try {
@@ -206,8 +224,8 @@ namespace MiuUtil {
                         DirUtils.create_with_parents (Path.build_filename (icons, "fluent"), 0755);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist-dark") + "/.", Path.build_filename (icons, "fluent-dark") }, cancellable);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist") + "/.", Path.build_filename (icons, "fluent") }, cancellable);
-                        if (cursor_links != null)
-                            yield cursor_links.apply (cancellable);
+                        if (installation_files != null)
+                            yield installation_files.apply (cancellable);
                         break;
                     case "blesh":
                         var blesh = Path.build_filename (data, "blesh");
@@ -237,14 +255,24 @@ namespace MiuUtil {
                         launcher.set_string ("Desktop Entry", "MimeType", "image/bmp;image/x-win-bitmap;image/gif;image/icns;image/x-icon;image/jpeg;image/jpg;image/x-portable-bitmap;image/x-portable-graymap;image/png;image/x-portable-pixmap;image/svg+xml;image/tiff;image/vnd.wap.wbmp;image/webp;image/x-xbitmap;image/x-xpixmap;application/x-navi-animation;image/apng;image/avif;image/avif-sequence;image/x-sgi-bw;image/aces;image/x-exr;image/vnd.radiance;image/heic;image/heif;image/jxl;application/x-krita;image/openraster;image/vnd.zbrush.pcx;image/x-pcx;image/x-pic;image/vnd.adobe.photoshop;application/x-photoshop;application/photoshop;application/psd;image/psd;image/x-sun-raster;image/x-rgb;image/x-sgi-rgba;image/sgi;image/x-tga;image/x-xcf;");
                         FileUtils.set_contents (Path.build_filename (launchers, "qview.desktop"), launcher.to_data ());
                         break;
-                    case "uosc":
+                    case "modernz": case "thumbfast":
                         var mpv = Path.build_filename (config, "mpv");
-                        DirUtils.create_with_parents (mpv, 0755);
-                        foreach (var part in new string[] { "scripts", "fonts", "script-opts" }) {
-                            var supplied = Path.build_filename (source, part);
-                            if (FileUtils.test (supplied, FileTest.IS_DIR))
-                                yield run_process ({ "cp", "-a", supplied, mpv }, cancellable);
+                        var scripts = Path.build_filename (mpv, "scripts");
+                        DirUtils.create_with_parents (scripts, 0755);
+                        var script = Path.build_filename (scripts, upstream + ".lua");
+                        if (!FileUtils.test (script, FileTest.EXISTS))
+                            yield File.new_for_path (Path.build_filename (source, upstream + ".lua")).copy_async (
+                                File.new_for_path (script), FileCopyFlags.NONE, Priority.DEFAULT, cancellable, null);
+                        if (upstream == "modernz") {
+                            var fonts = Path.build_filename (mpv, "fonts");
+                            DirUtils.create_with_parents (fonts, 0755);
+                            var font = Path.build_filename (fonts, "modernz-icons.ttf");
+                            if (!FileUtils.test (font, FileTest.EXISTS))
+                                yield File.new_for_path (Path.build_filename (source, "modernz-icons.ttf")).copy_async (
+                                    File.new_for_path (font), FileCopyFlags.NONE, Priority.DEFAULT, cancellable, null);
                         }
+                        if (installation_files != null)
+                            yield installation_files.apply (cancellable);
                         break;
                     case "fetch":
                         yield run_process ({ "make", "-C", source, "-j2" }, cancellable);

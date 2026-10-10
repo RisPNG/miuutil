@@ -1,3 +1,14 @@
+miuutil (0.1.5-1) unstable; urgency=medium
+
+  * Replace uosc with ModernZ and thumbfast seek previews.
+  * Apply Fluent mixed icons, the default layout and triangle chapter markers.
+  * Preserve account preferences and back up conflicting controller scripts.
+  * Add application defaults and reuse Console and Nautilus tabs.
+  * Repair Fluent cursor discovery and window-button hover flashing.
+  * Let python3-nautilus select its matching introspection package.
+
+ -- Ris Peng <hello@rispeng.com>  Sat, 10 Oct 2026 13:03:15 +0800
+
 miuutil (0.1.4-1) unstable; urgency=medium
 
   * Zero supported monitor brightness, contrast and RGB gains together.

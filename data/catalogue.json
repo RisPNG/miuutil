@@ -695,7 +695,6 @@
           "build-essential",
           "libfuse2t64",
           "python3-nautilus",
-          "gir1.2-nautilus-4.0",
           "pkg-config",
           "meson",
           "ninja-build",
@@ -3401,17 +3400,18 @@
     {
       "id": "applications-mpv",
       "title": "mpv window and controller preferences",
-      "description": "Keep the mpv window open and let uosc provide the controller.",
+      "description": "Keep the mpv window open and use ModernZ with seek previews.",
       "category": "applications",
       "scope": "Your account",
       "risk": "Low",
       "current": "",
-      "desired": "Keep the mpv window open and let uosc provide the controller.",
-      "details": "Preserves unrelated mpv options. Install uosc before disabling the built-in controller.",
+      "desired": "Keep the mpv window open and use ModernZ with seek previews.",
+      "details": "Uses ModernZ’s default layout, Fluent icons in mixed style, medium seek bar and triangle chapter markers. thumbfast supplies seek previews. Preserves unrelated mpv and ModernZ options.",
       "requires_admin": false,
       "dependencies": [
         "apps-mpv",
-        "applications-uosc"
+        "applications-modernz",
+        "applications-thumbfast"
       ],
       "operation": {
         "kind": "configuration",
@@ -3419,7 +3419,15 @@
           {
             "path": "$CONFIG/mpv/mpv.conf",
             "format": "text-keys",
-            "payload": "mpv/mpv.conf"
+            "payload": "mpv/mpv.conf",
+            "repeatable_keys": [
+              "watch-later-options-remove"
+            ]
+          },
+          {
+            "path": "$CONFIG/mpv/script-opts/modernz.conf",
+            "format": "text-keys",
+            "payload": "mpv/modernz.conf"
           }
         ]
       }
@@ -3804,22 +3812,55 @@
       }
     },
     {
-      "id": "applications-uosc",
-      "title": "Install uosc for mpv",
-      "description": "Install uosc for mpv.",
+      "id": "applications-modernz",
+      "title": "Install ModernZ for mpv",
+      "description": "Install ModernZ’s mpv controller and icon font.",
       "category": "applications",
       "scope": "Your account",
       "risk": "Low",
       "current": "",
-      "desired": "Install uosc for mpv.",
-      "details": "Installs from a verified official upstream artifact into your account. Network access is required. Existing installed software is detected first.",
+      "desired": "Install ModernZ’s mpv controller and icon font.",
+      "details": "Installs a verified upstream source archive into your account. Backs up conflicting uosc controller scripts before removing them from mpv’s active scripts. Preserves other scripts, existing ModernZ files and preferences. Network access is required for missing files.",
       "requires_admin": false,
       "dependencies": [
         "development-install-tools"
       ],
       "operation": {
         "kind": "upstream",
-        "upstream": "uosc"
+        "upstream": "modernz",
+        "files": [
+          {
+            "path": "$CONFIG/mpv/scripts/uosc",
+            "format": "absent"
+          },
+          {
+            "path": "$CONFIG/mpv/scripts/uosc.lua",
+            "format": "absent"
+          },
+          {
+            "path": "$CONFIG/mpv/scripts/uosc_shared.lua",
+            "format": "absent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "applications-thumbfast",
+      "title": "Install thumbfast for mpv",
+      "description": "Install seek previews for mpv controllers.",
+      "category": "applications",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Show seek previews with thumbfast.",
+      "details": "Installs from a verified official upstream artifact into your account. ModernZ displays thumbnails through its native thumbfast integration. Preserves an existing thumbfast script and configuration. Network access is required for installation.",
+      "requires_admin": false,
+      "dependencies": [
+        "development-install-tools"
+      ],
+      "operation": {
+        "kind": "upstream",
+        "upstream": "thumbfast"
       }
     },
     {

@@ -12,6 +12,8 @@ The audio preference lists Harmonoid first and mpv next. mpv handles audio while
 
 Harmonoid's optional installation downloads its verified official Debian package directly from the publisher; its binary is not bundled in MiuUtil or the Miubian ISO.
 
+The mpv preference installs ModernZ and thumbfast before selecting the controller. It uses the default layout, Fluent icon theme with mixed icon style, medium seek bar and triangle chapter markers. ModernZ's native thumbfast integration shows seek previews. Existing mpv and ModernZ settings outside this preset, thumbfast configuration, scripts and fonts are preserved. The native repeated `watch-later-options-remove` directives retain existing exclusions while adding `sub-pos`, so ModernZ's temporary subtitle position is not saved for playback resume. Conflicting uosc controller scripts are moved into the account's MiuUtil backups so both controllers do not load together. Restart mpv after applying.
+
 The Console default selects its native New Tab action for generic and GNOME terminal requests and uses `kgx --tab` for desktop launches. Super+T activates Console's New Tab action over D-Bus, preserving its most recently active tab's directory. The system terminal alternative uses `xdg-terminal-exec` to share that preference. Browser alternatives are a separate system choice. `BROWSER` and `TERMINAL` environment changes take effect in a new session.
 
 The Nautilus tab choice enables the packaged native extension through the account's `miu/nautilus-tabs.conf` file. Installing MiuUtil alone leaves it disabled; Miubian enables the same preference system-wide. It handles ordinary folder launches and FileManager1 file reveals, including Vivaldi's Show in File Manager, through native navigation and selection. Restart Files or sign out and in to load it. Nautilus's command runner also uses a Console tab.
@@ -79,7 +81,8 @@ Fluent cursor themes are linked from `~/.icons/fluent` and `~/.icons/fluent-dark
 | easyvenv | [easyvenv](https://github.com/RisPNG/easyvenv) |
 | fetch | [fetch](https://github.com/areofyl/fetch) |
 | qView | [qView](https://github.com/jurplel/qView) |
-| uosc | [uosc](https://github.com/tomasklaen/uosc) |
+| ModernZ | [ModernZ](https://github.com/Samillion/ModernZ) |
+| thumbfast | [thumbfast](https://github.com/po5/thumbfast) |
 | Harmonoid | [Official downloads](https://harmonoid.com/downloads/) and [release licence](https://github.com/harmonoid/harmonoid/blob/v0.3.32/LICENSE) |
 | Actions for Nautilus | [Actions for Nautilus](https://github.com/bassmanitram/actions-for-nautilus) |
 | Homebrew | [Homebrew](https://github.com/Homebrew/brew) |
