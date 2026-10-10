@@ -422,7 +422,7 @@ int main (string[] arguments) {
             FileUtils.set_contents (directory + "/mpv.conf",
                 "volume=42\nkeep-open=no\nwatch-later-options-remove=volume,speed\nwatch-later-options-remove=gamma\n");
             FileUtils.set_contents (directory + "/script-opts/modernz.conf",
-                "window_top_bar=always\nlayout=compact\nicon_theme=material\nicon_style=outline\nseekbar_height=large\nnibbles_style=bar\n");
+                "window_top_bar=always\nlayout=compact\nicon_theme=material\nicon_style=outline\ntimems=no\nsubtitles_button=no\naudio_tracks_button=no\nseekbar_height=large\nnibbles_style=bar\n");
             FileUtils.set_contents (directory + "/script-opts/thumbfast.conf", "network=yes\n");
             var option = catalogue_option ("applications-mpv");
             assert ("applications-modernz" in option.dependencies);
@@ -439,18 +439,27 @@ int main (string[] arguments) {
             assert (content.contains ("watch-later-options-remove=gamma"));
             assert_cmpuint (content.split ("watch-later-options-remove=sub-pos").length, CompareOperator.EQ, 2);
             var saved = content;
-            apply_option (option);
-            FileUtils.get_contents (directory + "/mpv.conf", out content);
-            assert_cmpstr (content, CompareOperator.EQ, saved);
             FileUtils.get_contents (directory + "/script-opts/modernz.conf", out content);
             assert (content.contains ("window_top_bar=always"));
             assert (content.contains ("layout=default"));
             assert (content.contains ("icon_theme=fluent"));
             assert (content.contains ("icon_style=mixed"));
+            assert (content.contains ("timems=yes"));
+            assert (content.contains ("subtitles_button=yes"));
+            assert (content.contains ("audio_tracks_button=yes"));
             assert (content.contains ("seekbar_height=medium"));
             assert (content.contains ("nibbles_style=triangle"));
             assert (!content.contains ("layout=compact"));
             assert (!content.contains ("icon_theme=material"));
+            assert (!content.contains ("timems=no"));
+            assert (!content.contains ("subtitles_button=no"));
+            assert (!content.contains ("audio_tracks_button=no"));
+            var saved_modernz = content;
+            apply_option (option);
+            FileUtils.get_contents (directory + "/mpv.conf", out content);
+            assert_cmpstr (content, CompareOperator.EQ, saved);
+            FileUtils.get_contents (directory + "/script-opts/modernz.conf", out content);
+            assert_cmpstr (content, CompareOperator.EQ, saved_modernz);
             FileUtils.get_contents (directory + "/script-opts/thumbfast.conf", out content);
             assert_cmpstr (content, CompareOperator.EQ, "network=yes\n");
             assert (option.state == OptionState.MATCHING);
@@ -872,6 +881,55 @@ int main (string[] arguments) {
             assert_cmpint (general.get_int ("hacks-level"), CompareOperator.EQ, 1);
             assert_cmpuint (settings.get_strv ("blacklist").length, CompareOperator.EQ, 8);
             assert_cmpstr (settings.get_string ("personal-preference"), CompareOperator.EQ, "Retain my unrelated blur preference");
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        }
+    });
+
+    Test.add_func ("/options/popup-blur-requires-support-and-preserves-radii-and-pipelines", () => {
+        try {
+            var directory = workspace + "/data/glib-2.0/schemas";
+            compile_sandbox_schema (directory, """
+                <schemalist>
+                  <schema id="org.gnome.shell.extensions.blur-my-shell" path="/org/gnome/shell/extensions/blur-my-shell/">
+                    <key name="pipelines" type="a{sa{sv}}"><default>{}</default></key>
+                  </schema>
+                </schemalist>
+            """);
+            var option = catalogue_option ("appearance-popup-blur");
+            inspect_option (option);
+            assert (option.state == OptionState.UNAVAILABLE);
+            assert (!option.blocked_by_dependencies);
+
+            compile_sandbox_schema (directory, """
+                <schemalist>
+                  <schema id="org.gnome.shell.extensions.blur-my-shell" path="/org/gnome/shell/extensions/blur-my-shell/">
+                    <key name="pipelines" type="a{sa{sv}}"><default>{}</default></key>
+                  </schema>
+                  <schema id="org.gnome.shell.extensions.blur-my-shell.popup" path="/org/gnome/shell/extensions/blur-my-shell/popup/">
+                    <key name="static-blur" type="b"><default>false</default></key>
+                    <key name="pipeline" type="s"><default>'pipeline_personal'</default></key>
+                    <key name="menu-corner-radius" type="i"><default>27</default></key>
+                    <key name="notification-corner-radius" type="i"><default>16</default></key>
+                  </schema>
+                </schemalist>
+            """);
+            var source = new SettingsSchemaSource.from_directory (directory, null, false);
+            var general = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell", false), null, null);
+            var popup = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell.popup", false), null, null);
+            var pipelines = Variant.parse (new VariantType ("a{sa{sv}}"),
+                "{'pipeline_personal': {'name': <'My pipeline'>, 'effects': <@av []>}}");
+            general.set_value ("pipelines", pipelines);
+            inspect_option (option);
+            assert (option.state == OptionState.DIFFERENT);
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert (popup.get_boolean ("static-blur"));
+            assert_cmpstr (popup.get_string ("pipeline"), CompareOperator.EQ, "pipeline_default_rounded");
+            assert_cmpint (popup.get_int ("menu-corner-radius"), CompareOperator.EQ, 27);
+            assert_cmpint (popup.get_int ("notification-corner-radius"), CompareOperator.EQ, 16);
+            assert (general.get_value ("pipelines").equal (pipelines));
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();

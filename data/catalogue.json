@@ -2648,6 +2648,34 @@
       }
     },
     {
+      "id": "appearance-popup-blur",
+      "title": "Rounded popup blur",
+      "description": "Keep menu and notification blur inside rounded corners.",
+      "category": "appearance",
+      "scope": "Your account",
+      "risk": "Low",
+      "current": "",
+      "desired": "Static popup blur with the Default rounded pipeline.",
+      "details": "Blurs the desktop wallpaper behind menus and notification banners while keeping their rounded corners without an additional blur library. Preserves existing corner radii and unrelated blur preferences. Requires an installed Blur My Shell version with popup blur support.",
+      "requires_admin": false,
+      "dependencies": [],
+      "operation": {
+        "kind": "settings",
+        "settings": [
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.popup",
+            "key": "static-blur",
+            "value": "true"
+          },
+          {
+            "schema": "org.gnome.shell.extensions.blur-my-shell.popup",
+            "key": "pipeline",
+            "value": "'pipeline_default_rounded'"
+          }
+        ]
+      }
+    },
+    {
       "id": "appearance-blur",
       "title": "Blur My Shell preferences",
       "description": "Application blur with solid text and DING exclusions.",
@@ -3406,7 +3434,7 @@
       "risk": "Low",
       "current": "",
       "desired": "Keep the mpv window open and use ModernZ with seek previews.",
-      "details": "Uses ModernZ’s default layout, Fluent icons in mixed style, medium seek bar and triangle chapter markers. thumbfast supplies seek previews. Preserves unrelated mpv and ModernZ options.",
+      "details": "Uses ModernZ’s default layout, Fluent icons in mixed style, medium seek bar and triangle chapter markers. Timestamps show milliseconds. Audio and subtitle selectors appear when tracks are available and the window has enough room. thumbfast supplies seek previews. Preserves unrelated mpv and ModernZ options.",
       "requires_admin": false,
       "dependencies": [
         "apps-mpv",

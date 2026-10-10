@@ -1,5 +1,5 @@
 project('miuutil', ['vala', 'c'],
-  version: '0.1.5',
+  version: '0.1.6',
   meson_version: '>= 1.0',
   license: '0BSD',
   default_options: ['warning_level=2', 'buildtype=debugoptimized'])

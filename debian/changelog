@@ -1,3 +1,12 @@
+miuutil (0.1.6-1) unstable; urgency=medium
+
+  * Enable audio and subtitle selectors and show milliseconds by default.
+  * Add rounded popup blur using the desktop wallpaper.
+  * Preserve personal corner radii and blur pipelines.
+  * Report popup blur as unavailable when the extension lacks support.
+
+ -- Ris Peng <hello@rispeng.com>  Sat, 10 Oct 2026 17:34:03 +0800
+
 miuutil (0.1.5-1) unstable; urgency=medium
 
   * Replace uosc with ModernZ and thumbfast seek previews.
