@@ -1,3 +1,10 @@
+miuutil (0.1.7-1) unstable; urgency=medium
+
+  * Disable blur for shell menus, the calendar and notification banners.
+  * Preserve popup tuning and application, panel and overview blur.
+
+ -- Ris Peng <hello@rispeng.com>  Tue, 13 Oct 2026 16:01:24 +0800
+
 miuutil (0.1.6-1) unstable; urgency=medium
 
   * Enable audio and subtitle selectors and show milliseconds by default.

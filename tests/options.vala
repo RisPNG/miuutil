@@ -887,7 +887,7 @@ int main (string[] arguments) {
         }
     });
 
-    Test.add_func ("/options/popup-blur-requires-support-and-preserves-radii-and-pipelines", () => {
+    Test.add_func ("/options/popup-blur-disable-requires-support-and-preserves-preferences", () => {
         try {
             var directory = workspace + "/data/glib-2.0/schemas";
             compile_sandbox_schema (directory, """
@@ -908,16 +908,21 @@ int main (string[] arguments) {
                     <key name="pipelines" type="a{sa{sv}}"><default>{}</default></key>
                   </schema>
                   <schema id="org.gnome.shell.extensions.blur-my-shell.popup" path="/org/gnome/shell/extensions/blur-my-shell/popup/">
-                    <key name="static-blur" type="b"><default>false</default></key>
+                    <key name="blur" type="b"><default>true</default></key>
+                    <key name="static-blur" type="b"><default>true</default></key>
                     <key name="pipeline" type="s"><default>'pipeline_personal'</default></key>
                     <key name="menu-corner-radius" type="i"><default>27</default></key>
                     <key name="notification-corner-radius" type="i"><default>16</default></key>
+                  </schema>
+                  <schema id="org.gnome.shell.extensions.blur-my-shell.applications" path="/org/gnome/shell/extensions/blur-my-shell/applications/">
+                    <key name="blur" type="b"><default>true</default></key>
                   </schema>
                 </schemalist>
             """);
             var source = new SettingsSchemaSource.from_directory (directory, null, false);
             var general = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell", false), null, null);
             var popup = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell.popup", false), null, null);
+            var applications = new Settings.full (source.lookup ("org.gnome.shell.extensions.blur-my-shell.applications", false), null, null);
             var pipelines = Variant.parse (new VariantType ("a{sa{sv}}"),
                 "{'pipeline_personal': {'name': <'My pipeline'>, 'effects': <@av []>}}");
             general.set_value ("pipelines", pipelines);
@@ -925,11 +930,23 @@ int main (string[] arguments) {
             assert (option.state == OptionState.DIFFERENT);
             apply_option (option);
             assert (option.state == OptionState.MATCHING);
+            assert (!popup.get_boolean ("blur"));
             assert (popup.get_boolean ("static-blur"));
-            assert_cmpstr (popup.get_string ("pipeline"), CompareOperator.EQ, "pipeline_default_rounded");
+            assert_cmpstr (popup.get_string ("pipeline"), CompareOperator.EQ, "pipeline_personal");
             assert_cmpint (popup.get_int ("menu-corner-radius"), CompareOperator.EQ, 27);
             assert_cmpint (popup.get_int ("notification-corner-radius"), CompareOperator.EQ, 16);
             assert (general.get_value ("pipelines").equal (pipelines));
+            assert (applications.get_boolean ("blur"));
+            popup.set_boolean ("static-blur", false);
+            inspect_option (option);
+            assert (option.state == OptionState.MATCHING);
+            popup.set_boolean ("blur", true);
+            inspect_option (option);
+            assert (option.state == OptionState.DIFFERENT);
+            apply_option (option);
+            assert (option.state == OptionState.MATCHING);
+            assert (!popup.get_boolean ("blur"));
+            assert (!popup.get_boolean ("static-blur"));
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();
