@@ -265,34 +265,14 @@ namespace MiuUtil {
             }
             if (kind == "copy")
                 return desired;
-            if (kind == "json" || kind == "nautilus") {
+            if (kind == "json") {
                 var target = new Json.Parser ();
                 target.load_from_data (desired);
                 var current = new Json.Parser ();
                 current.load_from_data (existing.strip () == "" ? "{}" : existing);
                 if (current.get_root ().get_node_type () != Json.NodeType.OBJECT)
                     throw new IOError.INVALID_DATA ("The selected JSON configuration must contain an object.");
-                if (kind == "nautilus") {
-                    var configuration = current.get_root ().get_object ();
-                    if (!configuration.has_member ("actions"))
-                        configuration.set_array_member ("actions", new Json.Array ());
-                    if (configuration.get_member ("actions").get_node_type () != Json.NodeType.ARRAY)
-                        throw new IOError.INVALID_DATA ("The Nautilus configuration actions must be an array.");
-                    var retained = new Json.Array ();
-                    foreach (var action in configuration.get_array_member ("actions").get_elements ()) {
-                        bool managed = false;
-                        foreach (var replacement in target.get_root ().get_object ().get_array_member ("actions").get_elements ())
-                            managed = managed || (action.get_node_type () == Json.NodeType.OBJECT && action.get_object ().has_member ("label") &&
-                                action.get_object ().get_member ("label").get_value_type () == typeof (string) &&
-                                action.get_object ().get_string_member ("label") == replacement.get_object ().get_string_member ("label"));
-                        if (!managed)
-                            retained.add_element (action.copy ());
-                    }
-                    foreach (var action in target.get_root ().get_object ().get_array_member ("actions").get_elements ())
-                        retained.add_element (action.copy ());
-                    configuration.set_array_member ("actions", retained);
-                } else
-                    merge_configuration (current.get_root ().get_object (), target.get_root ().get_object ());
+                merge_configuration (current.get_root ().get_object (), target.get_root ().get_object ());
                 return Json.to_string (current.get_root (), true) + "\n";
             }
             if (kind == "ini" || kind == "desktop" || kind == "gearlever" || kind == "mimeapps") {
@@ -556,7 +536,7 @@ namespace MiuUtil {
                             .replace ("$STATE", Environment.get_user_state_dir ())
                             .replace ("$LIBEXEC", Config.LIBEXEC_DIR);
                         match = existing.contains (desired);
-                    } else if (format == "json" || format == "nautilus") {
+                    } else if (format == "json") {
                         var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/" + entry.get_string_member ("payload"), ResourceLookupFlags.NONE);
                         var desired = new Json.Parser ();
                         desired.load_from_data ((((string) bytes.get_data ()).substring (0, (int) bytes.get_size ())).replace ("$HOME", Environment.get_home_dir ())
@@ -569,20 +549,7 @@ namespace MiuUtil {
                             current.load_from_data (existing);
                             if (current.get_root ().get_node_type () != Json.NodeType.OBJECT)
                                 throw new IOError.INVALID_DATA ("The selected JSON configuration must contain an object.");
-                            if (format == "nautilus") {
-                                match = current.get_root ().get_object ().has_member ("actions");
-                                if (match) {
-                                    if (current.get_root ().get_object ().get_member ("actions").get_node_type () != Json.NodeType.ARRAY)
-                                        throw new IOError.INVALID_DATA ("The Nautilus configuration actions must be an array.");
-                                    foreach (var expected in desired.get_root ().get_object ().get_array_member ("actions").get_elements ()) {
-                                        bool found = false;
-                                        foreach (var action in current.get_root ().get_object ().get_array_member ("actions").get_elements ())
-                                            found = found || configuration_matches (action, expected);
-                                        match = match && found;
-                                    }
-                                }
-                            } else
-                                match = configuration_matches (current.get_root (), desired.get_root ());
+                            match = configuration_matches (current.get_root (), desired.get_root ());
                         }
                     } else
                         match = FileUtils.test (path, FileTest.EXISTS) && configured_content (entry, existing).strip () == existing.strip ();

@@ -26,6 +26,17 @@ namespace MiuUtil {
         }
 
         public override async Assessment inspect (Cancellable? cancellable) throws Error {
+            var installation = yield inspect_installation (cancellable);
+            if (installation.state != OptionState.MATCHING || installation_files == null)
+                return installation;
+            var files = yield installation_files.inspect (cancellable);
+            if (files.state == OptionState.UNAVAILABLE)
+                return files;
+            return new Assessment (files.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
+                files.state == OptionState.MATCHING ? installation.current : "Installed; account files need updating.", files.details);
+        }
+
+        private async Assessment inspect_installation (Cancellable? cancellable) throws Error {
             var home = Environment.get_home_dir ();
             var data = Environment.get_user_data_dir ();
             var config = Environment.get_user_config_dir ();
@@ -46,16 +57,8 @@ namespace MiuUtil {
                         FileUtils.test (dark, FileTest.EXISTS) ? dark : "/usr/share/icons/fluent-dark", "cursors"), FileTest.IS_DIR);
                     bool light_installed = FileUtils.test (Path.build_filename (
                         FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
-                    if (icons_installed && dark_installed && light_installed) {
-                        if (installation_files == null)
-                            return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed.");
-                        var links = yield installation_files.inspect (cancellable);
-                        if (links.state == OptionState.UNAVAILABLE)
-                            return links;
-                        return new Assessment (links.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
-                            links.state == OptionState.MATCHING ? "Fluent icons and cursors are available to desktop applications." :
-                            "Fluent icons and cursors are installed; native cursor links need updating.", links.details);
-                    }
+                    if (icons_installed && dark_installed && light_installed)
+                        return new Assessment (OptionState.MATCHING, "Fluent icons and cursors are installed.");
                     break;
                 case "blesh":
                     if (FileUtils.test ("/usr/share/blesh/ble.sh", FileTest.EXISTS))
@@ -69,7 +72,16 @@ namespace MiuUtil {
                     installed_path = Path.build_filename (home, "AppImages", "qview.appimage");
                     break;
                 case "nautilus-actions":
-                    installed_path = Path.build_filename (data, "nautilus-python", "extensions", "actions-for-nautilus.py");
+                    string[] directories = { data, "/usr/share" };
+                    foreach (var directory in Environment.get_system_data_dirs ())
+                        directories += directory;
+                    foreach (var directory in directories) {
+                        var extension = Path.build_filename (directory, "nautilus-python", "extensions", "actions-for-nautilus.py");
+                        if (FileUtils.test (extension, FileTest.EXISTS)) {
+                            installed_path = extension;
+                            break;
+                        }
+                    }
                     break;
                 case "homebrew":
                     installed_path = "/home/linuxbrew/.linuxbrew/bin/brew";
@@ -124,16 +136,8 @@ namespace MiuUtil {
                 (program != null && Environment.find_program_in_path (program) != null);
             if (upstream == "modernz")
                 installed = installed && FileUtils.test (Path.build_filename (config, "mpv", "fonts", "modernz-icons.ttf"), FileTest.EXISTS);
-            if (installed) {
-                if (installation_files != null) {
-                    var files = yield installation_files.inspect (cancellable);
-                    if (files.state == OptionState.UNAVAILABLE)
-                        return files;
-                    return new Assessment (files.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
-                        files.state == OptionState.MATCHING ? "Already installed." : "Installed; account files need updating.", files.details);
-                }
+            if (installed)
                 return new Assessment (OptionState.MATCHING, "Already installed.");
-            }
             if (upstream == "qview" || upstream == "starship" || upstream == "mise" || upstream == "easyvenv" || upstream == "rustup") {
                 var architecture = (yield run_process ({ "uname", "-m" }, cancellable)).strip ();
                 if (architecture != "x86_64")
@@ -148,25 +152,8 @@ namespace MiuUtil {
         public override async void apply (Cancellable? cancellable) throws Error {
             var data = Environment.get_user_data_dir ();
             var config = Environment.get_user_config_dir ();
-            if (upstream == "fluent-icons") {
-                bool icons_installed = FileUtils.test ("/usr/share/icons/Fluent-dark/index.theme", FileTest.EXISTS) ||
-                    FileUtils.test (Path.build_filename (data, "icons", "Fluent-dark", "index.theme"), FileTest.EXISTS);
-                var dark = Path.build_filename (data, "icons", "fluent-dark");
-                var light = Path.build_filename (data, "icons", "fluent");
-                bool dark_installed = FileUtils.test (Path.build_filename (
-                    FileUtils.test (dark, FileTest.EXISTS) ? dark : "/usr/share/icons/fluent-dark", "cursors"), FileTest.IS_DIR);
-                bool light_installed = FileUtils.test (Path.build_filename (
-                    FileUtils.test (light, FileTest.EXISTS) ? light : "/usr/share/icons/fluent", "cursors"), FileTest.IS_DIR);
-                if (icons_installed && dark_installed && light_installed) {
-                    if (installation_files != null && (yield installation_files.inspect (cancellable)).state != OptionState.MATCHING)
-                        yield installation_files.apply (cancellable);
-                    return;
-                }
-            }
-            if (upstream == "modernz" &&
-                FileUtils.test (Path.build_filename (config, "mpv", "scripts", "modernz.lua"), FileTest.EXISTS) &&
-                FileUtils.test (Path.build_filename (config, "mpv", "fonts", "modernz-icons.ttf"), FileTest.EXISTS)) {
-                if (installation_files != null)
+            if ((yield inspect_installation (cancellable)).state == OptionState.MATCHING) {
+                if (installation_files != null && (yield installation_files.inspect (cancellable)).state != OptionState.MATCHING)
                     yield installation_files.apply (cancellable);
                 return;
             }
@@ -224,8 +211,6 @@ namespace MiuUtil {
                         DirUtils.create_with_parents (Path.build_filename (icons, "fluent"), 0755);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist-dark") + "/.", Path.build_filename (icons, "fluent-dark") }, cancellable);
                         yield run_process ({ "cp", "-a", Path.build_filename (source, "cursors", "dist") + "/.", Path.build_filename (icons, "fluent") }, cancellable);
-                        if (installation_files != null)
-                            yield installation_files.apply (cancellable);
                         break;
                     case "blesh":
                         var blesh = Path.build_filename (data, "blesh");
@@ -271,8 +256,6 @@ namespace MiuUtil {
                                 yield File.new_for_path (Path.build_filename (source, "modernz-icons.ttf")).copy_async (
                                     File.new_for_path (font), FileCopyFlags.NONE, Priority.DEFAULT, cancellable, null);
                         }
-                        if (installation_files != null)
-                            yield installation_files.apply (cancellable);
                         break;
                     case "fetch":
                         yield run_process ({ "make", "-C", source, "-j2" }, cancellable);
@@ -352,6 +335,8 @@ namespace MiuUtil {
                         output ("Log out and back in to load newly installed extension code.");
                         break;
                 }
+                if (installation_files != null)
+                    yield installation_files.apply (cancellable);
             } finally {
                 try {
                     string[] paths = { "rm", "-rf", "--", workspace };

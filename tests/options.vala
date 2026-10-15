@@ -267,6 +267,8 @@ int main (string[] arguments) {
             for (uint index = 0; index < catalogue.options.get_n_items (); index++) {
                 var option = (Option) catalogue.options.get_item (index);
                 assert (option.id != "" && option.title != "" && option.desired != "");
+                assert (option.id != "files-nautilus-extension");
+                assert (!("files-nautilus-extension" in option.dependencies));
                 categories.insert (option.category, true);
             }
             assert_cmpuint (categories.size (), CompareOperator.EQ, 8);
@@ -693,22 +695,127 @@ int main (string[] arguments) {
         }
     });
 
-    Test.add_func ("/options/nautilus-preserves-personal-actions", () => {
+    Test.add_func ("/options/nautilus-replaces-complete-configuration", () => {
         try {
             var directory = workspace + "/data/actions-for-nautilus";
             DirUtils.create_with_parents (directory, 0700);
-            FileUtils.set_contents (directory + "/config.json", "{\"actions\":[{\"type\":\"command\",\"label\":\"Personal action\",\"command_line\":\"example\"}],\"personal\":true}");
+            var path = directory + "/config.json";
+            var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
+            var desired = (((string) bytes.get_data ()).substring (0, (int) bytes.get_size ())).replace ("$LIBEXEC", Config.LIBEXEC_DIR);
+            FileUtils.set_contents (path, desired);
             var option = catalogue_option ("files-nautilus-actions");
+            assert ("development-install-tools" in option.dependencies);
+            inspect_option (option);
+            if (FileUtils.test ("/usr/share/nautilus-python/extensions/actions-for-nautilus.py", FileTest.EXISTS) ||
+                FileUtils.test ("/usr/local/share/nautilus-python/extensions/actions-for-nautilus.py", FileTest.EXISTS))
+                assert (option.state == OptionState.MATCHING);
+            else
+                assert (option.state == OptionState.DIFFERENT || option.state == OptionState.PARTIAL);
+
+            var extension = workspace + "/data/nautilus-python/extensions/actions-for-nautilus.py";
+            DirUtils.create_with_parents (Path.get_dirname (extension), 0700);
+            FileUtils.set_contents (extension, "existing extension sentinel");
+            inspect_option (option);
+            assert (option.state == OptionState.MATCHING);
+            FileUtils.remove (path);
+            inspect_option (option);
+            assert (option.state == OptionState.PARTIAL);
             apply_option (option);
             string content;
-            FileUtils.get_contents (directory + "/config.json", out content);
-            assert (content.contains ("Personal action"));
-            assert (content.contains ("Copy details"));
-            assert (content.contains ("\"personal\""));
+            FileUtils.get_contents (path, out content);
+            assert_cmpstr (content, CompareOperator.EQ, desired);
             assert (option.state == OptionState.MATCHING);
+
+            var parser = new Json.Parser ();
+            parser.load_from_data (desired);
+            var actions = parser.get_root ().get_object ().get_array_member ("actions");
+            var reordered = new Json.Array ();
+            for (int index = (int) actions.get_length () - 1; index >= 0; index--)
+                reordered.add_element (actions.get_element (index).copy ());
+            parser.get_root ().get_object ().set_array_member ("actions", reordered);
+            string[] configurations = {
+                "{\"actions\":[{\"type\":\"command\",\"label\":\"Personal action\",\"command_line\":\"example\"}],\"personal\":true}",
+                desired.replace ("\"debug\": false", "\"debug\": false, \"personal\": true"),
+                Json.to_string (parser.get_root (), true),
+                "[]",
+                "{invalid configuration"
+            };
+            var backup_directory = workspace + "/state/miuutil/backups/files-nautilus-actions";
+            foreach (var previous in configurations) {
+                FileUtils.set_contents (path, previous);
+                inspect_option (option);
+                assert (option.state == OptionState.PARTIAL);
+                apply_option (option);
+                assert (option.state == OptionState.MATCHING);
+                FileUtils.get_contents (path, out content);
+                assert_cmpstr (content, CompareOperator.EQ, desired);
+                bool saved_previous = false;
+                var backups = File.new_for_path (backup_directory).enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
+                FileInfo? saved;
+                while ((saved = backups.next_file ()) != null) {
+                    string backup;
+                    FileUtils.get_contents (backup_directory + "/" + saved.get_name () + "/config.json", out backup);
+                    saved_previous = saved_previous || backup == previous;
+                }
+                assert (saved_previous);
+            }
+            apply_option (option);
+            var backups = File.new_for_path (backup_directory).enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
+            uint backup_count = 0;
+            while (backups.next_file () != null)
+                backup_count++;
+            assert_cmpuint (backup_count, CompareOperator.EQ, configurations.length);
+            FileUtils.get_contents (extension, out content);
+            assert_cmpstr (content, CompareOperator.EQ, "existing extension sentinel");
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();
+        }
+    });
+
+    Test.add_func ("/options/nautilus-reuses-system-extension", () => {
+        var original_path = Environment.get_variable ("PATH");
+        string[] extensions = {};
+        try {
+            var tools = workspace + "/nautilus-tools";
+            DirUtils.create_with_parents (tools, 0700);
+            FileUtils.set_contents (tools + "/curl", "#!/bin/sh\nexit 97\n");
+            File.new_for_path (tools + "/curl").set_attribute_uint32 (FileAttribute.UNIX_MODE, 0755, FileQueryInfoFlags.NONE);
+            Environment.set_variable ("PATH", tools + ":" + original_path, true);
+            var account_extension = workspace + "/data/nautilus-python/extensions/actions-for-nautilus.py";
+            FileUtils.remove (account_extension);
+            var path = workspace + "/data/actions-for-nautilus/config.json";
+            DirUtils.create_with_parents (Path.get_dirname (path), 0700);
+            var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
+            var desired = (((string) bytes.get_data ()).substring (0, (int) bytes.get_size ())).replace ("$LIBEXEC", Config.LIBEXEC_DIR);
+            foreach (var directory in new string[] { workspace + "/system-high", workspace + "/system-low" }) {
+                var extension = directory + "/nautilus-python/extensions/actions-for-nautilus.py";
+                extensions += extension;
+                DirUtils.create_with_parents (Path.get_dirname (extension), 0700);
+                FileUtils.set_contents (extension, "system extension sentinel");
+                FileUtils.set_contents (path, "{\"actions\":[],\"personal\":true}");
+                var option = catalogue_option ("files-nautilus-actions");
+                inspect_option (option);
+                assert (option.state == OptionState.PARTIAL);
+                apply_option (option);
+                assert (option.state == OptionState.MATCHING);
+                assert (!FileUtils.test (account_extension, FileTest.EXISTS));
+                string content;
+                FileUtils.get_contents (extension, out content);
+                assert_cmpstr (content, CompareOperator.EQ, "system extension sentinel");
+                FileUtils.get_contents (path, out content);
+                assert_cmpstr (content, CompareOperator.EQ, desired);
+                apply_option (option);
+                assert (option.state == OptionState.MATCHING);
+                FileUtils.remove (extension);
+            }
+        } catch (Error error) {
+            Test.message (error.message);
+            Test.fail ();
+        } finally {
+            Environment.set_variable ("PATH", original_path, true);
+            foreach (var extension in extensions)
+                FileUtils.remove (extension);
         }
     });
 
@@ -1266,7 +1373,7 @@ int main (string[] arguments) {
             var path = directory + "/config.json";
             FileUtils.set_contents (path, "[]");
             var definition = new Json.Parser ();
-            definition.load_from_data ("{\"id\":\"test\",\"title\":\"JSON\",\"description\":\"JSON\",\"category\":\"files\",\"scope\":\"Your account\",\"risk\":\"Low\",\"desired\":\"Object\",\"details\":\"\",\"requires_admin\":false,\"dependencies\":[],\"operation\":{\"kind\":\"configuration\",\"files\":[{\"path\":\"" + path + "\",\"format\":\"nautilus\",\"payload\":\"nautilus.json\"}]}}");
+            definition.load_from_data ("{\"id\":\"test\",\"title\":\"JSON\",\"description\":\"JSON\",\"category\":\"files\",\"scope\":\"Your account\",\"risk\":\"Low\",\"desired\":\"Object\",\"details\":\"\",\"requires_admin\":false,\"dependencies\":[],\"operation\":{\"kind\":\"configuration\",\"files\":[{\"path\":\"" + path + "\",\"format\":\"json\",\"payload\":\"nautilus.json\"}]}}");
             var option = new Option (definition.get_root ().get_object ());
             var loop = new MainLoop ();
             option.detect.begin (null, (object, result) => {

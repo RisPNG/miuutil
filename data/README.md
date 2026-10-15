@@ -20,6 +20,8 @@ The Console default selects its native New Tab action for generic and GNOME term
 
 The Nautilus tab choice enables the packaged native extension through the account's `miu/nautilus-tabs.conf` file. Installing MiuUtil alone leaves it disabled; Miubian enables the same preference system-wide. It handles ordinary folder launches and FileManager1 file reveals, including Vivaldi's Show in File Manager, through native navigation and selection. Restart Files or sign out and in to load it. Nautilus's command runner also uses a Console tab.
 
+The Nautilus context-menu choice installs Actions for Nautilus and replaces its entire `actions-for-nautilus/config.json` with the MiuUtil menu. Existing personal actions and extension preferences are backed up before replacement. Detection checks the account's data folder first, then Debian's native `/usr/share` prefix and the system data folders, including Miubian's installation under `/usr/local/share`. An installed extension is reused when only its configuration needs updating. Both the extension and the replacement configuration must match. Restart Files or sign out and in after installing the extension.
+
 ## Configuration and build inputs
 
 | File | Purpose |

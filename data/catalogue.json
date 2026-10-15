@@ -3596,26 +3596,27 @@
     {
       "id": "files-nautilus-actions",
       "title": "Nautilus context-menu actions",
-      "description": "Copy details, Console, command runner and Visual Studio Code actions.",
+      "description": "Install Actions for Nautilus with Copy details, Console, command runner and Visual Studio Code actions.",
       "category": "files",
       "scope": "Your account",
-      "risk": "Low",
+      "risk": "Moderate",
       "current": "",
-      "desired": "Copy details, Console, command runner and Visual Studio Code actions.",
-      "details": "Requires the Actions for Nautilus extension. Keeps existing unrelated menu actions. Commands use the installed helper with URI arguments. Matching confirms the menu configuration is saved. Newly installed extension code becomes available after restarting Files or signing out and in.",
+      "desired": "Actions for Nautilus installed with the MiuUtil context-menu configuration.",
+      "details": "Installs a verified Actions for Nautilus release when needed. Backs up and replaces all existing actions and preferences with MiuUtil's configuration. Commands use the installed helper with URI arguments. Matching confirms both the extension and menu configuration are installed. Restart Files, or sign out and sign in, to load newly installed extension code.",
       "requires_admin": false,
       "dependencies": [
         "apps-files-tools",
         "apps-console",
         "development-vscode",
-        "files-nautilus-extension"
+        "development-install-tools"
       ],
       "operation": {
-        "kind": "configuration",
+        "kind": "upstream",
+        "upstream": "nautilus-actions",
         "files": [
           {
             "path": "$DATA/actions-for-nautilus/config.json",
-            "format": "nautilus",
+            "format": "copy",
             "payload": "nautilus.json"
           }
         ]
@@ -4857,24 +4858,6 @@
             ]
           }
         ]
-      }
-    },
-    {
-      "id": "files-nautilus-extension",
-      "title": "Install Actions for Nautilus",
-      "description": "Install the official Actions for Nautilus extension for your account.",
-      "category": "files",
-      "scope": "Your account",
-      "risk": "Moderate",
-      "desired": "Actions for Nautilus extension installed",
-      "details": "Installs a verified upstream source release. Matching confirms the extension files are installed. Restart the Files application, or sign out and sign in, to load newly installed extension code.",
-      "requires_admin": false,
-      "dependencies": [
-        "development-install-tools"
-      ],
-      "operation": {
-        "kind": "upstream",
-        "upstream": "nautilus-actions"
       }
     },
     {
