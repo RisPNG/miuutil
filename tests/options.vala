@@ -696,8 +696,11 @@ int main (string[] arguments) {
     });
 
     Test.add_func ("/options/nautilus-replaces-complete-configuration", () => {
+        var system_extension = workspace + "/system-high/nautilus-python/extensions/actions-for-nautilus.py";
         try {
-            var directory = workspace + "/data/actions-for-nautilus";
+            DirUtils.create_with_parents (Path.get_dirname (system_extension), 0700);
+            FileUtils.set_contents (system_extension, "system extension sentinel");
+            var directory = workspace + "/.local/share/actions-for-nautilus";
             DirUtils.create_with_parents (directory, 0700);
             var path = directory + "/config.json";
             var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
@@ -705,16 +708,7 @@ int main (string[] arguments) {
             FileUtils.set_contents (path, desired);
             var option = catalogue_option ("files-nautilus-actions");
             assert ("development-install-tools" in option.dependencies);
-            inspect_option (option);
-            if (FileUtils.test ("/usr/share/nautilus-python/extensions/actions-for-nautilus.py", FileTest.EXISTS) ||
-                FileUtils.test ("/usr/local/share/nautilus-python/extensions/actions-for-nautilus.py", FileTest.EXISTS))
-                assert (option.state == OptionState.MATCHING);
-            else
-                assert (option.state == OptionState.DIFFERENT || option.state == OptionState.PARTIAL);
-
-            var extension = workspace + "/data/nautilus-python/extensions/actions-for-nautilus.py";
-            DirUtils.create_with_parents (Path.get_dirname (extension), 0700);
-            FileUtils.set_contents (extension, "existing extension sentinel");
+            assert ("apps-blackbox" in option.dependencies);
             inspect_option (option);
             assert (option.state == OptionState.MATCHING);
             FileUtils.remove (path);
@@ -765,15 +759,18 @@ int main (string[] arguments) {
             while (backups.next_file () != null)
                 backup_count++;
             assert_cmpuint (backup_count, CompareOperator.EQ, configurations.length);
-            FileUtils.get_contents (extension, out content);
-            assert_cmpstr (content, CompareOperator.EQ, "existing extension sentinel");
+            FileUtils.get_contents (system_extension, out content);
+            assert_cmpstr (content, CompareOperator.EQ, "system extension sentinel");
+            assert (!FileUtils.test (workspace + "/data/actions-for-nautilus/config.json", FileTest.EXISTS));
         } catch (Error error) {
             Test.message (error.message);
             Test.fail ();
+        } finally {
+            FileUtils.remove (system_extension);
         }
     });
 
-    Test.add_func ("/options/nautilus-reuses-system-extension", () => {
+    Test.add_func ("/options/nautilus-reconciles-system-and-account-extensions", () => {
         var original_path = Environment.get_variable ("PATH");
         string[] extensions = {};
         try {
@@ -782,31 +779,81 @@ int main (string[] arguments) {
             FileUtils.set_contents (tools + "/curl", "#!/bin/sh\nexit 97\n");
             File.new_for_path (tools + "/curl").set_attribute_uint32 (FileAttribute.UNIX_MODE, 0755, FileQueryInfoFlags.NONE);
             Environment.set_variable ("PATH", tools + ":" + original_path, true);
-            var account_extension = workspace + "/data/nautilus-python/extensions/actions-for-nautilus.py";
-            FileUtils.remove (account_extension);
-            var path = workspace + "/data/actions-for-nautilus/config.json";
+            var account_directory = workspace + "/data/nautilus-python/extensions";
+            var account_extension = account_directory + "/actions-for-nautilus.py";
+            var support_directory = account_directory + "/actions-for-nautilus";
+            DirUtils.create_with_parents (account_directory, 0700);
+            FileUtils.set_contents (account_directory + "/personal-extension.py", "unrelated extension sentinel");
+            var path = workspace + "/.local/share/actions-for-nautilus/config.json";
             DirUtils.create_with_parents (Path.get_dirname (path), 0700);
             var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
             var desired = (((string) bytes.get_data ()).substring (0, (int) bytes.get_size ())).replace ("$LIBEXEC", Config.LIBEXEC_DIR);
+            var option = catalogue_option ("files-nautilus-actions");
+            string output = "";
+            option.output.connect ((text) => output += text + "\n");
             foreach (var directory in new string[] { workspace + "/system-high", workspace + "/system-low" }) {
                 var extension = directory + "/nautilus-python/extensions/actions-for-nautilus.py";
                 extensions += extension;
                 DirUtils.create_with_parents (Path.get_dirname (extension), 0700);
                 FileUtils.set_contents (extension, "system extension sentinel");
-                FileUtils.set_contents (path, "{\"actions\":[],\"personal\":true}");
-                var option = catalogue_option ("files-nautilus-actions");
+                FileUtils.set_contents (path, desired);
+                inspect_option (option);
+                assert (option.state == OptionState.MATCHING);
+
+                var launcher = "account launcher " + Path.get_basename (directory);
+                var support = "account support " + Path.get_basename (directory);
+                FileUtils.set_contents (account_extension, launcher);
+                DirUtils.create_with_parents (support_directory + "/__pycache__", 0700);
+                FileUtils.set_contents (support_directory + "/afn_config.py", support);
+                FileUtils.set_contents (support_directory + "/__pycache__/fixture.pyc", "cached module sentinel");
                 inspect_option (option);
                 assert (option.state == OptionState.PARTIAL);
                 apply_option (option);
                 assert (option.state == OptionState.MATCHING);
                 assert (!FileUtils.test (account_extension, FileTest.EXISTS));
+                assert (!FileUtils.test (support_directory, FileTest.EXISTS));
+                assert (output.contains ("Backed up " + account_extension));
+                assert (output.contains ("Backed up " + support_directory));
                 string content;
                 FileUtils.get_contents (extension, out content);
                 assert_cmpstr (content, CompareOperator.EQ, "system extension sentinel");
+                FileUtils.get_contents (account_directory + "/personal-extension.py", out content);
+                assert_cmpstr (content, CompareOperator.EQ, "unrelated extension sentinel");
                 FileUtils.get_contents (path, out content);
                 assert_cmpstr (content, CompareOperator.EQ, desired);
+
+                var backup_directory = workspace + "/state/miuutil/backups/files-nautilus-actions";
+                var backups = File.new_for_path (backup_directory).enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
+                bool saved_account_extension = false;
+                uint backup_count = 0;
+                FileInfo? saved;
+                while ((saved = backups.next_file ()) != null) {
+                    backup_count++;
+                    var backup = backup_directory + "/" + saved.get_name ();
+                    if (!FileUtils.test (backup + "/actions-for-nautilus.py", FileTest.EXISTS))
+                        continue;
+                    FileUtils.get_contents (backup + "/actions-for-nautilus.py", out content);
+                    if (content != launcher)
+                        continue;
+                    FileUtils.get_contents (backup + "/actions-for-nautilus/afn_config.py", out content);
+                    assert_cmpstr (content, CompareOperator.EQ, support);
+                    FileUtils.get_contents (backup + "/actions-for-nautilus/__pycache__/fixture.pyc", out content);
+                    assert_cmpstr (content, CompareOperator.EQ, "cached module sentinel");
+                    saved_account_extension = true;
+                }
+                assert (saved_account_extension);
                 apply_option (option);
                 assert (option.state == OptionState.MATCHING);
+                backups = File.new_for_path (backup_directory).enumerate_children (FileAttribute.STANDARD_NAME, FileQueryInfoFlags.NONE);
+                uint reapplied_backup_count = 0;
+                while (backups.next_file () != null)
+                    reapplied_backup_count++;
+                assert_cmpuint (reapplied_backup_count, CompareOperator.EQ, backup_count);
+
+                FileUtils.set_contents (account_extension, launcher);
+                apply_option (option);
+                assert (option.state == OptionState.MATCHING);
+                assert (!FileUtils.test (account_extension, FileTest.EXISTS));
                 FileUtils.remove (extension);
             }
         } catch (Error error) {

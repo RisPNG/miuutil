@@ -3596,17 +3596,18 @@
     {
       "id": "files-nautilus-actions",
       "title": "Nautilus context-menu actions",
-      "description": "Install Actions for Nautilus with Copy details, Console, command runner and Visual Studio Code actions.",
+      "description": "Install Actions for Nautilus with Copy details, Console, Black Box command runner and Visual Studio Code actions.",
       "category": "files",
       "scope": "Your account",
       "risk": "Moderate",
       "current": "",
       "desired": "Actions for Nautilus installed with the MiuUtil context-menu configuration.",
-      "details": "Installs a verified Actions for Nautilus release when needed. Backs up and replaces all existing actions and preferences with MiuUtil's configuration. Commands use the installed helper with URI arguments. Matching confirms both the extension and menu configuration are installed. Restart Files, or sign out and sign in, to load newly installed extension code.",
+      "details": "Reuses an existing system extension or installs a verified Actions for Nautilus release when needed. Backs up and removes a redundant account extension when a system copy is installed, and backs up and replaces all existing actions and preferences with MiuUtil's configuration. Open in Terminal uses Console; Execute command here uses Black Box. Commands use the installed helper with URI arguments. Matching confirms the extension, menu configuration and absence of a redundant account copy. Restart Files, or sign out and sign in, to reload extension code.",
       "requires_admin": false,
       "dependencies": [
         "apps-files-tools",
         "apps-console",
+        "apps-blackbox",
         "development-vscode",
         "development-install-tools"
       ],
@@ -3615,7 +3616,7 @@
         "upstream": "nautilus-actions",
         "files": [
           {
-            "path": "$DATA/actions-for-nautilus/config.json",
+            "path": "$HOME/.local/share/actions-for-nautilus/config.json",
             "format": "copy",
             "payload": "nautilus.json"
           }

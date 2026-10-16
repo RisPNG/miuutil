@@ -3,7 +3,7 @@
 import argparse
 import html
 import os
-from pathlib import Path
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -18,7 +18,7 @@ else
 fi
 ( builtin eval -- "$1" )
 _action_status=$?
-printf '\nExit status: %s.\nPress any key to close this tab...' "$_action_status"
+printf '\nExit status: %s.\nPress any key to close this terminal...' "$_action_status"
 IFS= builtin read -r -s -n 1
 printf '\n'
 exit "$_action_status"
@@ -72,10 +72,17 @@ def selected_directory(uris):
     return directory
 
 
-def launch_console(directory, command=None):
-    arguments = ["/usr/bin/kgx", "--tab", "--working-directory=" + directory]
-    if command is not None:
-        arguments.extend(["--", "/bin/bash", "-ic", COMMAND_RUNNER, "nautilus-command", command])
+def launch_terminal(directory, command=None):
+    if command is None:
+        application = "Console"
+        arguments = ["/usr/bin/kgx", "--tab", "--working-directory=" + directory]
+    else:
+        application = "Black Box"
+        shell_command = "exec " + shlex.join([
+            "/bin/bash", "-ic", COMMAND_RUNNER, "nautilus-command", command,
+        ])
+        arguments = ["/usr/bin/blackbox-terminal", "--working-directory=" + directory,
+                     "--command=" + shell_command]
     # Report fast CLI failures while allowing the GUI to run independently.
     with tempfile.TemporaryFile() as diagnostics:
         process = subprocess.Popen(arguments, cwd=directory,
@@ -87,13 +94,13 @@ def launch_console(directory, command=None):
         if status != 0:
             diagnostics.seek(0)
             detail = diagnostics.read().decode("utf-8", errors="replace").strip()
-            raise RuntimeError("Console could not start (exit %s).\n%s" % (status, detail[-2000:]))
+            raise RuntimeError("%s could not start (exit %s).\n%s" % (application, status, detail[-2000:]))
 
 
 def ask_command(directory):
     result = subprocess.run(
         ["/usr/bin/zenity", "--entry", "--title=Execute command here", "--width=800",
-         "--text=" + html.escape(directory) + "\nEnter a Bash command. After it finishes, press any key to close the Console tab."],
+         "--text=" + html.escape(directory) + "\nEnter a Bash command. After it finishes, press any key to close Black Box."],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
@@ -108,11 +115,11 @@ def perform(action, uris):
         return
     directory = selected_directory(uris)
     if action == "terminal":
-        launch_console(directory)
+        launch_terminal(directory)
     elif action == "execute":
         command = ask_command(directory)
         if command is not None:
-            launch_console(directory, command)
+            launch_terminal(directory, command)
     elif action == "code":
         subprocess.Popen(["/usr/bin/code", "--new-window", directory], cwd=directory)
 

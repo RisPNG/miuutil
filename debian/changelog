@@ -1,3 +1,11 @@
+miuutil (0.1.9-1) unstable; urgency=medium
+
+  * Back up redundant account Nautilus extensions and reuse the system copy.
+  * Apply Nautilus actions at the upstream account configuration path.
+  * Run entered commands in Black Box while retaining Console for terminal launches.
+
+ -- Ris Peng <hello@rispeng.com>  Fri, 16 Oct 2026 10:20:51 +0800
+
 miuutil (0.1.8-1) unstable; urgency=medium
 
   * Combine Actions for Nautilus installation and context-menu configuration.

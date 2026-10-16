@@ -15,7 +15,7 @@ namespace MiuUtil {
             var parser = new Json.Parser ();
             parser.load_from_data ((string) bytes.get_data (), (ssize_t) bytes.get_size ());
             manifest = parser.get_root ().get_object ();
-            if (specification.has_member ("files")) {
+            if (upstream != "nautilus-actions" && specification.has_member ("files")) {
                 installation_files = new ConfigurationOperation (identity, specification);
                 Signal.connect_object (installation_files, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
             }
@@ -72,15 +72,40 @@ namespace MiuUtil {
                     installed_path = Path.build_filename (home, "AppImages", "qview.appimage");
                     break;
                 case "nautilus-actions":
-                    string[] directories = { data, "/usr/share" };
+                    var account_extension = Path.build_filename (data, "nautilus-python", "extensions", "actions-for-nautilus.py");
+                    string[] directories = { "/usr/share" };
                     foreach (var directory in Environment.get_system_data_dirs ())
                         directories += directory;
                     foreach (var directory in directories) {
                         var extension = Path.build_filename (directory, "nautilus-python", "extensions", "actions-for-nautilus.py");
-                        if (FileUtils.test (extension, FileTest.EXISTS)) {
+                        if (!File.new_for_path (extension).equal (File.new_for_path (account_extension)) &&
+                            FileUtils.test (extension, FileTest.EXISTS)) {
                             installed_path = extension;
                             break;
                         }
+                    }
+                    var files = new Json.Array ();
+                    if (specification.has_member ("files")) {
+                        foreach (var node in specification.get_array_member ("files").get_elements ())
+                            files.add_element (node.copy ());
+                    }
+                    if (installed_path != null) {
+                        foreach (var name in new string[] { "actions-for-nautilus.py", "actions-for-nautilus" }) {
+                            var entry = new Json.Object ();
+                            entry.set_string_member ("path", Path.build_filename (data, "nautilus-python", "extensions", name));
+                            entry.set_string_member ("format", "absent");
+                            files.add_object_element (entry);
+                        }
+                    } else
+                        installed_path = account_extension;
+                    installation_files = null;
+                    if (files.get_length () > 0) {
+                        var configuration = new Json.Object ();
+                        foreach (var name in specification.get_members ())
+                            configuration.set_member (name, specification.get_member (name).copy ());
+                        configuration.set_array_member ("files", files);
+                        installation_files = new ConfigurationOperation (identity, configuration);
+                        Signal.connect_object (installation_files, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
                     }
                     break;
                 case "homebrew":

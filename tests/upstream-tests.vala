@@ -110,6 +110,11 @@ int main (string[] arguments) {
             var source = workspace + "/release/extensions";
             DirUtils.create_with_parents (source, 0700);
             FileUtils.set_contents (source + "/actions-for-nautilus.py", "verified extension fixture\n");
+            DirUtils.create_with_parents (source + "/actions-for-nautilus", 0700);
+            FileUtils.set_contents (source + "/actions-for-nautilus/afn_config.py", "verified support fixture\n");
+            DirUtils.create_with_parents (Path.get_dirname (extension), 0700);
+            var unrelated_extension = Path.get_dirname (extension) + "/personal-extension.py";
+            FileUtils.set_contents (unrelated_extension, "unrelated extension sentinel");
             var archive = workspace + "/release.tar";
             var pack = new Subprocess.newv ({ "tar", "--create", "--file", archive, "--directory", workspace, "release" }, SubprocessFlags.NONE);
             pack.wait_check ();
@@ -154,7 +159,7 @@ int main (string[] arguments) {
             string content;
             FileUtils.get_contents (extension, out content);
             assert_cmpstr (content, CompareOperator.EQ, "verified extension fixture\n");
-            var configuration = test_home + "/data/actions-for-nautilus/config.json";
+            var configuration = test_home + "/.local/share/actions-for-nautilus/config.json";
             FileUtils.get_contents (configuration, out content);
             var desired = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
             assert_cmpstr (content, CompareOperator.EQ,
@@ -171,6 +176,13 @@ int main (string[] arguments) {
             loop.run ();
             FileUtils.get_contents (download_log, out content);
             assert_cmpstr (content, CompareOperator.EQ, "download\n");
+            FileUtils.get_contents (extension, out content);
+            assert_cmpstr (content, CompareOperator.EQ, "verified extension fixture\n");
+            FileUtils.get_contents (Path.get_dirname (extension) + "/actions-for-nautilus/afn_config.py", out content);
+            assert_cmpstr (content, CompareOperator.EQ, "verified support fixture\n");
+            FileUtils.get_contents (unrelated_extension, out content);
+            assert_cmpstr (content, CompareOperator.EQ, "unrelated extension sentinel");
+            assert (!FileUtils.test (test_home + "/data/actions-for-nautilus/config.json", FileTest.EXISTS));
             assert (!FileUtils.test (test_home + "/state/miuutil/backups/files-nautilus-actions", FileTest.EXISTS));
         } catch (Error error) {
             Test.message (error.message);
