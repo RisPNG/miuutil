@@ -3598,12 +3598,12 @@
       "title": "Nautilus context-menu actions",
       "description": "Install Actions for Nautilus with Copy details, Console, Black Box command runner and Visual Studio Code actions.",
       "category": "files",
-      "scope": "Your account",
+      "scope": "System and your account",
       "risk": "Moderate",
       "current": "",
       "desired": "Actions for Nautilus installed with the MiuUtil context-menu configuration.",
-      "details": "Reuses an existing system extension or installs a verified Actions for Nautilus release when needed. Backs up and removes a redundant account extension when a system copy is installed, and backs up and replaces all existing actions and preferences with MiuUtil's configuration. Open in Terminal uses Console; Execute command here uses Black Box. Commands use the installed helper with URI arguments. Matching confirms the extension, menu configuration and absence of a redundant account copy. Restart Files, or sign out and sign in, to reload extension code.",
-      "requires_admin": false,
+      "details": "Reuses an existing system extension or installs a verified Actions for Nautilus release when needed. Removes GNOME Terminal's separate Nautilus extension package for all accounts while keeping GNOME Terminal, Console and Black Box installed. Backs up and removes a redundant account extension when a system copy is installed, and backs up and replaces all existing actions and preferences with MiuUtil's configuration. Open in Terminal uses Console; Execute command here uses Black Box. The command helper is saved in your account so actions keep working after a temporary MiuUtil session ends. Matching confirms the extension, configuration, helper and absence of conflicting extensions. Restart Files, or sign out and sign in, to reload extension code.",
+      "requires_admin": true,
       "dependencies": [
         "apps-files-tools",
         "apps-console",
@@ -3614,10 +3614,18 @@
       "operation": {
         "kind": "upstream",
         "upstream": "nautilus-actions",
+        "remove_packages": [
+          "nautilus-extension-gnome-terminal"
+        ],
         "files": [
           {
+            "path": "$DATA/miuutil/helpers/nautilus-actions.py",
+            "format": "binary",
+            "payload": "helpers/nautilus-actions.py"
+          },
+          {
             "path": "$HOME/.local/share/actions-for-nautilus/config.json",
-            "format": "copy",
+            "format": "nautilus",
             "payload": "nautilus.json"
           }
         ]

@@ -1,3 +1,11 @@
+miuutil (0.1.10-1) unstable; urgency=medium
+
+  * Keep Nautilus action helpers available after temporary package restoration.
+  * Remove GNOME Terminal's conflicting Nautilus extension while keeping the terminal.
+  * Quote account helper paths for the native action parser.
+
+ -- Ris Peng <hello@rispeng.com>  Fri, 16 Oct 2026 11:47:32 +0800
+
 miuutil (0.1.9-1) unstable; urgency=medium
 
   * Back up redundant account Nautilus extensions and reuse the system copy.

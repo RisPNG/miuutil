@@ -257,6 +257,24 @@ namespace MiuUtil {
                 var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/" + source, ResourceLookupFlags.NONE);
                 if (bytes.get_size () > 0)
                     desired = ((string) bytes.get_data ()).substring (0, (int) bytes.get_size ());
+                if (kind == "nautilus") {
+                    var parser = new Json.Parser ();
+                    parser.load_from_data (desired);
+                    var helper = Shell.quote (Path.build_filename (Environment.get_user_data_dir (), "miuutil", "helpers", "nautilus-actions.py").replace ("%", "%%"));
+                    var actions = new Queue<Json.Object> ();
+                    foreach (var node in parser.get_root ().get_object ().get_array_member ("actions").get_elements ())
+                        actions.push_tail (node.get_object ());
+                    while (!actions.is_empty ()) {
+                        var action = actions.pop_head ();
+                        if (action.has_member ("command_line"))
+                            action.set_string_member ("command_line", action.get_string_member ("command_line").replace ("$HELPER", helper));
+                        if (action.has_member ("actions")) {
+                            foreach (var node in action.get_array_member ("actions").get_elements ())
+                                actions.push_tail (node.get_object ());
+                        }
+                    }
+                    return Json.to_string (parser.get_root (), true) + "\n";
+                }
                 desired = (desired).replace ("$HOME", Environment.get_home_dir ())
                     .replace ("$CONFIG", Environment.get_user_config_dir ())
                     .replace ("$DATA", Environment.get_user_data_dir ())

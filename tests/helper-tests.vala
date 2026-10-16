@@ -46,6 +46,55 @@ void describes_fixed_package_install () {
         assert (plan.get_string_member ("state") == assessment.get_string_member ("state"));
         assert (plan.get_string_member ("details") == assessment.get_string_member ("details"));
         assert (plan.get_array_member ("files").get_length () == 0);
+        assert (plan.get_array_member ("requested_removals").get_length () == 0);
+        assert (plan.get_array_member ("remove_packages").get_length () == 0);
+    } catch (Error error) {
+        critical ("%s", error.message);
+    }
+}
+
+void describes_fixed_nautilus_package_removal () {
+    try {
+        var change = new MiuUtil.PrivilegedChange ("files-nautilus-actions");
+        var plan = change.plan ();
+        var assessment = change.inspect ();
+        assert (plan.get_boolean_member ("requires_admin"));
+        assert (plan.get_array_member ("requested_packages").get_length () == 0);
+        assert (plan.get_array_member ("install_packages").get_length () == 0);
+        assert (plan.get_array_member ("requested_removals").get_length () == 1);
+        assert (plan.get_array_member ("requested_removals").get_string_element (0) == "nautilus-extension-gnome-terminal");
+        assert (assessment.get_array_member ("requested_removals").get_string_element (0) == "nautilus-extension-gnome-terminal");
+        var removals = plan.get_array_member ("remove_packages");
+        assert (removals.get_length () == assessment.get_array_member ("remove_packages").get_length ());
+        foreach (var node in removals.get_elements ())
+            assert (node.get_string ().split (":")[0] == "nautilus-extension-gnome-terminal");
+        assert (plan.get_string_member ("state") == assessment.get_string_member ("state"));
+        assert (plan.get_string_member ("details") == assessment.get_string_member ("details"));
+        assert (plan.get_array_member ("files").get_length () == 0);
+    } catch (Error error) {
+        critical ("%s", error.message);
+    }
+}
+
+void rejects_unapproved_upstream_operations () {
+    try {
+        var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/catalogue.json", ResourceLookupFlags.NONE);
+        var parser = new Json.Parser ();
+        parser.load_from_data ((string) bytes.get_data (), (ssize_t) bytes.get_size ());
+        foreach (var node in parser.get_root ().get_object ().get_array_member ("options").get_elements ()) {
+            var definition = node.get_object ();
+            var id = definition.get_string_member ("id");
+            if (definition.get_object_member ("operation").get_string_member ("kind") != "upstream" ||
+                id == "development-homebrew" || id == "files-nautilus-actions")
+                continue;
+            bool rejected = false;
+            try {
+                new MiuUtil.PrivilegedChange (id);
+            } catch (IOError.PERMISSION_DENIED error) {
+                rejected = true;
+            }
+            assert (rejected);
+        }
     } catch (Error error) {
         critical ("%s", error.message);
     }
@@ -189,6 +238,8 @@ int main (string[] arguments) {
     Test.add_func ("/helper/rejects-untrusted-identifiers", rejects_untrusted_identifiers);
     Test.add_func ("/helper/rejects-user-operations", rejects_user_operations);
     Test.add_func ("/helper/describes-fixed-package-install", describes_fixed_package_install);
+    Test.add_func ("/helper/describes-fixed-nautilus-package-removal", describes_fixed_nautilus_package_removal);
+    Test.add_func ("/helper/rejects-unapproved-upstream-operations", rejects_unapproved_upstream_operations);
     Test.add_func ("/helper/describes-recovery-without-mutation", describes_recovery_without_mutation);
     Test.add_func ("/helper/describes-official-harmonoid-install", describes_official_harmonoid_install);
     Test.add_func ("/helper/private-assessments-require-authorisation", private_assessments_require_authorisation);

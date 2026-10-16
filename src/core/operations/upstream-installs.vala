@@ -6,6 +6,8 @@ namespace MiuUtil {
         private Json.Object manifest;
         private string shell_version = "";
         private ConfigurationOperation? installation_files;
+        private PackageOperation? package_setup;
+        private string[] conflicting_packages = {};
 
         public UpstreamOperation (string identity, Json.Object specification) throws Error {
             this.identity = identity;
@@ -19,6 +21,10 @@ namespace MiuUtil {
                 installation_files = new ConfigurationOperation (identity, specification);
                 Signal.connect_object (installation_files, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
             }
+            if (specification.has_member ("remove_packages") && specification.get_array_member ("remove_packages").get_length () > 0) {
+                package_setup = new PackageOperation (identity, specification);
+                Signal.connect_object (package_setup, "output", (Callback) relay_output, this, ConnectFlags.SWAPPED);
+            }
         }
 
         private static void relay_output (UpstreamOperation operation, string text) {
@@ -27,19 +33,36 @@ namespace MiuUtil {
 
         public override async Assessment inspect (Cancellable? cancellable) throws Error {
             var installation = yield inspect_installation (cancellable);
-            if (installation.state != OptionState.MATCHING || installation_files == null)
+            if (installation.state != OptionState.MATCHING)
                 return installation;
-            var files = yield installation_files.inspect (cancellable);
+            var files = installation_files == null ? new Assessment (OptionState.MATCHING, "") :
+                yield installation_files.inspect (cancellable);
             if (files.state == OptionState.UNAVAILABLE)
                 return files;
-            return new Assessment (files.state == OptionState.MATCHING ? OptionState.MATCHING : OptionState.PARTIAL,
-                files.state == OptionState.MATCHING ? installation.current : "Installed; account files need updating.", files.details);
+            bool matching = files.state == OptionState.MATCHING && conflicting_packages.length == 0;
+            var details = files.details;
+            if (conflicting_packages.length > 0)
+                details += (details == "" ? "" : "\n\n") + "Packages to remove: " + string.joinv (", ", conflicting_packages);
+            return new Assessment (matching ? OptionState.MATCHING : OptionState.PARTIAL,
+                matching ? installation.current : conflicting_packages.length > 0 ?
+                    "Installed; conflicting packages need removing." : "Installed; account files need updating.", details);
         }
 
         private async Assessment inspect_installation (Cancellable? cancellable) throws Error {
             var home = Environment.get_home_dir ();
             var data = Environment.get_user_data_dir ();
             var config = Environment.get_user_config_dir ();
+            conflicting_packages = {};
+            if (specification.has_member ("remove_packages") && specification.get_array_member ("remove_packages").get_length () > 0) {
+                string[] query = { "dpkg-query", "--show", "--showformat=${binary:Package}\t${db:Status-Status}\n" };
+                foreach (var node in specification.get_array_member ("remove_packages").get_elements ())
+                    query += node.get_string ();
+                foreach (var line in (yield run_process (query, cancellable, false)).split ("\n")) {
+                    var columns = line.split ("\t");
+                    if (columns.length == 2 && columns[1] == "installed")
+                        conflicting_packages += columns[0];
+                }
+            }
             string? installed_path = null;
             string? program = null;
             switch (upstream) {
@@ -177,7 +200,10 @@ namespace MiuUtil {
         public override async void apply (Cancellable? cancellable) throws Error {
             var data = Environment.get_user_data_dir ();
             var config = Environment.get_user_config_dir ();
-            if ((yield inspect_installation (cancellable)).state == OptionState.MATCHING) {
+            var installation = yield inspect_installation (cancellable);
+            if (package_setup != null && conflicting_packages.length > 0)
+                yield package_setup.apply (null);
+            if (installation.state == OptionState.MATCHING) {
                 if (installation_files != null && (yield installation_files.inspect (cancellable)).state != OptionState.MATCHING)
                     yield installation_files.apply (cancellable);
                 return;

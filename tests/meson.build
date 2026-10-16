@@ -28,6 +28,10 @@ test('packages', packages_tests, env: test_environment)
 helper_test_environment = environment()
 helper_test_environment.set('MIUUTIL_TEST_HELPER', helper.full_path())
 test('helper-scripts', python, args: files('helper-script-tests.py'), env: helper_test_environment, depends: helper)
+nautilus_runtime_fixture = executable('nautilus-runtime-fixture', 'nautilus-runtime-fixture.vala', core_resources,
+  dependencies: core_dependency, vala_args: ['--pkg=posix'])
+test('nautilus-runtime', python,
+  args: [files('nautilus-runtime-tests.py'), nautilus_runtime_fixture], env: test_environment, timeout: 60)
 test('ci-build', python, args: files('ci-build-tests.py'))
 test('launcher', python, args: files('launcher-tests.py'), timeout: 120)
 ui_tests = executable('ui-tests', 'ui-tests.vala', core_resources, dependencies: ui_dependency,

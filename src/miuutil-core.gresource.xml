@@ -23,6 +23,7 @@
     <file alias="payloads/mpv/mpv.conf">../data/payloads/mpv/mpv.conf</file>
     <file alias="payloads/mpv/modernz.conf">../data/payloads/mpv/modernz.conf</file>
     <file alias="payloads/nautilus.json">../data/payloads/nautilus.json</file>
+    <file alias="payloads/helpers/nautilus-actions.py">../data/helpers/nautilus-actions.py</file>
     <file alias="payloads/nautilus-tabs.conf">../data/payloads/nautilus-tabs.conf</file>
     <file alias="payloads/terminal.list">../data/payloads/terminal.list</file>
     <file alias="payloads/terminal-environment.conf">../data/payloads/terminal-environment.conf</file>

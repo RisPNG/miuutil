@@ -134,6 +134,10 @@ int main (string[] arguments) {
                 "  if [ \"$1\" = --output ]; then cp " + Shell.quote (archive) + " \"$2\"; exit $?; fi\n" +
                 "  shift\ndone\nexit 1\n");
             File.new_for_path (fake_download).set_attribute_uint32 (FileAttribute.UNIX_MODE, 0755, FileQueryInfoFlags.NONE);
+            FileUtils.set_contents (workspace + "/dpkg-query", "#!/bin/sh\nexit 0\n");
+            FileUtils.set_contents (workspace + "/pkexec", "#!/bin/sh\nexit 98\n");
+            foreach (var tool in new string[] { "dpkg-query", "pkexec" })
+                File.new_for_path (workspace + "/" + tool).set_attribute_uint32 (FileAttribute.UNIX_MODE, 0755, FileQueryInfoFlags.NONE);
             Environment.set_variable ("PATH", workspace + ":" + original_path, true);
             var bytes = resources_lookup_data ("/com/rispeng/MiuUtil/catalogue.json", ResourceLookupFlags.NONE);
             var catalogue = new Json.Parser ();
@@ -161,9 +165,21 @@ int main (string[] arguments) {
             assert_cmpstr (content, CompareOperator.EQ, "verified extension fixture\n");
             var configuration = test_home + "/.local/share/actions-for-nautilus/config.json";
             FileUtils.get_contents (configuration, out content);
-            var desired = resources_lookup_data ("/com/rispeng/MiuUtil/payloads/nautilus.json", ResourceLookupFlags.NONE);
-            assert_cmpstr (content, CompareOperator.EQ,
-                (((string) desired.get_data ()).substring (0, (int) desired.get_size ())).replace ("$LIBEXEC", Config.LIBEXEC_DIR));
+            var menu = new Json.Parser ();
+            menu.load_from_data (content);
+            var helper = test_home + "/data/miuutil/helpers/nautilus-actions.py";
+            foreach (var node in menu.get_root ().get_object ().get_array_member ("actions").get_elements ()) {
+                var action = node.get_object ();
+                if (action.get_string_member ("type") != "command")
+                    continue;
+                string[] command;
+                Shell.parse_argv (action.get_string_member ("command_line"), out command);
+                assert_cmpstr (command[0], CompareOperator.EQ, "/usr/bin/python3");
+                assert_cmpstr (command[1], CompareOperator.EQ, helper);
+                assert_cmpstr (command[3], CompareOperator.EQ, "%U");
+            }
+            assert (File.new_for_path (helper).load_bytes ().compare (
+                resources_lookup_data ("/com/rispeng/MiuUtil/payloads/helpers/nautilus-actions.py", ResourceLookupFlags.NONE)) == 0);
             operation.apply.begin (null, (object, result) => {
                 try {
                     operation.apply.end (result);

@@ -10,7 +10,7 @@ namespace MiuUtil {
 
         public override async Assessment inspect (Cancellable? cancellable) throws Error {
             var kind = specification.get_string_member ("kind");
-            if (kind == "apt" || kind == "system") {
+            if (kind == "apt" || kind == "system" || specification.has_member ("remove_packages")) {
                 if (!FileUtils.test (Config.HELPER_PATH, FileTest.IS_EXECUTABLE))
                     return new Assessment (OptionState.UNAVAILABLE, "Install MiuUtil's administrator helper to manage this system option.");
                 string[] inspection = identity == "system-root-mc-skin" || identity == "system-passwordless-admin" ?
@@ -48,7 +48,7 @@ namespace MiuUtil {
 
         public override async void apply (Cancellable? cancellable) throws Error {
             var kind = specification.get_string_member ("kind");
-            if (kind == "apt" || kind == "system") {
+            if (kind == "apt" || kind == "system" || specification.has_member ("remove_packages")) {
                 if (Environment.find_program_in_path ("pkexec") == null)
                     throw new IOError.NOT_SUPPORTED ("polkit's pkexec command is not available.");
                 yield run_process ({ "pkexec", Config.HELPER_PATH, "--apply", identity }, null);

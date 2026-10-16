@@ -16,7 +16,9 @@ namespace MiuUtil {
                     continue;
                 var operation = candidate.get_object_member ("operation");
                 var kind = operation.get_string_member ("kind");
-                if (kind != "apt" && kind != "system" && !(kind == "upstream" && id == "development-homebrew" && operation.get_string_member ("upstream") == "homebrew"))
+                if (kind != "apt" && kind != "system" && !(kind == "upstream" &&
+                    ((id == "development-homebrew" && operation.get_string_member ("upstream") == "homebrew") ||
+                     (id == "files-nautilus-actions" && operation.get_string_member ("upstream") == "nautilus-actions"))))
                     throw new IOError.PERMISSION_DENIED ("%s is a user operation, not an administrator operation", id);
                 if (kind == "system") {
                     switch (id) {
@@ -54,7 +56,7 @@ namespace MiuUtil {
             var packages = new Json.Array ();
             var files = new Json.Array ();
             var services = new Json.Array ();
-            if (specification.get_string_member ("kind") == "apt") {
+            if (specification.get_string_member ("kind") == "apt" || id == "files-nautilus-actions") {
                 var selection = new DebianPackages (specification, execute);
                 var requested_packages = new Json.Array ();
                 foreach (var name in selection.requested)
@@ -67,9 +69,17 @@ namespace MiuUtil {
                 var omitted_packages = new Json.Array ();
                 foreach (var name in selection.omitted)
                     omitted_packages.add_string_element (name);
+                var requested_removals = new Json.Array ();
+                foreach (var name in selection.requested_removals)
+                    requested_removals.add_string_element (name);
+                var remove_packages = new Json.Array ();
+                foreach (var name in selection.installed_removals)
+                    remove_packages.add_string_element (name);
                 plan.set_array_member ("requested_packages", requested_packages);
                 plan.set_array_member ("install_packages", install_packages);
                 plan.set_array_member ("omitted_packages", omitted_packages);
+                plan.set_array_member ("requested_removals", requested_removals);
+                plan.set_array_member ("remove_packages", remove_packages);
                 plan.set_string_member ("state", selection.state);
                 plan.set_string_member ("current", selection.current);
                 plan.set_string_member ("details", selection.details);
@@ -192,8 +202,16 @@ namespace MiuUtil {
                     return result;
                 }
             }
-            if (specification.get_string_member ("kind") == "apt") {
+            if (specification.get_string_member ("kind") == "apt" || id == "files-nautilus-actions") {
                 var selection = new DebianPackages (specification, execute);
+                var requested_removals = new Json.Array ();
+                foreach (var name in selection.requested_removals)
+                    requested_removals.add_string_element (name);
+                var remove_packages = new Json.Array ();
+                foreach (var name in selection.installed_removals)
+                    remove_packages.add_string_element (name);
+                result.set_array_member ("requested_removals", requested_removals);
+                result.set_array_member ("remove_packages", remove_packages);
                 result.set_string_member ("state", selection.state);
                 result.set_string_member ("current", selection.current);
                 result.set_string_member ("details", selection.details);
@@ -443,7 +461,7 @@ namespace MiuUtil {
                 }
             }
             var plan = plan ();
-            bool package_operation = specification.get_string_member ("kind") == "apt";
+            bool package_operation = specification.get_string_member ("kind") == "apt" || id == "files-nautilus-actions";
             if (package_operation) {
                 if (plan.get_string_member ("state") == "unavailable")
                     throw new IOError.NOT_SUPPORTED ("%s\n%s", plan.get_string_member ("current"), plan.get_string_member ("details"));
@@ -487,19 +505,27 @@ namespace MiuUtil {
                         "Types: deb\nURIs: %s\nSuites: stable\nComponents: main\nSigned-By: %s\n".printf (address, key_path), 0644);
                 }
             }
-            execute ({"/usr/bin/apt-get", "update"}, true, true);
             string[] packages = {"/usr/bin/apt-get", "--yes", "--no-remove", "-o", "Dpkg::Options::=--force-confold", "install"};
             if (package_operation) {
+                if (plan.get_array_member ("install_packages").get_length () > 0)
+                    execute ({"/usr/bin/apt-get", "update"}, true, true);
                 var selection = new DebianPackages (specification, execute);
                 if (selection.state == "unavailable")
                     throw new IOError.NOT_SUPPORTED ("%s\n%s", selection.current, selection.details);
                 stdout.printf ("%s\n%s\n", selection.current, selection.details);
+                if (selection.installed_removals.length > 0) {
+                    string[] removal = {"/usr/bin/apt-get", "--yes", "--no-auto-remove", "remove"};
+                    foreach (var name in selection.installed_removals)
+                        removal += name;
+                    execute (removal, true, true);
+                }
                 foreach (var name in selection.missing)
                     packages += name;
                 if (selection.missing.length > 0)
                     execute (packages, true, true);
                 return;
             }
+            execute ({"/usr/bin/apt-get", "update"}, true, true);
             foreach (var node in plan.get_array_member ("packages").get_elements ())
                 packages += node.get_string ();
             execute (packages, true, true);
